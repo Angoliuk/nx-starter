@@ -1,34 +1,57 @@
-name: dev
-
+name: CI
 on:
   push:
     branches:
-      - "!master"
-      - "**"
-
-# Needed for nx-set-shas within nx-cloud-main.yml, when run on the main branch
-permissions:
-  actions: read
-  contents: read
+      - main
+  pull_request:
 
 jobs:
   main:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      # Cache node_modules
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          cache: "pnpm"
-      - uses: nrwl/nx-set-shas@v3
-      # This line is needed for nx affected to work when CI is running on a PR
-      - run: git branch --track main origin/main
+    name: Nx Cloud - Main Job
+    uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
+    with:
+      number-of-agents: 3
+      parallel-commands: |
+        npx nx-cloud record -- npx nx format:check
+      parallel-commands-on-agents: |
+        npx nx affected -t lint,test,build --parallel=2
 
-      - run: npx nx format:check
-      - run: npx exec nx affected -t lint,build --parallel=3
+  agents:
+    name: Nx Cloud - Agents
+    uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.0
+    with:
+      number-of-agents: 3
+# name: dev
+
+# on:
+#   push:
+#     branches:
+#       - "!master"
+#       - "**"
+
+# # Needed for nx-set-shas within nx-cloud-main.yml, when run on the main branch
+# permissions:
+#   actions: read
+#   contents: read
+
+# jobs:
+#   main:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
+#       # Cache node_modules
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: 20
+#           cache: "pnpm"
+#       - uses: nrwl/nx-set-shas@v3
+#       # This line is needed for nx affected to work when CI is running on a PR
+#       - run: git branch --track main origin/main
+
+#       - run: npx nx format:check
+#       - run: npx exec nx affected -t lint,build --parallel=3
 # jobs:
 #   main:
 #     name: Nx Cloud - Main Job
