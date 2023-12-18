@@ -1,0 +1,22 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider     = "postgres"
+  // url          = env("DATABASE_URL")
+  url          = "postgresql://angoliukstas:IWasU5PKmR8f@ep-odd-forest-026460.eu-central-1.aws.neon.tech/neondb?sslmode=require"
+  relationMode = "prisma"
+}
+
+model User {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+
+  hashedRt String @default("")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
