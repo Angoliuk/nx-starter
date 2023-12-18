@@ -56,6 +56,9 @@ jobs:
       - name: Lint
         run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 
+      - name: Prisma Generation
+        run: nx generate-types db
+
       - name: Build
         run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 # name: CI
