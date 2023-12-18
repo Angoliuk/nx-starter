@@ -20,7 +20,7 @@ jobs:
       parallel-commands: |
         npx nx-cloud record -- npx nx format:check
       parallel-commands-on-agents: |
-        npx nx affected -t lint,build --parallel=2
+        npx exec nx affected -t lint,build --parallel=3
 
   agents:
     name: Nx Cloud - Agents
@@ -39,8 +39,8 @@ jobs:
 #       parallel-commands: |
 #         pnpm exec nx-cloud record -- pnpm exec nx format:check
 #       parallel-commands-on-agents: |
-#         pnpm exec nx affected --target=lint --parallel=3
-#         pnpm exec nx affected --target=build --parallel=3
+# pnpm exec nx affected --target=lint --parallel=3
+# pnpm exec nx affected --target=build --parallel=3
 
 #   agents:
 #     name: Nx Cloud - Agents
