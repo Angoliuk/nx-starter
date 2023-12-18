@@ -5,8 +5,6 @@ on:
     branches:
       - "!master"
       - "**"
-    branches-ignore:
-      - master
 
 # Needed for nx-set-shas within nx-cloud-main.yml, when run on the main branch
 permissions:
