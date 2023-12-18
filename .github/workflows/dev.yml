@@ -29,6 +29,11 @@ jobs:
           version: 8
           run_install: false
 
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
       - name: Get pnpm store directory
         shell: bash
         run: |
@@ -48,6 +53,10 @@ jobs:
 
       - name: Install NX
         run: pnpm install -g nx
+
+      - uses: nrwl/nx-set-shas@v3
+        # This line is needed for nx affected to work when CI is running on a PR
+      - run: git branch --track main origin/main
 
       - name: Code style
         run: nx format:check
