@@ -21,16 +21,14 @@ jobs:
         with:
           node-version: "18.x"
 
+      - name: Fetching git
+        run: git fetch
+
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         with:
           version: 8
           run_install: false
-
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
 
       - name: Get pnpm store directory
         shell: bash
@@ -52,9 +50,6 @@ jobs:
       - name: Install NX
         run: pnpm install -g nx
 
-      - name: Fetching git
-        run: git fetch
-        # && git branch --track ${{ github.event.pull_request.head.ref }} origin/${{ github.event.pull_request.base.ref }}
       - name: Code style
         run: nx format:check
 

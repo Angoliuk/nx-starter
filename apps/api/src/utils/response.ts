@@ -74,9 +74,6 @@ export const formatBody = <T extends Record<string, unknown>>({
 
 export const wrapper = (cb: typeof Function) => {
   try {
-    let a = 3;
-
-    console.log(a);
     cb();
   } catch (error) {
     return {
