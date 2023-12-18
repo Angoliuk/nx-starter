@@ -38,3 +38,10 @@ tsconfig.tsbuildinfo
 screenshots
 videos
 downloads
+
+
+# .md
+*.md
+
+# json
+*.json

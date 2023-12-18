@@ -5,16 +5,14 @@ on:
     branches:
       - "!main"
       - "**"
-  push:
-    branches:
-      - "!main"
-      - "**"
 
 jobs:
   ci:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: nrwl/nx-set-shas@v3
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -22,6 +20,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18.x"
+
+      - name: Fetching git
+        run: git fetch
 
       - uses: pnpm/action-setup@v2
         name: Install pnpm
@@ -46,14 +47,20 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Install NX
+        run: pnpm install -g nx
+
       - name: Code style
-        run: npx nx format:check
+        run: nx format:check
 
       - name: Lint
-        run: npx nx affected --target=lint --parallel=3
+        run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+
+      - name: Prisma Generation
+        run: nx generate-types db
 
       - name: Build
-        run: npx nx affected --target=build --parallel=3
+        run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 # name: CI
 # on:
 #   push:
