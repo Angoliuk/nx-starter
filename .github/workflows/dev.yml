@@ -47,7 +47,7 @@ jobs:
         run: pnpm install
 
       - name: Install NX
-        run: pnpm install -G nx
+        run: pnpm install -g nx
 
       - name: Code style
         run: nx format:check
