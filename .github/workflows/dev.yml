@@ -1,26 +1,82 @@
-name: CI
+name: dev-build
+
 on:
+  pull_request:
+    branches:
+      - "!main"
+      - "**"
   push:
     branches:
-      - main
-  pull_request:
+      - "!main"
+      - "**"
 
 jobs:
-  main:
-    name: Nx Cloud - Main Job
-    uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
-    with:
-      number-of-agents: 3
-      parallel-commands: |
-        npx nx-cloud record -- npx nx format:check
-      parallel-commands-on-agents: |
-        npx nx affected -t lint,test,build --parallel=2
+  lint_and_test:
+    runs-on: ubuntu-latest
 
-  agents:
-    name: Nx Cloud - Agents
-    uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.0
-    with:
-      number-of-agents: 3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      #    TODO: Setup cache
+      #  - uses: actions/cache@v3
+      #    name: Setup pnpm cache
+      #    with:
+      #       path: ${{ env.STORE_PATH }}
+      #       key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+      #       restore-keys: |
+      #          ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Code style
+        run: npx nx format:check
+
+      - name: Lint
+        run: npx nx affected --target=lint --parallel=3
+
+      - name: Build
+        run: npx nx affected --target=build --parallel=3
+# name: CI
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+
+# jobs:
+#   main:
+#     name: Nx Cloud - Main Job
+#     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
+#     with:
+#       number-of-agents: 3
+#       parallel-commands: |
+#         npx nx-cloud record -- npx nx format:check
+#       parallel-commands-on-agents: |
+#         npx nx affected -t lint,test,build --parallel=2
+
+#   agents:
+#     name: Nx Cloud - Agents
+#     uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.0
+#     with:
+#       number-of-agents: 3
 # name: dev
 
 # on:
