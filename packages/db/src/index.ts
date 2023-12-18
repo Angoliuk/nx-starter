@@ -1,6 +1,2 @@
 export * from "@prisma/client";
-export  {
-
-
-}
-;
+export {};
