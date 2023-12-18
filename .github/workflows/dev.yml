@@ -59,10 +59,10 @@ jobs:
         run: nx format:check
 
       - name: Lint
-        run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=${{ github.event.pull_request.head.ref }}
+        run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 
       - name: Build
-        run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=${{ github.event.pull_request.head.ref }}
+        run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 # name: CI
 # on:
 #   push:
