@@ -53,7 +53,7 @@ jobs:
         run: pnpm install -g nx
 
       - name: Locating Changes
-        run: git branch --track ${{ github.event.pull_request.head.ref }} origin/${{ github.event.pull_request.base.ref }}
+        run: git fetch && git branch --track ${{ github.event.pull_request.head.ref }} origin/${{ github.event.pull_request.base.ref }}
 
       - name: Code style
         run: nx format:check
