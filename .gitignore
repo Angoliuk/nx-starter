@@ -1,5 +1,3 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
-
 # compiled output
 dist
 tmp
@@ -39,3 +37,6 @@ testem.log
 Thumbs.db
 
 .nx/cache
+
+# Next.js
+.next

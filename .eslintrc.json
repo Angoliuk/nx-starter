@@ -1,0 +1,37 @@
+{
+  "root": true,
+  "plugins": ["@nx", "unused-imports", "perfectionist"],
+  "ignorePatterns": ["node_modules", "dist", "dev-dist", "build", ".history"],
+  "rules": {},
+  "extends": ["plugin:perfectionist/recommended-natural"],
+  "overrides": [
+    // {
+    //   "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+    //   "rules": {
+    //     "@nx/enforce-module-boundaries": [
+    //       "error",
+    //       {
+    //         "enforceBuildableLibDependency": true,
+    //         "allow": [],
+    //         "depConstraints": [
+    //           {
+    //             "sourceTag": "*",
+    //             "onlyDependOnLibsWithTags": ["*"]
+    //           }
+    //         ]
+    //       }
+    //     ]
+    //   }
+    // },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nx/typescript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nx/javascript"],
+      "rules": {}
+    }
+  ]
+}
