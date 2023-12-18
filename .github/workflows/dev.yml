@@ -46,14 +46,17 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Install NX
+        run: pnpm install -G nx
+
       - name: Code style
-        run: npx nx format:check
+        run: nx format:check
 
       - name: Lint
-        run: npx nx affected --target=lint --parallel=3
+        run: nx affected --target=lint --parallel=3
 
       - name: Build
-        run: npx nx affected --target=build --parallel=3
+        run: nx affected --target=build --parallel=3
 # name: CI
 # on:
 #   push:
