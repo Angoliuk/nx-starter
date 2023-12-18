@@ -52,17 +52,17 @@ jobs:
       - name: Install NX
         run: pnpm install -g nx
 
-      - name: Locating Changes
-        run: git fetch && git branch --track ${{ github.event.pull_request.head.ref }} origin/${{ github.event.pull_request.base.ref }}
-
+      - name: Fetching git
+        run: git fetch
+        # && git branch --track ${{ github.event.pull_request.head.ref }} origin/${{ github.event.pull_request.base.ref }}
       - name: Code style
         run: nx format:check
 
       - name: Lint
-        run: nx affected --target=lint
+        run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=${{ github.event.pull_request.head.ref }}
 
       - name: Build
-        run: nx affected --target=build
+        run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=${{ github.event.pull_request.head.ref }}
 # name: CI
 # on:
 #   push:
