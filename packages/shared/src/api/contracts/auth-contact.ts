@@ -8,12 +8,14 @@ const successSchema = (dataSchema?: AnyZodObject) =>
   zod.object({
     data: dataSchema ?? zod.undefined(),
     message: zod.string(),
+    status: zod.number(),
   });
 
 const errorSchema = (errorSchema?: AnyZodObject) =>
   zod.object({
     error: errorSchema ?? zod.string(),
     message: zod.string(),
+    status: zod.number(),
   });
 
 export const authContract = (c: ContractInstance) =>
@@ -25,6 +27,7 @@ export const authContract = (c: ContractInstance) =>
         path: "/logout",
         responses: {
           [StatusCodes.FORBIDDEN]: errorSchema(),
+          [StatusCodes.SERVER_ERROR]: errorSchema(),
           [StatusCodes.SUCCESS]: successSchema(),
         },
       },
@@ -34,6 +37,7 @@ export const authContract = (c: ContractInstance) =>
         path: "/refresh",
         responses: {
           [StatusCodes.FORBIDDEN]: errorSchema(),
+          [StatusCodes.SERVER_ERROR]: errorSchema(),
           [StatusCodes.SUCCESS]: successSchema(),
         },
       },
@@ -43,6 +47,7 @@ export const authContract = (c: ContractInstance) =>
         path: "/sign-in",
         responses: {
           [StatusCodes.FORBIDDEN]: errorSchema(),
+          [StatusCodes.SERVER_ERROR]: errorSchema(),
           [StatusCodes.SUCCESS]: successSchema(),
         },
         summary: "test",
@@ -53,6 +58,7 @@ export const authContract = (c: ContractInstance) =>
         path: "/sign-up",
         responses: {
           [StatusCodes.FORBIDDEN]: errorSchema(),
+          [StatusCodes.SERVER_ERROR]: errorSchema(),
           [StatusCodes.SUCCESS]: successSchema(),
         },
         summary: "test",

@@ -49,5 +49,5 @@ export const api = initClient(contract, {
     };
   },
   baseHeaders: {},
-  baseUrl: "http://localhost:8000",
+  baseUrl: "http://localhost:8080",
 });

@@ -17,6 +17,5 @@ import { UsersModule } from "./users";
     AuthModule,
     UsersModule,
   ],
-  providers: [],
 })
 export class AppModule {}

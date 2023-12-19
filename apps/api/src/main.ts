@@ -4,13 +4,16 @@ import { SwaggerModule } from "@nestjs/swagger";
 import { contract } from "@nx-starter/shared";
 import { generateOpenApi } from "@ts-rest/open-api";
 
+import { ErrorFilter } from "./middlewares";
 import { AppModule } from "./modules/app.module";
+
+const port = process.env.PORT || 3000;
+const globalPrefix = "api";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const globalPrefix = "api";
-  // app.setGlobalPrefix(globalPrefix);
-  const port = process.env.PORT || 3000;
+
+  app.useGlobalFilters(new ErrorFilter());
 
   const document = generateOpenApi(
     contract,
@@ -27,8 +30,7 @@ async function bootstrap() {
 
   SwaggerModule.setup("api-docs", app, document);
 
-  await app.listen(port);
-  Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+  await app.listen(port, () => Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`));
 }
 
 bootstrap();
