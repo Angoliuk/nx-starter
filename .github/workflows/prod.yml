@@ -1,0 +1,75 @@
+name: dev
+
+on:
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: nrwl/nx-set-shas@v3
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+
+      - name: Fetching git
+        run: git fetch
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      #    TODO: Setup cache
+      #  - uses: actions/cache@v3
+      #    name: Setup pnpm cache
+      #    with:
+      #       path: ${{ env.STORE_PATH }}
+      #       key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+      #       restore-keys: |
+      #          ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install NX
+        run: pnpm install -g nx
+
+      - name: Code style
+        run: nx format:check
+
+      - name: Lint
+        run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+
+      - name: Prisma Generation
+        run: nx generate-types db
+
+      - name: Build
+        run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+
+      - name: Check for apps to deploy
+        uses: dkhunt27/action-nx-affected-list@v4
+        id: checkForAffectedApps
+
+      - if: steps.checkForAffectedApps.outputs.hasAffectedApps == 'true'
+        name: Deploy
+        run: echo steps.checkForAffectedApps.outputs.hasAffectedApps
+
+        # with:
+        #   targets: build
+        #   affected: true
+        #   nxCloud: false
