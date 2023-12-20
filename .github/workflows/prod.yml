@@ -6,102 +6,65 @@ on:
       - "main"
 
 jobs:
-  # identify_affected:
+  # ci:
   #   runs-on: ubuntu-latest
-  #   outputs:
-  #     affected: ${{ steps.set-output.outputs.affected }}
+
   #   steps:
+  #     - uses: nrwl/nx-set-shas@v3
+
   #     - name: Checkout code
-  #       uses: actions/checkout@v2
+  #       uses: actions/checkout@v3
 
-  #     - name: Fetch Base Branch
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: "18.x"
+
+  #     - name: Fetching git
+  #       run: git fetch
+
+  #     - uses: pnpm/action-setup@v2
+  #       name: Install pnpm
+  #       with:
+  #         version: 8
+  #         run_install: false
+
+  #     - name: Get pnpm store directory
+  #       shell: bash
   #       run: |
-  #         git fetch origin main:main
+  #         echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-  #     - name: Install Dependencies
-  #       run: npm install -g nx
+  #     #    TODO: Setup cache
+  #     #  - uses: actions/cache@v3
+  #     #    name: Setup pnpm cache
+  #     #    with:
+  #     #       path: ${{ env.STORE_PATH }}
+  #     #       key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+  #     #       restore-keys: |
+  #     #          ${{ runner.os }}-pnpm-store-
 
-  #     - name: Identify affected projects
-  #       run: |
-  #         echo "AFFECTED=$(nx show projects --affected --json --base=main --head=HEAD | jq -r '.projects | join(" ")')" >> $GITHUB_ENV
+  #     - name: Install dependencies
+  #       run: pnpm install
 
-  #     - name: Set affected projects as output
-  #       id: set-output
-  #       run: echo "::set-output name=affected::${{ env.AFFECTED }}"
-  # build:
-  # needs: identify_affected
-  # runs-on: ubuntu-latest
-  # strategy:
-  #   matrix:
-  #     project: [web, api]
-  # steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v2
+  #     - name: Install NX
+  #       run: pnpm install -g nx
 
-  #   - name: Install Dependencies
-  #     run: npm install
+  #     - name: Code style
+  #       run: nx format:check
 
-  #   - name: Build Project
-  #     run: echo "${{ needs.identify_affected.outputs.affected }}"
-  ci:
-    runs-on: ubuntu-latest
+  #     - name: Lint
+  #       run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 
-    steps:
-      - uses: nrwl/nx-set-shas@v3
+  #     - name: Prisma Generation
+  #       run: nx generate-types db
 
-      - name: Checkout code
-        uses: actions/checkout@v3
+  #     - name: Build
+  #       run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.x"
-
-      - name: Fetching git
-        run: git fetch
-
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      #    TODO: Setup cache
-      #  - uses: actions/cache@v3
-      #    name: Setup pnpm cache
-      #    with:
-      #       path: ${{ env.STORE_PATH }}
-      #       key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-      #       restore-keys: |
-      #          ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Install NX
-        run: pnpm install -g nx
-
-      - name: Code style
-        run: nx format:check
-
-      - name: Lint
-        run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
-
-      - name: Prisma Generation
-        run: nx generate-types db
-
-      - name: Build
-        run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+  # READY
 
   defineAffectedApps:
     runs-on: ubuntu-latest
-    # outputs:
-    #   affected: ${{ steps.set-output.outputs.affected }}
     steps:
       - uses: nrwl/nx-set-shas@v3
 
@@ -136,29 +99,18 @@ jobs:
       #       restore-keys: |
       #          ${{ runner.os }}-pnpm-store-
 
-      - name: Install dependencies
-        run: pnpm install
+      # - name: Install dependencies
+      #   run: pnpm install
 
       - name: Install NX
         run: pnpm install -g nx
 
-      - name: Set Variable
-        id: set_var
+      - name: Getting affected apps
+        id: affected
         run: |
           echo "affectedApps=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD }})" >> $GITHUB_OUTPUT
     outputs:
-      affectedApps: ${{ steps.set_var.outputs.affectedApps }}
-    # outputs:
-    # affectedApps: echo nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
-    # affectedApps2: echo "nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD"
-
-    # - name: Identify affected projects
-    #   run: |
-    #     echo "AFFECTED=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD | jq -r '.projects | join(" ")')" >> $GITHUB_ENV
-
-    # - name: Set affected projects as output
-    #   id: set-output
-    #   run: echo "::set-output name=affected::${{ env.AFFECTED }}"
+      affectedApps: ${{ steps.affected.outputs.affectedApps }}
 
   deploy:
     needs: defineAffectedApps
@@ -180,7 +132,7 @@ jobs:
 
       - name: Build Project
         if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)
-        run: echo 123
+        run: echo ${{ matrix.project }}
 
       # - name: Build Project
       #   run: echo "${{ needs.identify_affected.outputs.affected }}"
