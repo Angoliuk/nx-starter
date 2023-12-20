@@ -50,7 +50,7 @@ jobs:
         run: pnpm install -g nx
 
       - name: Code style
-        run: nx format:check
+        run: nx format:check --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 
       - name: Lint
         run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
