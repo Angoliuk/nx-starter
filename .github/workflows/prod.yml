@@ -28,6 +28,22 @@ jobs:
       - name: Set affected projects as output
         id: set-output
         run: echo "::set-output name=affected::${{ env.AFFECTED }}"
+  build:
+    needs: identify_affected
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [web, api]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project
+        if: contains(needs.identify_affected.outputs.affected, matrix.project)
+        run: echo ${{ matrix.project }}
   ci:
     runs-on: ubuntu-latest
 
