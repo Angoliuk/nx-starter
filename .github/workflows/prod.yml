@@ -167,6 +167,12 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Install Dependencies
+        run: echo "${{ needs.defineAffectedApps.outputs.affectedApps }}"
+
+      - name: Install Dependencies
+        run: echo ${{ needs.defineAffectedApps.outputs.affectedApps }}
+
       - name: Build Project
         if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)
         run: echo 123
