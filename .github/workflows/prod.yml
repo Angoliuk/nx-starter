@@ -143,7 +143,8 @@ jobs:
         run: pnpm install -g nx
 
     outputs:
-      affectedApps: nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+      affectedApps: echo nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+      affectedApps2: echo "nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD"
 
       # - name: Identify affected projects
       #   run: |
@@ -172,6 +173,12 @@ jobs:
 
       - name: Install Dependencies
         run: echo ${{ needs.defineAffectedApps.outputs.affectedApps }}
+
+      - name: Install Dependencies
+        run: echo "${{ needs.defineAffectedApps.outputs.affectedApps2 }}"
+
+      - name: Install Dependencies
+        run: echo ${{ needs.defineAffectedApps.outputs.affectedApps2 }}
 
       - name: Build Project
         if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)
