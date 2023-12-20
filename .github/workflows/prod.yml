@@ -33,9 +33,6 @@ jobs:
           version: 8
           run_install: false
 
-      - name: A
-        run: echo ${{ github }}
-
       - name: Get pnpm store directory
         shell: bash
         run: |
@@ -54,6 +51,9 @@ jobs:
 
       - name: Install NX
         run: pnpm install -g nx
+
+      - name: A
+        run: echo ${{ github }}
 
       - name: Code style
         run: nx format:check --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
