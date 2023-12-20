@@ -39,6 +39,16 @@ jobs:
         run: echo ${{ github.event.inputs.pnpmPath }}
       - name: Check is CI valid
         run: echo ${{ github.event.inputs }}
+      - name: Check is CI valid
+        run: echo ${{ env }}
+      - name: Check is CI valid
+        run: echo ${{ env.inputs }}
+      - name: Check is CI valid
+        run: echo ${{ env.inputs.flags }}
+      - name: Check is CI valid
+        run: echo ${{ env.flags }}
+      - name: Check is CI valid
+        run: echo ${{ github }}
   ci:
     runs-on: ubuntu-latest
     steps:

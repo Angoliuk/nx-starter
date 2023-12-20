@@ -11,16 +11,16 @@ on:
 jobs:
   variables:
     uses: ./.github/workflows/variables.yml
-  # test:
-  #   needs: variables
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Check is CI valid
-  #       run: echo ${{ needs.variables.outputs.flags }}
-  #     - name: Check is CI valid
-  #       run: echo ${{ needs.variables.outputs.pnpmKeysPrefix }}
-  #     - name: Check is CI valid
-  #       run: echo ${{ needs.variables.outputs.pnpmPath }}
+  test:
+    needs: variables
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check is CI valid
+        run: echo ${{ needs.variables.outputs.flags }}
+      - name: Check is CI valid
+        run: echo ${{ needs.variables.outputs.pnpmKeysPrefix }}
+      - name: Check is CI valid
+        run: echo ${{ needs.variables.outputs.pnpmPath }}
   ci:
     needs: variables
     uses: ./.github/workflows/ci.yml
