@@ -38,7 +38,7 @@
     "paths": {
       "@nx-starter/db": ["packages/db/src/index.ts"],
       "@nx-starter/shared": ["packages/shared/src/index.ts"],
-      "@nx-starter/tailwind": ["packages/tailwind/src/tailwind.config.ts"]
+      "@nx-starter/tailwind": ["packages/tailwind/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

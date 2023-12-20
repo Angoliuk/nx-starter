@@ -2,17 +2,17 @@
 
 version: "3.8"
 services:
-  server:
-    build:
-      context: ./
-      dockerfile: ./dockerfile.server
-    depends_on:
-      - postgres
-    ports:
-      - "8080:8080"
-    restart: unless-stopped
-    volumes:
-      - ./:/app
+  # server:
+  #   build:
+  #     context: ./
+  #     dockerfile: ./dockerfile.server
+  #   depends_on:
+  #     - postgres
+  #   ports:
+  #     - "8080:8080"
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./:/app
   postgres:
     image: postgres
     ports:
@@ -35,6 +35,19 @@ services:
         limits:
           cpus: "1"
           memory: 4G
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    depends_on:
+      - postgres
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    restart: unless-stopped
 volumes:
   pgdata:
   pgadmin-data:

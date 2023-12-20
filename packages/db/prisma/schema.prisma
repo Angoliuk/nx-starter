@@ -5,8 +5,7 @@ generator client {
 
 datasource db {
   provider     = "postgres"
-  // url          = env("DATABASE_URL")
-  url          = "postgresql://angoliukstas:IWasU5PKmR8f@ep-odd-forest-026460.eu-central-1.aws.neon.tech/neondb?sslmode=require"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 

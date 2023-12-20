@@ -3,6 +3,6 @@ export enum AppThemeColors {
 }
 
 export enum FontSizes {
-  HEADLINE_S = ".text-headlineS",
   BODY_S = ".text-bodyS",
+  HEADLINE_S = ".text-headlineS",
 }

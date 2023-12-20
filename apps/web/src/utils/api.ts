@@ -12,6 +12,7 @@ export const api = initClient(contract, {
       next,
       signal,
     });
+
     const contentType = result.headers.get("content-type");
 
     if (contentType?.includes("application/") && contentType?.includes("json")) {

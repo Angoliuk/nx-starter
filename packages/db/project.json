@@ -10,6 +10,18 @@
         "cwd": "packages/db"
       }
     },
+    "push": {
+      "command": "prisma db push",
+      "options": {
+        "cwd": "packages/db"
+      }
+    },
+    "pull": {
+      "command": "prisma db pull",
+      "options": {
+        "cwd": "packages/db"
+      }
+    },
     "generate-types": {
       "command": "prisma generate",
       "options": {
@@ -24,9 +36,14 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["packages/db/**/*.ts", "packages/db/package.json"]
+        "lintFilePatterns": [
+          "packages/db/**/*.ts",
+          "packages/db/package.json"
+        ]
       }
     }
   },
