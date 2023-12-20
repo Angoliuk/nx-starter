@@ -6,12 +6,15 @@ on:
       pnpmPath:
         required: true
         type: string
+        default: "13"
       pnpmKeysPrefix:
         required: true
         type: string
+        default: "13"
       flags:
         required: true
         type: string
+        default: "13"
     outputs:
       isBuildPassed:
         value: ${{jobs.ci.outputs.isBuildPassed}}
