@@ -4,11 +4,10 @@ on:
   push:
     branches:
       - "main"
-
-      # on:
-      #   pull_request:
-      #     branches:
-      #       - "main"
+# on:
+#   pull_request:
+#     branches:
+#       - "main"
 
 jobs:
   ci:
@@ -33,6 +32,9 @@ jobs:
         with:
           version: 8
           run_install: false
+
+      - name: A
+        run: echo ${{ github }}
 
       - name: Get pnpm store directory
         shell: bash
