@@ -142,17 +142,23 @@ jobs:
       - name: Install NX
         run: pnpm install -g nx
 
+      - name: Set Variable
+        id: set_var
+        run: |
+          echo "var1=good" >> $GITHUB_OUTPUT
     outputs:
-      affectedApps: echo nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
-      affectedApps2: echo "nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD"
+      var1: ${{ steps.set_var.outputs.var1 }}
+    # outputs:
+    # affectedApps: echo nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+    # affectedApps2: echo "nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD"
 
-      # - name: Identify affected projects
-      #   run: |
-      #     echo "AFFECTED=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD | jq -r '.projects | join(" ")')" >> $GITHUB_ENV
+    # - name: Identify affected projects
+    #   run: |
+    #     echo "AFFECTED=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD | jq -r '.projects | join(" ")')" >> $GITHUB_ENV
 
-      # - name: Set affected projects as output
-      #   id: set-output
-      #   run: echo "::set-output name=affected::${{ env.AFFECTED }}"
+    # - name: Set affected projects as output
+    #   id: set-output
+    #   run: echo "::set-output name=affected::${{ env.AFFECTED }}"
 
   deploy:
     needs: defineAffectedApps
@@ -168,17 +174,9 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Install Dependencies
-        run: echo "${{ needs.defineAffectedApps.outputs.affectedApps }}"
-
-      - name: Install Dependencies
-        run: echo ${{ needs.defineAffectedApps.outputs.affectedApps }}
-
-      - name: Install Dependencies
-        run: echo "${{ needs.defineAffectedApps.outputs.affectedApps2 }}"
-
-      - name: Install Dependencies
-        run: echo ${{ needs.defineAffectedApps.outputs.affectedApps2 }}
+      - name: Access Variable
+        run: |
+          echo "var1=${{ needs.defineAffectedApps.outputs.var1 }}"
 
       - name: Build Project
         if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)
