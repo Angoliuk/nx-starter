@@ -1,15 +1,13 @@
 name: dev
 
 on:
-  pull_request:
+  push:
     branches:
-      - "!main"
-      - "**"
+      - "main"
 
 jobs:
-  ci:
+  defineAffectedApps:
     runs-on: ubuntu-latest
-
     steps:
       - uses: nrwl/nx-set-shas@v3
 
@@ -49,14 +47,31 @@ jobs:
       - name: Install NX
         run: pnpm install -g nx
 
-      - name: Code style
-        run: nx format:check --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+      - name: Getting affected apps
+        id: affected
+        run: |
+          echo "affectedApps=$(nx show projects --affected --json --base=origin/main --head=HEAD }})" >> $GITHUB_OUTPUT
+    outputs:
+      affectedApps: ${{ steps.affected.outputs.affectedApps }}
 
-      - name: Lint
-        run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+  deploy:
+    needs: defineAffectedApps
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [web, api]
 
-      - name: Prisma Generation
-        run: nx generate-types db
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Build
-        run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+      # - name: Install Dependencies
+      #   run: npm install
+
+      - name: Access Variable
+        run: |
+          echo "${{ needs.defineAffectedApps.outputs.affectedApps }}"
+
+      - name: Build Project
+        if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)
+        run: echo ${{ matrix.project }}

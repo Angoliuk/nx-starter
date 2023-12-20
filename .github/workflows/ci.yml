@@ -1,0 +1,112 @@
+name: ci
+
+on:
+  pull_request:
+    branches:
+      - "**"
+  push:
+    branches:
+      - "**"
+
+jobs:
+  variables:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: nrwl/nx-set-shas@v3
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+
+      - name: Fetching git
+        run: git fetch
+
+      - name: Getting head
+        id: head
+        run: |
+          echo "head=HEAD" >> $GITHUB_OUTPUT
+
+      - name: Getting base
+        id: base
+        run: |
+          echo "base=${{ github.event.pull_request.base.ref }}" >> $GITHUB_OUTPUT
+
+      - name: Get pnpm store directory
+        id: storePath
+        run: |
+          echo "storePath=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+
+      - name: Get pnpm store directory
+        run: |
+          echo "w=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: F
+        run: echo ${{env.w}}
+
+    outputs:
+      base: ${{ steps.base.outputs.base }}
+      head: ${{ steps.head.outputs.head }}
+      flags: --base=origin/${{ steps.base.outputs.base }} --head=${{ steps.head.outputs.head }}
+      pnpmPath: ${{ steps.storePath.outputs.storePath }}
+      pnpmKeysPrefix: ${{ runner.os }}-pnpm-store-
+
+  ci:
+    runs-on: ubuntu-latest
+    needs: variables
+    steps:
+      - uses: nrwl/nx-set-shas@v3
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+
+      - name: Fetching git
+        run: git fetch
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: F
+        run: echo ${{env.w}}
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ needs.variables.outputs.pnpmPath }}
+          key: ${{ needs.variables.outputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ needs.variables.outputs.pnpmKeysPrefix }}
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install NX
+        run: pnpm install -g nx
+
+      - name: Code style
+        run: nx format:check ${{ needs.variables.outputs.flags }}
+
+      - name: Lint
+        run: nx affected --target=lint ${{ needs.variables.outputs.flags }}
+
+      - name: Prisma Generation
+        run: nx generate-types db
+
+      - name: Build
+        run: nx affected --target=build ${{ needs.variables.outputs.flags }}
