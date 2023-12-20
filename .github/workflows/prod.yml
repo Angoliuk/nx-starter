@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - "main"
-# on:
-#   pull_request:
-#     branches:
-#       - "main"
 
 jobs:
   ci:
@@ -52,20 +48,17 @@ jobs:
       - name: Install NX
         run: pnpm install -g nx
 
-      - name: A
-        run: echo ${{ github }}
-
       - name: Code style
-        run: nx format:check --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+        run: nx format:check --base=origin/main --head=HEAD
 
       - name: Lint
-        run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+        run: nx affected --target=lint --base=origin/main --head=HEAD
 
       - name: Prisma Generation
         run: nx generate-types db
 
       - name: Build
-        run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+        run: nx affected --target=build --base=origin/main --head=HEAD
 
   defineAffectedApps:
     runs-on: ubuntu-latest
@@ -111,7 +104,7 @@ jobs:
       - name: Getting affected apps
         id: affected
         run: |
-          echo "affectedApps=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD }})" >> $GITHUB_OUTPUT
+          echo "affectedApps=$(nx show projects --affected --json --base=origin/main --head=HEAD }})" >> $GITHUB_OUTPUT
     outputs:
       affectedApps: ${{ steps.affected.outputs.affectedApps }}
 
@@ -136,18 +129,3 @@ jobs:
       - name: Build Project
         if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)
         run: echo ${{ matrix.project }}
-
-      # - name: Build Project
-      #   run: echo "${{ needs.identify_affected.outputs.affected }}"
-      # - name: Test
-      #   run: nx show projects --affected --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
-      # - name: Identify affected projects
-    #   run: echo "AFFECTED=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD"
-    # echo "{name}={value}" >> $GITHUB_OUTPUT
-
-    # - name: Set color
-    #   id: random-color-generator
-    #   run: echo "SELECTED_COLOR=green" >> $GITHUB_OUTPUT
-
-    # - name: Get color
-    #   run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
