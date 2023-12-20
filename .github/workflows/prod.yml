@@ -61,10 +61,6 @@ jobs:
       - name: Build
         run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 
-      - name: Check for apps to deploy
-        uses: dkhunt27/action-nx-affected-list@v4
-        id: checkForAffectedApps
-
-      - if: contains(steps.checkForAffectedApps.outputs.affected, 'web')
-        name: Deploy
-        run: echo ${{ steps.checkForAffectedApps.outputs.affectedApps }}
+      - name: Identify affected projects
+        run: |
+          echo "AFFECTED=$(nx show projects --affected --json --base=main --head=HEAD | jq -r '.projects | join(" ")')" >> $GITHUB_ENV
