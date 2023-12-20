@@ -38,21 +38,24 @@ jobs:
         run: git fetch
 
       - name: Getting head
+        id: head
         run: |
-          echo "head=HEAD" >> $GITHUB_ENV
+          echo "head=HEAD" >> $GITHUB_OUTPUT
 
       - name: Getting base
+        id: base
         run: |
-          echo "base=origin/${{ github.event.pull_request.base.ref && github.event.pull_request.base.ref || 'main' }}" >> $GITHUB_ENV
+          echo "base=origin/${{ github.event.pull_request.base.ref && github.event.pull_request.base.ref || 'main' }}" >> $GITHUB_OUTPUT
 
       - name: Get pnpm store directory
         shell: bash
+        id: storePath
         run: |
-          echo "storePath=$(pnpm store path --silent)" >> $GITHUB_ENV
+          echo "storePath=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
 
     outputs:
-      base: ${{ env.base }}
-      head: ${{ env.head }}
-      flags: --base=${{ env.base }} --head=${{ env.head }}
-      pnpmPath: ${{ env.storePath }}
+      base: ${{ steps.base.outputs.base }}
+      head: ${{ steps.base.outputs.head }}
+      flags: --base=${{ steps.base.outputs.base }} --head=${{ steps.base.outputs.head }}
+      pnpmPath: ${{ steps.storePath.outputs.storePath }}
       pnpmKeysPrefix: ${{ runner.os }}-pnpm-store-

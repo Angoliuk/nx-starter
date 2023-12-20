@@ -14,15 +14,15 @@ on:
         type: string
     outputs:
       isBuildPassed:
-        value: ${{jobs.variables.outputs.isBuildPassed}}
+        value: ${{jobs.ci.outputs.isBuildPassed}}
       isLintPassed:
-        value: ${{jobs.variables.outputs.isLintPassed}}
+        value: ${{jobs.ci.outputs.isLintPassed}}
       isPrettierPassed:
-        value: ${{jobs.variables.outputs.isPrettierPassed}}
+        value: ${{jobs.ci.outputs.isPrettierPassed}}
       isDatabasePassed:
-        value: ${{jobs.variables.outputs.isDatabasePassed}}
+        value: ${{jobs.ci.outputs.isDatabasePassed}}
       isPassed:
-        value: ${{jobs.variables.outputs.isPassed}}
+        value: ${{jobs.ci.outputs.isPassed}}
 
 jobs:
   ci:
