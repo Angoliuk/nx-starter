@@ -145,9 +145,9 @@ jobs:
       - name: Set Variable
         id: set_var
         run: |
-          echo "var1=good" >> $GITHUB_OUTPUT
+          echo "affectedApps=good" >> $GITHUB_OUTPUT
     outputs:
-      var1: ${{ steps.set_var.outputs.var1 }}
+      affectedApps: ${{ steps.set_var.outputs.affectedApps }}
     # outputs:
     # affectedApps: echo nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
     # affectedApps2: echo "nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD"
@@ -176,7 +176,7 @@ jobs:
 
       - name: Access Variable
         run: |
-          echo "var1=${{ needs.defineAffectedApps.outputs.var1 }}"
+          echo "${{ needs.defineAffectedApps.outputs.affectedApps }}"
 
       - name: Build Project
         if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)
