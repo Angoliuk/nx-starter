@@ -99,8 +99,8 @@ jobs:
       #       restore-keys: |
       #          ${{ runner.os }}-pnpm-store-
 
-      # - name: Install dependencies
-      #   run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Install NX
         run: pnpm install -g nx
