@@ -42,7 +42,7 @@ jobs:
         run: npm install
 
       - name: Build Project
-        run: echo ${{ needs.identify_affected.outputs.affected }}
+        run: echo "${{ needs.identify_affected.outputs.affected }}"
   ci:
     runs-on: ubuntu-latest
 
