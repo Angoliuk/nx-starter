@@ -26,38 +26,34 @@ jobs:
         run: git fetch
 
       - name: Getting head
-        id: head
         run: |
-          echo "head=HEAD" >> $GITHUB_OUTPUT
+          echo "head=HEAD" >> $GITHUB_ENV
 
       - name: Getting base
-        id: base
         run: |
-          echo "base=${{ github.event.pull_request.base.ref }}" >> $GITHUB_OUTPUT
-
-      - name: Get pnpm store directory
-        id: storePath
-        run: |
-          echo "storePath=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
+          echo "base=${{ github.event.pull_request.base.ref }}" >> $GITHUB_ENV
 
       - name: Get pnpm store directory
         run: |
-          echo "w=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: F
-        run: echo ${{env.w}}
+          echo "storePath=$(pnpm store path --silent)" >> $GITHUB_ENV
 
     outputs:
-      base: ${{ steps.base.outputs.base }}
-      head: ${{ steps.head.outputs.head }}
-      flags: --base=origin/${{ steps.base.outputs.base }} --head=${{ steps.head.outputs.head }}
-      pnpmPath: ${{ steps.storePath.outputs.storePath }}
+      base: ${{ env.base }}
+      head: ${{ env.head }}
+      flags: --base=origin/${{ env.base }} --head=${{ env.head }}
+      pnpmPath: ${{ env.storePath }}
       pnpmKeysPrefix: ${{ runner.os }}-pnpm-store-
 
   ci:
     runs-on: ubuntu-latest
     needs: variables
     steps:
+      - name: Adding variables to env
+        run: echo "variables=${{ needs.variables.outputs }}" >> $GITHUB_ENV
+
+      - name: Adding variables to env
+        run: echo ${{ env.variables }}
+
       - uses: nrwl/nx-set-shas@v3
 
       - name: Checkout code
@@ -77,9 +73,6 @@ jobs:
           version: 8
           run_install: false
 
-      - name: F
-        run: echo ${{env.w}}
-
       - name: Get pnpm store directory
         shell: bash
         run: |
@@ -88,10 +81,10 @@ jobs:
       - uses: actions/cache@v3
         name: Setup pnpm cache
         with:
-          path: ${{ needs.variables.outputs.pnpmPath }}
-          key: ${{ needs.variables.outputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ${{ env.variables.pnpmPath }}
+          key: ${{ env.variables.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ needs.variables.outputs.pnpmKeysPrefix }}
+            ${{ env.variables.pnpmKeysPrefix }}
 
       - name: Install dependencies
         run: pnpm install
@@ -100,13 +93,13 @@ jobs:
         run: pnpm install -g nx
 
       - name: Code style
-        run: nx format:check ${{ needs.variables.outputs.flags }}
+        run: nx format:check ${{ env.variables.flags }}
 
       - name: Lint
-        run: nx affected --target=lint ${{ needs.variables.outputs.flags }}
+        run: nx affected --target=lint ${{ env.variables.flags }}
 
       - name: Prisma Generation
         run: nx generate-types db
 
       - name: Build
-        run: nx affected --target=build ${{ needs.variables.outputs.flags }}
+        run: nx affected --target=build ${{ env.variables.flags }}
