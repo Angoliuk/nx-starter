@@ -12,6 +12,7 @@ export const api = initClient(contract, {
       next,
       signal,
     });
+
     const contentType = result.headers.get("content-type");
 
     if (contentType?.includes("application/") && contentType?.includes("json")) {
@@ -49,5 +50,5 @@ export const api = initClient(contract, {
     };
   },
   baseHeaders: {},
-  baseUrl: "http://localhost:8000",
+  baseUrl: "http://localhost:8080",
 });

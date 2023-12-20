@@ -35,14 +35,13 @@ jobs:
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      #    TODO: Setup cache
-      #  - uses: actions/cache@v3
-      #    name: Setup pnpm cache
-      #    with:
-      #       path: ${{ env.STORE_PATH }}
-      #       key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-      #       restore-keys: |
-      #          ${{ runner.os }}-pnpm-store-
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
         run: pnpm install
@@ -51,7 +50,7 @@ jobs:
         run: pnpm install -g nx
 
       - name: Code style
-        run: nx format:check
+        run: nx format:check --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 
       - name: Lint
         run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
@@ -61,94 +60,3 @@ jobs:
 
       - name: Build
         run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
-# name: CI
-# on:
-#   push:
-#     branches:
-#       - main
-#   pull_request:
-
-# jobs:
-#   main:
-#     name: Nx Cloud - Main Job
-#     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
-#     with:
-#       number-of-agents: 3
-#       parallel-commands: |
-#         npx nx-cloud record -- npx nx format:check
-#       parallel-commands-on-agents: |
-#         npx nx affected -t lint,test,build --parallel=2
-
-#   agents:
-#     name: Nx Cloud - Agents
-#     uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.0
-#     with:
-#       number-of-agents: 3
-# name: dev
-
-# on:
-#   push:
-#     branches:
-#       - "!master"
-#       - "**"
-
-# # Needed for nx-set-shas within nx-cloud-main.yml, when run on the main branch
-# permissions:
-#   actions: read
-#   contents: read
-
-# jobs:
-#   main:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v4
-#         with:
-#           fetch-depth: 0
-#       # Cache node_modules
-#       - uses: actions/setup-node@v3
-#         with:
-#           node-version: 20
-#           cache: "pnpm"
-#       - uses: nrwl/nx-set-shas@v3
-#       # This line is needed for nx affected to work when CI is running on a PR
-#       - run: git branch --track main origin/main
-
-#       - run: npx nx format:check
-#       - run: npx exec nx affected -t lint,build --parallel=3
-# jobs:
-#   main:
-#     name: Nx Cloud - Main Job
-#     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
-#     with:
-#       number-of-agents: 3
-#       parallel-commands: |
-#         npx nx-cloud record -- npx nx format:check
-#       parallel-commands-on-agents: |
-#         npx exec nx affected -t lint,build --parallel=3
-
-#   agents:
-#     name: Nx Cloud - Agents
-#     uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.0
-#     with:
-#       number-of-agents: 3
-
-# jobs:
-#   main:
-#     name: Nx Cloud - Main Job
-#     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.1
-#     with:
-#       main-branch-name: main
-#       number-of-agents: 3
-#       init-commands: |
-#         pnpm exec nx-cloud start-ci-run --stop-agents-after="build" --agent-count=3
-#       parallel-commands: |
-#         pnpm exec nx-cloud record -- pnpm exec nx format:check
-#       parallel-commands-on-agents: |
-# pnpm exec nx affected --target=lint --parallel=3
-# pnpm exec nx affected --target=build --parallel=3
-
-#   agents:
-#     name: Nx Cloud - Agents
-#     uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.1
-#     with:
-#       number-of-agents: 3

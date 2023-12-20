@@ -28,7 +28,6 @@ export class AuthController {
   async refreshTokens() {
     return tsRestHandler(contract.auth.refreshTokens, async ({ body }) => {
       const refreshTokensResponse = await this.authService.refreshTokens(body);
-
       return refreshTokensResponse;
     });
   }
@@ -36,9 +35,8 @@ export class AuthController {
   @TsRestHandler(contract.auth.signIn)
   async signIn() {
     return tsRestHandler(contract.auth.signIn, async ({ body }) => {
-      const signedInUserResponse = await this.authService.signIn(body);
-
-      return signedInUserResponse;
+      const signedInUser = await this.authService.signIn(body);
+      return signedInUser;
     });
   }
 
@@ -46,112 +44,7 @@ export class AuthController {
   async signUp() {
     return tsRestHandler(contract.auth.signUp, async ({ body }) => {
       const signedUpUser = await this.authService.signUp(body);
-
       return signedUpUser;
     });
   }
-
-  //   @TsRestHandler(contract.auth)
-  //   async handler() {
-  //     return tsRestHandler(contract.auth, {
-  //       logout: async () => {
-  //         return {
-  //           body: {},
-  //           status: 201 as const,
-  //         }
-  // // return this.authService.logout()
-  //       },
-  //       refresh: async () => {
-  //         return {
-  //           body: {},
-  //           status: 201 as const,
-  //         }
-  // // return this.authService.refreshTokens(body)
-  //       },
-  //       signIn: async () => {
-  //         return {
-  //           body: {},
-  //           status: 201 as const,
-  //         }
-  // // return this.authService.signIn(body)
-  //       },
-  //       signUp: async () => {
-  //         return {
-  //           body: {},
-  //           status: 201 as const,
-  //         }
-  //         // return this.authService.signUp(body)
-  //       }
-  //     });
-  //   }
-
-  // @UseGuards(AuthGuard("jwt"))
-  // @ApiBearerAuth()
-  // @TsRestHandler(contract.auth.logout)
-  // async logout() {
-  //   return tsRestHandler(contract.auth.logout, async () => {
-  //     return {
-  //       body: {},
-  //       status: 201 as const,
-  //     }
-  //   });
-  // }
-
-  // @UseGuards(AuthGuard("jwt"))
-  // @ApiBearerAuth()
-  // @Post("logout")
-  // @HttpCode(HttpStatus.OK)
-  // @ApiResponse({
-  //   description: "Logged out",
-  //   status: HttpStatus.OK,
-  // })
-  // @ApiResponse({
-  //   description: "Forbidden",
-  //   status: HttpStatus.FORBIDDEN,
-  // })
-  // logout(@Req() req: unknown) {
-  //   return this.authService.logout();
-  // }
-
-  // @Post("refresh")
-  // @HttpCode(HttpStatus.OK)
-  // @ApiResponse({
-  //   description: "Tokens refreshed",
-  //   status: HttpStatus.OK,
-  // })
-  // @ApiResponse({
-  //   description: "Forbidden",
-  //   status: HttpStatus.FORBIDDEN,
-  // })
-  // refreshTokens(@Body() body: unknown) {
-  //   return this.authService.refreshTokens(body);
-  // }
-
-  // @Post("sign-in")
-  // @HttpCode(HttpStatus.OK)
-  // @ApiResponse({
-  //   description: "Success",
-  //   status: HttpStatus.OK,
-  // })
-  // @ApiResponse({
-  //   description: "Forbidden",
-  //   status: HttpStatus.FORBIDDEN,
-  // })
-  // signIn(@Body() body: unknown) {
-  //   return this.authService.signIn(body);
-  // }
-
-  // @Post("sign-up")
-  // @HttpCode(HttpStatus.CREATED)
-  // @ApiResponse({
-  //   description: "Success",
-  //   status: HttpStatus.CREATED,
-  // })
-  // @ApiResponse({
-  //   description: "Forbidden",
-  //   status: HttpStatus.FORBIDDEN,
-  // })
-  // signUp(@Body() body: unknown) {
-  //   return this.authService.signUp(body);
-  // }
 }
