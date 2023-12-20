@@ -65,6 +65,6 @@ jobs:
         uses: dkhunt27/action-nx-affected-list@v4
         id: checkForAffectedApps
 
-      - if: steps.checkForAffectedApps.outputs.hasAffectedApps == 'true'
+      - if: contains(steps.checkForAffectedApps.outputs.affected, 'web')
         name: Deploy
-        run: echo ${{ steps.checkForAffectedApps.outputs.hasAffectedApps }}
+        run: echo ${{ steps.checkForAffectedApps.outputs.affectedApps }}
