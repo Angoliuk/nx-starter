@@ -67,9 +67,4 @@ jobs:
 
       - if: steps.checkForAffectedApps.outputs.hasAffectedApps == 'true'
         name: Deploy
-        run: echo steps.checkForAffectedApps.outputs.hasAffectedApps
-
-        # with:
-        #   targets: build
-        #   affected: true
-        #   nxCloud: false
+        run: echo ${{ steps.checkForAffectedApps.outputs.hasAffectedApps }}
