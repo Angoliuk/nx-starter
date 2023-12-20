@@ -62,5 +62,4 @@ jobs:
         run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 
       - name: Identify affected projects
-        run: |
-          echo "AFFECTED=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD | jq -r '.projects | join(" ")')" >> $GITHUB_ENV
+        run: echo "AFFECTED=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD"
