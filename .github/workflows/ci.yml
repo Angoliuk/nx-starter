@@ -47,7 +47,7 @@ jobs:
     outputs:
       base: ${{ env.base }}
       head: ${{ env.head }}
-      flags: --base=origin/${{ env.base }} --head=${{ env.head }}
+      flags: --base=${{ env.base }} --head=${{ env.head }}
       pnpmPath: ${{ env.storePath }}
       pnpmKeysPrefix: ${{ runner.os }}-pnpm-store-
 
