@@ -22,6 +22,12 @@ jobs:
         with:
           node-version: "18.x"
 
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
       - name: Fetching git
         run: git fetch
 
@@ -34,6 +40,7 @@ jobs:
           echo "base=${{  github.event.pull_request.base.ref && github.event.pull_request.base.ref || 'origin/main' }}" >> $GITHUB_ENV
 
       - name: Get pnpm store directory
+        shell: bash
         run: |
           echo "storePath=$(pnpm store path --silent)" >> $GITHUB_ENV
 
@@ -66,11 +73,6 @@ jobs:
         with:
           version: 8
           run_install: false
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
       - uses: actions/cache@v3
         name: Setup pnpm cache
