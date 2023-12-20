@@ -6,43 +6,43 @@ on:
       - "main"
 
 jobs:
-  identify_affected:
-    runs-on: ubuntu-latest
-    outputs:
-      affected: ${{ steps.set-output.outputs.affected }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  # identify_affected:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     affected: ${{ steps.set-output.outputs.affected }}
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
 
-      - name: Fetch Base Branch
-        run: |
-          git fetch origin main:main
+  #     - name: Fetch Base Branch
+  #       run: |
+  #         git fetch origin main:main
 
-      - name: Install Dependencies
-        run: npm install -g nx
+  #     - name: Install Dependencies
+  #       run: npm install -g nx
 
-      - name: Identify affected projects
-        run: |
-          echo "AFFECTED=$(nx show projects --affected --json --base=main --head=HEAD | jq -r '.projects | join(" ")')" >> $GITHUB_ENV
+  #     - name: Identify affected projects
+  #       run: |
+  #         echo "AFFECTED=$(nx show projects --affected --json --base=main --head=HEAD | jq -r '.projects | join(" ")')" >> $GITHUB_ENV
 
-      - name: Set affected projects as output
-        id: set-output
-        run: echo "::set-output name=affected::${{ env.AFFECTED }}"
-  build:
-    needs: identify_affected
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project: [web, api]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  #     - name: Set affected projects as output
+  #       id: set-output
+  #       run: echo "::set-output name=affected::${{ env.AFFECTED }}"
+  # build:
+  # needs: identify_affected
+  # runs-on: ubuntu-latest
+  # strategy:
+  #   matrix:
+  #     project: [web, api]
+  # steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v2
 
-      - name: Install Dependencies
-        run: npm install
+  #   - name: Install Dependencies
+  #     run: npm install
 
-      - name: Build Project
-        run: echo "${{ needs.identify_affected.outputs.affected }}"
+  #   - name: Build Project
+  #     run: echo "${{ needs.identify_affected.outputs.affected }}"
   ci:
     runs-on: ubuntu-latest
 
@@ -98,5 +98,79 @@ jobs:
       - name: Build
         run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 
+  identify_affected:
+    runs-on: ubuntu-latest
+    outputs:
+      affected: ${{ steps.set-output.outputs.affected }}
+    steps:
+      - uses: nrwl/nx-set-shas@v3
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+
+      - name: Fetching git
+        run: git fetch
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      #    TODO: Setup cache
+      #  - uses: actions/cache@v3
+      #    name: Setup pnpm cache
+      #    with:
+      #       path: ${{ env.STORE_PATH }}
+      #       key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+      #       restore-keys: |
+      #          ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install NX
+        run: pnpm install -g nx
+
+      - name: Identify affected projects
+        run: |
+          echo "AFFECTED=$(nx show projects --affected --json --base=main --head=HEAD | jq -r '.projects | join(" ")')" >> $GITHUB_ENV
+
+      - name: Set affected projects as output
+        id: set-output
+        run: echo "::set-output name=affected::${{ env.AFFECTED }}"
+
+  deploy:
+    needs: identify_affected
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [web, api]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project
+        if: contains(needs.identify_affected.outputs.affected, matrix.project)
+        run: echo 123
+
+      # - name: Build Project
+      #   run: echo "${{ needs.identify_affected.outputs.affected }}"
+      # - name: Test
+      #   run: nx show projects --affected --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
       # - name: Identify affected projects
-      #   run: echo "AFFECTED=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD"
+    #   run: echo "AFFECTED=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD"
