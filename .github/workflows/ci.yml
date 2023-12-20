@@ -49,10 +49,7 @@ jobs:
     needs: variables
     steps:
       - name: Adding variables to env
-        run: echo "variables=${{ needs.variables.outputs }}" >> $GITHUB_ENV
-
-      - name: Adding variables to env
-        run: echo ${{ env.variables }}
+        run: echo ${{ needs.variables }}
 
       - uses: nrwl/nx-set-shas@v3
 
@@ -81,10 +78,10 @@ jobs:
       - uses: actions/cache@v3
         name: Setup pnpm cache
         with:
-          path: ${{ env.variables.pnpmPath }}
-          key: ${{ env.variables.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ${{ needs.variables.outputs.pnpmPath }}
+          key: ${{ needs.variables.outputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ env.variables.pnpmKeysPrefix }}
+            ${{ needs.variables.outputs.pnpmKeysPrefix }}
 
       - name: Install dependencies
         run: pnpm install
@@ -93,13 +90,13 @@ jobs:
         run: pnpm install -g nx
 
       - name: Code style
-        run: nx format:check ${{ env.variables.flags }}
+        run: nx format:check ${{ needs.variables.outputs.flags }}
 
       - name: Lint
-        run: nx affected --target=lint ${{ env.variables.flags }}
+        run: nx affected --target=lint ${{ needs.variables.outputs.flags }}
 
       - name: Prisma Generation
         run: nx generate-types db
 
       - name: Build
-        run: nx affected --target=build ${{ env.variables.flags }}
+        run: nx affected --target=build ${{ needs.variables.outputs.flags }}
