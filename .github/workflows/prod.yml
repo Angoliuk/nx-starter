@@ -1,67 +1,69 @@
 name: dev
 
 on:
-  pull_request:
+  push:
     branches:
       - "main"
 
+      # on:
+      #   pull_request:
+      #     branches:
+      #       - "main"
+
 jobs:
-  # ci:
-  #   runs-on: ubuntu-latest
+  ci:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - uses: nrwl/nx-set-shas@v3
+    steps:
+      - uses: nrwl/nx-set-shas@v3
 
-  #     - name: Checkout code
-  #       uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: "18.x"
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
 
-  #     - name: Fetching git
-  #       run: git fetch
+      - name: Fetching git
+        run: git fetch
 
-  #     - uses: pnpm/action-setup@v2
-  #       name: Install pnpm
-  #       with:
-  #         version: 8
-  #         run_install: false
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
 
-  #     - name: Get pnpm store directory
-  #       shell: bash
-  #       run: |
-  #         echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-  #     #    TODO: Setup cache
-  #     #  - uses: actions/cache@v3
-  #     #    name: Setup pnpm cache
-  #     #    with:
-  #     #       path: ${{ env.STORE_PATH }}
-  #     #       key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-  #     #       restore-keys: |
-  #     #          ${{ runner.os }}-pnpm-store-
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
-  #     - name: Install dependencies
-  #       run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
-  #     - name: Install NX
-  #       run: pnpm install -g nx
+      - name: Install NX
+        run: pnpm install -g nx
 
-  #     - name: Code style
-  #       run: nx format:check
+      - name: Code style
+        run: nx format:check
 
-  #     - name: Lint
-  #       run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+      - name: Lint
+        run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 
-  #     - name: Prisma Generation
-  #       run: nx generate-types db
+      - name: Prisma Generation
+        run: nx generate-types db
 
-  #     - name: Build
-  #       run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
-
-  # READY
+      - name: Build
+        run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 
   defineAffectedApps:
     runs-on: ubuntu-latest
@@ -90,14 +92,13 @@ jobs:
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      #    TODO: Setup cache
-      #  - uses: actions/cache@v3
-      #    name: Setup pnpm cache
-      #    with:
-      #       path: ${{ env.STORE_PATH }}
-      #       key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-      #       restore-keys: |
-      #          ${{ runner.os }}-pnpm-store-
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
         run: pnpm install
