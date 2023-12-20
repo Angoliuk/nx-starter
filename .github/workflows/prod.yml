@@ -42,8 +42,7 @@ jobs:
         run: npm install
 
       - name: Build Project
-        if: contains(needs.identify_affected.outputs.affected, matrix.project)
-        run: echo ${{ matrix.project }}
+        run: echo ${{ needs.identify_affected.outputs.affected }}
   ci:
     runs-on: ubuntu-latest
 
