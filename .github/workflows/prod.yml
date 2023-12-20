@@ -6,6 +6,28 @@ on:
       - "main"
 
 jobs:
+  identify_affected:
+    runs-on: ubuntu-latest
+    outputs:
+      affected: ${{ steps.set-output.outputs.affected }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Fetch Base Branch
+        run: |
+          git fetch origin main:main
+
+      - name: Install Dependencies
+        run: npm install -g nx
+
+      - name: Identify affected projects
+        run: |
+          echo "AFFECTED=$(nx show projects --affected --json --base=main --head=HEAD | jq -r '.projects | join(" ")')" >> $GITHUB_ENV
+
+      - name: Set affected projects as output
+        id: set-output
+        run: echo "::set-output name=affected::${{ env.AFFECTED }}"
   ci:
     runs-on: ubuntu-latest
 
@@ -61,5 +83,5 @@ jobs:
       - name: Build
         run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
 
-      - name: Identify affected projects
-        run: echo "AFFECTED=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD"
+      # - name: Identify affected projects
+      #   run: echo "AFFECTED=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD"
