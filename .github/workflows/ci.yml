@@ -32,13 +32,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check is CI valid
-        run: echo ${{ github.event.inputs.flags }}
+        run: echo ${{ inputs.flags }}
       - name: Check is CI valid
-        run: echo ${{ github.event.inputs.pnpmKeysPrefix }}
+        run: echo ${{ inputs.pnpmKeysPrefix }}
       - name: Check is CI valid
-        run: echo ${{ github.event.inputs.pnpmPath }}
+        run: echo ${{ inputs.pnpmPath }}
       - name: Check is CI valid
-        run: echo ${{ github.event.inputs }}
+        run: echo ${{ inputs }}
       - name: Check is CI valid
         run: echo ${{ env }}
       - name: Check is CI valid
@@ -74,10 +74,10 @@ jobs:
       - uses: actions/cache@v3
         name: Setup pnpm cache
         with:
-          path: ${{ github.event.inputs.pnpmPath }}
-          key: ${{ github.event.inputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ${{ inputs.pnpmPath }}
+          key: ${{ inputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ github.event.inputs.pnpmKeysPrefix }}
+            ${{ inputs.pnpmKeysPrefix }}
 
       - name: Install dependencies
         run: pnpm install
@@ -87,11 +87,11 @@ jobs:
 
       - name: Code style
         id: format
-        run: nx format:check ${{ github.event.inputs.flags }}
+        run: nx format:check ${{ inputs.flags }}
 
       - name: Lint
         id: lint
-        run: nx affected --target=lint ${{ github.event.inputs.flags }}
+        run: nx affected --target=lint ${{ inputs.flags }}
 
       - name: Prisma Generation
         id: db
@@ -99,7 +99,7 @@ jobs:
 
       - name: Build
         id: build
-        run: nx affected --target=build ${{ github.event.inputs.flags }}
+        run: nx affected --target=build ${{ inputs.flags }}
 
     outputs:
       isBuildPassed: ${{steps.build.outcome == 'success'}}
