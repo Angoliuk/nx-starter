@@ -25,6 +25,17 @@ on:
         value: ${{jobs.ci.outputs.isPassed}}
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check is CI valid
+        run: echo ${{ github.event.inputs.flags }}
+      - name: Check is CI valid
+        run: echo ${{ github.event.inputs.pnpmKeysPrefix }}
+      - name: Check is CI valid
+        run: echo ${{ github.event.inputs.pnpmPath }}
+      - name: Check is CI valid
+        run: echo ${{ github.event.inputs }}
   ci:
     runs-on: ubuntu-latest
     steps:
