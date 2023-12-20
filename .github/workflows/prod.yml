@@ -145,7 +145,7 @@ jobs:
       - name: Set Variable
         id: set_var
         run: |
-          echo "affectedApps=nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD }}" >> $GITHUB_OUTPUT
+          echo "affectedApps=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD }})" >> $GITHUB_OUTPUT
     outputs:
       affectedApps: ${{ steps.set_var.outputs.affectedApps }}
     # outputs:
