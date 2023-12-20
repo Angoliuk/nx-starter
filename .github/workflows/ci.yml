@@ -58,9 +58,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Install dependencies
-        run: echo ${{ github.event.inputs }}
-
       - name: Install NX
         run: pnpm install -g nx
 
