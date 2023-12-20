@@ -37,7 +37,7 @@ jobs:
 
       - name: Getting base
         run: |
-          echo "base=${{  github.event.pull_request.base.ref && github.event.pull_request.base.ref || 'origin/main' }}" >> $GITHUB_ENV
+          echo "base=origin/${{ github.event.pull_request.base.ref && github.event.pull_request.base.ref || 'main' }}" >> $GITHUB_ENV
 
       - name: Get pnpm store directory
         shell: bash
