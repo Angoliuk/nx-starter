@@ -1,0 +1,20 @@
+name: ci
+
+on:
+  pull_request:
+    branches:
+      - "**"
+  push:
+    branches:
+      - "**"
+
+jobs:
+  variables:
+    uses: ./.github/workflows/variables.yml
+  ci:
+    needs: variables
+    uses: ./.github/workflows/ci.yml
+    with:
+      flags: ${{needs.variables.outputs.flags}}
+      pnpmKeysPrefix: ${{needs.variables.outputs.pnpmKeysPrefix}}
+      pnpmPath: ${{needs.variables.outputs.pnpmPath}}

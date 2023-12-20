@@ -1,59 +1,32 @@
 name: ci
 
 on:
-  pull_request:
-    branches:
-      - "**"
-  push:
-    branches:
-      - "**"
+  workflow_call:
+    inputs:
+      pnpmPath:
+        required: true
+        type: string
+      pnpmKeysPrefix:
+        required: true
+        type: string
+      flags:
+        required: true
+        type: string
+    outputs:
+      isBuildPassed:
+        value: ${{jobs.variables.outputs.isBuildPassed}}
+      isLintPassed:
+        value: ${{jobs.variables.outputs.isLintPassed}}
+      isPrettierPassed:
+        value: ${{jobs.variables.outputs.isPrettierPassed}}
+      isDatabasePassed:
+        value: ${{jobs.variables.outputs.isDatabasePassed}}
+      isPassed:
+        value: ${{jobs.variables.outputs.isPassed}}
 
 jobs:
-  variables:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: nrwl/nx-set-shas@v3
-
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.x"
-
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
-
-      - name: Fetching git
-        run: git fetch
-
-      - name: Getting head
-        run: |
-          echo "head=HEAD" >> $GITHUB_ENV
-
-      - name: Getting base
-        run: |
-          echo "base=origin/${{ github.event.pull_request.base.ref && github.event.pull_request.base.ref || 'main' }}" >> $GITHUB_ENV
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "storePath=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-    outputs:
-      base: ${{ env.base }}
-      head: ${{ env.head }}
-      flags: --base=${{ env.base }} --head=${{ env.head }}
-      pnpmPath: ${{ env.storePath }}
-      pnpmKeysPrefix: ${{ runner.os }}-pnpm-store-
-
   ci:
     runs-on: ubuntu-latest
-    needs: variables
     steps:
       - uses: nrwl/nx-set-shas@v3
 
@@ -77,10 +50,10 @@ jobs:
       - uses: actions/cache@v3
         name: Setup pnpm cache
         with:
-          path: ${{ needs.variables.outputs.pnpmPath }}
-          key: ${{ needs.variables.outputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ${{ github.event.inputs.pnpmPath }}
+          key: ${{ github.event.inputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ needs.variables.outputs.pnpmKeysPrefix }}
+            ${{ github.event.inputs.pnpmKeysPrefix }}
 
       - name: Install dependencies
         run: pnpm install
@@ -89,13 +62,24 @@ jobs:
         run: pnpm install -g nx
 
       - name: Code style
-        run: nx format:check ${{ needs.variables.outputs.flags }}
+        id: format
+        run: nx format:check ${{ github.event.inputs.flags }}
 
       - name: Lint
-        run: nx affected --target=lint ${{ needs.variables.outputs.flags }}
+        id: lint
+        run: nx affected --target=lint ${{ github.event.inputs.flags }}
 
       - name: Prisma Generation
+        id: db
         run: nx generate-types db
 
       - name: Build
-        run: nx affected --target=build ${{ needs.variables.outputs.flags }}
+        id: build
+        run: nx affected --target=build ${{ github.event.inputs.flags }}
+
+    outputs:
+      isBuildPassed: ${{steps.build.outcome == 'success'}}
+      isLintPassed: ${{steps.lint.outcome == 'success'}}
+      isPrettierPassed: ${{steps.format.outcome == 'success'}}
+      isDatabasePassed: ${{steps.db.outcome == 'success'}}
+      isPassed: ${{steps.build.outcome == 'success' && steps.lint.outcome == 'success' && steps.db.outcome == 'success' && steps.format.outcome == 'success'}}

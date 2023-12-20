@@ -1,0 +1,58 @@
+name: variables
+
+on:
+  workflow_call:
+    outputs:
+      base:
+        value: ${{jobs.variables.outputs.base}}
+      head:
+        value: ${{jobs.variables.outputs.head}}
+      flags:
+        value: ${{jobs.variables.outputs.flags}}
+      pnpmPath:
+        value: ${{jobs.variables.outputs.pnpmPath}}
+      pnpmKeysPrefix:
+        value: ${{jobs.variables.outputs.pnpmKeysPrefix}}
+
+jobs:
+  variables:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: nrwl/nx-set-shas@v3
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Fetching git
+        run: git fetch
+
+      - name: Getting head
+        run: |
+          echo "head=HEAD" >> $GITHUB_ENV
+
+      - name: Getting base
+        run: |
+          echo "base=origin/${{ github.event.pull_request.base.ref && github.event.pull_request.base.ref || 'main' }}" >> $GITHUB_ENV
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "storePath=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    outputs:
+      base: ${{ env.base }}
+      head: ${{ env.head }}
+      flags: --base=${{ env.base }} --head=${{ env.head }}
+      pnpmPath: ${{ env.storePath }}
+      pnpmKeysPrefix: ${{ runner.os }}-pnpm-store-
