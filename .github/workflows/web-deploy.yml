@@ -1,0 +1,43 @@
+name: Deploy API
+
+on:
+  workflow_call:
+    inputs:
+      pnpmPath:
+        required: true
+        type: string
+      pnpmKeysPrefix:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Get Secrets by Name and by ARN
+        run: |
+          aws secretsmanager get-secret-value --secret-id web | \
+          jq -r '.SecretString' | \
+          jq -r "to_entries|map(\"\(.key)=\\\"\(.value|tostring)\\\"\")|.[]" > ./apps/web/.env
+
+      - uses: ./.github/actions/base-setup
+
+      - uses: ./.github/actions/install-dependencies
+        with:
+          pnpmKeysPrefix: ${{inputs.pnpmKeysPrefix}}
+          pnpmPath: ${{inputs.pnpmPath}}
+
+      - run: nx build web
+
+      - name: Deploy app build to S3 bucket
+        run: aws s3 sync ./dist/apps/web/.next s3://${{secrets.AWS_WEB_S3_BUCKET}} --delete
+
+      - name: Clear CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id E3ONK74XEM6DAR --paths "/*"

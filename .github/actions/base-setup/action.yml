@@ -1,0 +1,24 @@
+name: "Setup base"
+
+inputs:
+  withDependencies:
+    required: true
+    default: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Fetching git
+      shell: sh
+      run: git fetch
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: "18.x"
+
+    - uses: nrwl/nx-set-shas@v3
+
+    - name: Install NX
+      shell: sh
+      run: npm install -g nx

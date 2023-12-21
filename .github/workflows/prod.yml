@@ -8,16 +8,7 @@ on:
 jobs:
   variables:
     uses: ./.github/workflows/variables.yml
-  test:
-    needs: variables
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check is CI valid
-        run: echo ${{ needs.variables.outputs.flags }}
-      - name: Check is CI valid
-        run: echo ${{ needs.variables.outputs.pnpmKeysPrefix }}
-      - name: Check is CI valid
-        run: echo ${{ needs.variables.outputs.pnpmPath }}
+
   ci:
     needs: variables
     uses: ./.github/workflows/ci.yml
@@ -25,6 +16,7 @@ jobs:
       flags: ${{needs.variables.outputs.flags}}
       pnpmKeysPrefix: ${{needs.variables.outputs.pnpmKeysPrefix}}
       pnpmPath: ${{needs.variables.outputs.pnpmPath}}
+
   ciChecker:
     runs-on: ubuntu-latest
     needs: ci
@@ -32,9 +24,11 @@ jobs:
       - name: Check is CI valid
         if: needs.ci.outputs.isPassed != 'true'
         run: exit 1
+
   deploy:
-    needs: [variables, ci, ciChecker]
+    needs: [variables, ciChecker]
     uses: ./.github/workflows/deploy.yml
     with:
+      flags: ${{needs.variables.outputs.flags}}
       pnpmPath: ${{needs.variables.outputs.pnpmPath}}
       pnpmKeysPrefix: ${{needs.variables.outputs.pnpmKeysPrefix}}
