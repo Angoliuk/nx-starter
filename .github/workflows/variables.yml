@@ -30,22 +30,6 @@ jobs:
           version: 8
           run_install: false
 
-      # - name: Getting head
-      #   id: head
-      #   run: |
-      #     echo "head=HEAD" >> $GITHUB_OUTPUT
-
-      # - name: Getting base
-      #   id: base
-      #   run: |
-      #     if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
-      #       echo "base=origin/$(echo ${GITHUB_REF##*/})" >> $GITHUB_OUTPUT
-      #     elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
-      #       echo "base=origin/$(echo $GITHUB_BASE_REF)" >> $GITHUB_OUTPUT
-      #     else
-      #       echo "base=origin/main" >> $GITHUB_OUTPUT
-      #     fi
-
       - name: Get pnpm store directory
         shell: bash
         id: storePath
@@ -56,6 +40,5 @@ jobs:
       base: ${{ env.NX_BASE }}
       head: ${{ env.NX_HEAD }}
       flags: --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}
-      # flags: ${{ github.event_name == 'push' && ' ' || format('--base={0} --head={1}', steps.base.outputs.base, steps.head.outputs.head) }}
       pnpmPath: ${{ steps.storePath.outputs.storePath }}
       pnpmKeysPrefix: ${{ runner.os }}-pnpm-store-
