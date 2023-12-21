@@ -1,153 +1,26 @@
-name: dev
+name: prod
 
 on:
   push:
     branches:
       - "main"
-# on:
-#   pull_request:
-#     branches:
-#       - "main"
 
 jobs:
+  variables:
+    uses: ./.github/workflows/variables.yml
   ci:
+    needs: variables
+    uses: ./.github/workflows/ci.yml
+    with:
+      flags: ${{needs.variables.outputs.flags}}
+      pnpmKeysPrefix: ${{needs.variables.outputs.pnpmKeysPrefix}}
+      pnpmPath: ${{needs.variables.outputs.pnpmPath}}
+  deployReadyChecker:
     runs-on: ubuntu-latest
-
+    needs: ci
     steps:
-      - uses: nrwl/nx-set-shas@v3
-
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.x"
-
-      - name: Fetching git
-        run: git fetch
-
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Install NX
-        run: pnpm install -g nx
-
-      - name: A
-        run: echo ${{ github }}
-
-      - name: Code style
-        run: nx format:check --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
-
-      - name: Lint
-        run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
-
-      - name: Prisma Generation
-        run: nx generate-types db
-
-      - name: Build
-        run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
-
-  defineAffectedApps:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: nrwl/nx-set-shas@v3
-
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.x"
-
-      - name: Fetching git
-        run: git fetch
-
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Install NX
-        run: pnpm install -g nx
-
-      - name: Getting affected apps
-        id: affected
-        run: |
-          echo "affectedApps=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD }})" >> $GITHUB_OUTPUT
-    outputs:
-      affectedApps: ${{ steps.affected.outputs.affectedApps }}
-
+      - name: Check is CI valid
+        if: needs.ci.outputs.isPassed != 'true'
+        run: exit 1
   deploy:
-    needs: defineAffectedApps
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project: [web, api]
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # - name: Install Dependencies
-      #   run: npm install
-
-      - name: Access Variable
-        run: |
-          echo "${{ needs.defineAffectedApps.outputs.affectedApps }}"
-
-      - name: Build Project
-        if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)
-        run: echo ${{ matrix.project }}
-
-      # - name: Build Project
-      #   run: echo "${{ needs.identify_affected.outputs.affected }}"
-      # - name: Test
-      #   run: nx show projects --affected --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
-      # - name: Identify affected projects
-    #   run: echo "AFFECTED=$(nx show projects --affected --json --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD"
-    # echo "{name}={value}" >> $GITHUB_OUTPUT
-
-    # - name: Set color
-    #   id: random-color-generator
-    #   run: echo "SELECTED_COLOR=green" >> $GITHUB_OUTPUT
-
-    # - name: Get color
-    #   run: echo "The selected color is ${{ steps.random-color-generator.outputs.SELECTED_COLOR }}"
+    uses: ./.github/workflows/deploy.yml

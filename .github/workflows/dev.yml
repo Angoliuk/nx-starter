@@ -3,60 +3,28 @@ name: dev
 on:
   pull_request:
     branches:
-      - "!main"
+      - "**"
+  push:
+    branches:
       - "**"
 
 jobs:
-  ci:
+  variables:
+    uses: ./.github/workflows/variables.yml
+  test:
+    needs: variables
     runs-on: ubuntu-latest
-
     steps:
-      - uses: nrwl/nx-set-shas@v3
-
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.x"
-
-      - name: Fetching git
-        run: git fetch
-
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Install NX
-        run: pnpm install -g nx
-
-      - name: Code style
-        run: nx format:check --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
-
-      - name: Lint
-        run: nx affected --target=lint --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
-
-      - name: Prisma Generation
-        run: nx generate-types db
-
-      - name: Build
-        run: nx affected --target=build --base=origin/${{ github.event.pull_request.base.ref }} --head=HEAD
+      - name: Check is CI valid
+        run: echo ${{ needs.variables.outputs.flags }}
+      - name: Check is CI valid
+        run: echo ${{ needs.variables.outputs.pnpmKeysPrefix }}
+      - name: Check is CI valid
+        run: echo ${{ needs.variables.outputs.pnpmPath }}
+  ci:
+    needs: variables
+    uses: ./.github/workflows/ci.yml
+    with:
+      flags: ${{needs.variables.outputs.flags}}
+      pnpmKeysPrefix: ${{needs.variables.outputs.pnpmKeysPrefix}}
+      pnpmPath: ${{needs.variables.outputs.pnpmPath}}

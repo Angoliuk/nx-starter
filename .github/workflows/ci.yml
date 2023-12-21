@@ -1,0 +1,109 @@
+name: ci
+
+on:
+  workflow_call:
+    inputs:
+      pnpmPath:
+        required: true
+        type: string
+        default: "13"
+      pnpmKeysPrefix:
+        required: true
+        type: string
+        default: "13"
+      flags:
+        required: true
+        type: string
+        default: "13"
+    outputs:
+      isBuildPassed:
+        value: ${{jobs.ci.outputs.isBuildPassed}}
+      isLintPassed:
+        value: ${{jobs.ci.outputs.isLintPassed}}
+      isPrettierPassed:
+        value: ${{jobs.ci.outputs.isPrettierPassed}}
+      isDatabasePassed:
+        value: ${{jobs.ci.outputs.isDatabasePassed}}
+      isPassed:
+        value: ${{jobs.ci.outputs.isPassed}}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check is CI valid
+        run: echo ${{ inputs.flags }}
+      - name: Check is CI valid
+        run: echo ${{ inputs.pnpmKeysPrefix }}
+      - name: Check is CI valid
+        run: echo ${{ inputs.pnpmPath }}
+      - name: Check is CI valid
+        run: echo ${{ inputs }}
+      - name: Check is CI valid
+        run: echo ${{ env }}
+      - name: Check is CI valid
+        run: echo ${{ env.inputs }}
+      - name: Check is CI valid
+        run: echo ${{ env.inputs.flags }}
+      - name: Check is CI valid
+        run: echo ${{ env.flags }}
+      - name: Check is CI valid
+        run: echo ${{ github }}
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: nrwl/nx-set-shas@v3
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+
+      - name: Fetching git
+        run: git fetch
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ inputs.pnpmPath }}
+          key: ${{ inputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ inputs.pnpmKeysPrefix }}
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install NX
+        run: pnpm install -g nx
+
+      - name: Code style
+        id: format
+        run: nx format:check ${{ inputs.flags }}
+
+      - name: Lint
+        id: lint
+        run: nx affected --target=lint ${{ inputs.flags }}
+
+      - name: Prisma Generation
+        id: db
+        run: nx generate-types db
+
+      - name: Build
+        id: build
+        run: nx affected --target=build ${{ inputs.flags }}
+
+    outputs:
+      isBuildPassed: ${{steps.build.outcome == 'success'}}
+      isLintPassed: ${{steps.lint.outcome == 'success'}}
+      isPrettierPassed: ${{steps.format.outcome == 'success'}}
+      isDatabasePassed: ${{steps.db.outcome == 'success'}}
+      isPassed: ${{steps.build.outcome == 'success' && steps.lint.outcome == 'success' && steps.db.outcome == 'success' && steps.format.outcome == 'success'}}

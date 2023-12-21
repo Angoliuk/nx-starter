@@ -1,0 +1,77 @@
+name: deploy
+
+on:
+  workflow_call:
+    inputs:
+      pnpmPath:
+        required: true
+        type: string
+      pnpmKeysPrefix:
+        required: true
+        type: string
+
+jobs:
+  defineAffectedApps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: nrwl/nx-set-shas@v3
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+
+      - name: Fetching git
+        run: git fetch
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ github.event.inputs.pnpmPath }}
+          key: ${{ github.event.inputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ github.event.inputs.pnpmKeysPrefix }}
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install NX
+        run: pnpm install -g nx
+
+      - name: Getting affected apps
+        id: affected
+        run: |
+          echo "affectedApps=$(nx show projects --affected --json --base=origin/main --head=HEAD }})" >> $GITHUB_OUTPUT
+    outputs:
+      affectedApps: ${{ steps.affected.outputs.affectedApps }}
+
+  deploy:
+    needs: defineAffectedApps
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [web, api]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # - name: Install Dependencies
+      #   run: npm install
+
+      - name: Access Variable
+        run: |
+          echo "${{ needs.defineAffectedApps.outputs.affectedApps }}"
+
+      - name: Build Project
+        if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)
+        run: echo ${{ matrix.project }}
