@@ -11,17 +11,18 @@ Stack:
 
 
 Key features:
- - GH actions with linting, building and auto deploy to AWS
- - Docker compose with postgres and pgAdmin for dev
- - TS-rest for end-to-end type-safety and auto generated swagger
- - shared package for reusable code between packages
- - pre-configured tailwind
+ - *GH actions* with linting, building and auto deploy to AWS
+ - *Docker compose* with postgres and pgAdmin for dev
+ - TS-Rest for *end-to-end type-safety* and auto generated swagger
+ - *Shared package* for reusable code between packages
+ - Pre-configured *tailwind*
+ - Next with *Server Components*
 
 
 Prerequisites:
  - NodeJS 18+
- - pnpm 8+
- - docker with docker compose
+ - Pnpm 8+
+ - Docker with docker compose
 
 
 First start:
