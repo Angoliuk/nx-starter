@@ -45,8 +45,15 @@ jobs:
       - name: Getting base
         id: base
         run: |
-          echo "base=origin/${{ github.event.pull_request.base.ref && github.event.pull_request.base.ref || 'main' }}" >> $GITHUB_OUTPUT
+          if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            echo "base=origin/$(echo ${GITHUB_REF##*/})" >> $GITHUB_OUTPUT
+          elif [[ "${GITHUB_EVENT_NAME}" == "pull_request" ]]; then
+            echo "base=origin/$(echo $GITHUB_BASE_REF)" >> $GITHUB_OUTPUT
+          else
+            echo "base=origin/main" >> $GITHUB_OUTPUT
+          fi
 
+      # echo "base=origin/${{ github.ref_name && github.ref_name || github.event.pull_request.base.ref && github.event.pull_request.base.ref || 'main' }}" >> $GITHUB_OUTPUT
       - name: Get pnpm store directory
         shell: bash
         id: storePath
