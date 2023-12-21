@@ -1,9 +1,6 @@
 name: dev
 
 on:
-  pull_request:
-    branches:
-      - "**"
   push:
     branches:
       - "**"
