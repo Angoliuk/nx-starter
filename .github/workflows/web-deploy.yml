@@ -43,4 +43,4 @@ jobs:
         run: aws s3 sync ./dist/apps/web/.next s3://${{secrets.AWS_WEB_S3_BUCKET}} --delete
 
       - name: Clear CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id E3ONK74XEM6DAR --paths "/*"
+        run: aws cloudfront create-invalidation --distribution-id  --paths "/*"
