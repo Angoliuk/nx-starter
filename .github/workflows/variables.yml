@@ -55,6 +55,6 @@ jobs:
     outputs:
       base: ${{ steps.base.outputs.base }}
       head: ${{ steps.base.outputs.head }}
-      flags: --base=${{ steps.base.outputs.base }} --head=${{ steps.head.outputs.head }}
+      flags: ${{ github.event_name == 'push' && '' || format('--base={0} --head={1}', steps.base.outputs.base, steps.head.outputs.head) }}
       pnpmPath: ${{ steps.storePath.outputs.storePath }}
       pnpmKeysPrefix: ${{ runner.os }}-pnpm-store-
