@@ -45,8 +45,8 @@ jobs:
 
     steps:
       - name: Build web
-        if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)
+        if: contains(needs.defineAffectedApps.outputs.affectedApps, 'web')
         uses: ./.github/workflows/web-deploy.yml
       - name: Build api
-        if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)
+        if: contains(needs.defineAffectedApps.outputs.affectedApps, 'api')
         uses: ./.github/workflows/api-deploy.yml
