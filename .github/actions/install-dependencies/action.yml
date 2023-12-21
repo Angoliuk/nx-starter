@@ -18,4 +18,5 @@ runs:
           ${{ inputs.pnpmKeysPrefix }}
 
     - name: Installation
+      shell: sh
       run: pnpm install
