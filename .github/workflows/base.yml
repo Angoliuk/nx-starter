@@ -3,7 +3,7 @@ name: base
 on: workflow_call
 
 jobs:
-  git:
+  setup:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -12,29 +12,40 @@ jobs:
       - name: Fetching git
         run: git fetch
 
-  node:
-    needs: git
-    runs-on: ubuntu-latest
-    steps:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18.x"
 
-  pnpm:
-    needs: node
-    runs-on: ubuntu-latest
-    steps:
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         with:
           run_install: false
 
-  nx:
-    needs: pnpm
-    runs-on: ubuntu-latest
-    steps:
       - uses: nrwl/nx-set-shas@v3
 
       - name: Install NX
         run: pnpm install -g nx
+
+  # node:
+  #   needs: git
+  #   runs-on: ubuntu-latest
+  #   steps:
+
+  # pnpm:
+  #   needs: node
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: pnpm/action-setup@v2
+  #       name: Install pnpm
+  #       with:
+  #         run_install: false
+
+  # nx:
+  #   needs: pnpm
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: nrwl/nx-set-shas@v3
+
+  #     - name: Install NX
+  #       run: pnpm install -g nx
