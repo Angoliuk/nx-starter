@@ -16,8 +16,12 @@ jobs:
     steps:
       # - uses: nrwl/nx-set-shas@v3
 
-      # - name: Checkout code
-      #   uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: ./.github/actions/base-setup
+
+      - uses: ./.github/actions/install-dependencies
 
       # - name: Set up Node.js
       #   uses: actions/setup-node@v3
@@ -33,16 +37,16 @@ jobs:
       #     version: 8
       #     run_install: false
 
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ inputs.pnpmPath }}
-          key: ${{ inputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ inputs.pnpmKeysPrefix }}
+      # - uses: actions/cache@v3
+      #   name: Setup pnpm cache
+      #   with:
+      #     path: ${{ inputs.pnpmPath }}
+      #     key: ${{ inputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
+      #     restore-keys: |
+      #       ${{ inputs.pnpmKeysPrefix }}
 
-      - name: Install dependencies
-        run: pnpm install
+      # - name: Install dependencies
+      #   run: pnpm install
 
       # - name: Install NX
       #   run: pnpm install -g nx

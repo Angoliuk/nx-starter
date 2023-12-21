@@ -18,29 +18,17 @@ jobs:
   variables:
     runs-on: ubuntu-latest
     steps:
-      # - name: Checkout code
-      #   uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: base
+      - name: Base
         uses: ./.github/actions/base-setup
-      # - uses: nrwl/nx-set-shas@v3
-
-      # - name: Checkout code
-      #   uses: actions/checkout@v3
-
-      # - name: Set up Node.js
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: "18.x"
 
       - uses: pnpm/action-setup@v2
         name: Install pnpm
         with:
           version: 8
           run_install: false
-
-      # - name: Fetching git
-      #   run: git fetch
 
       - name: Getting head
         id: head

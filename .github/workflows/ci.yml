@@ -28,17 +28,13 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      # - name: Checkout code
-      #   uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-      - name: base
-        uses: ./.github/actions/base-setup
+      - uses: ./.github/actions/base-setup
 
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
+      - uses: ./.github/actions/install-dependencies
+
       # - uses: nrwl/nx-set-shas@v3
 
       # - name: Checkout code
@@ -58,16 +54,16 @@ jobs:
       #     version: 8
       #     run_install: false
 
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ inputs.pnpmPath }}
-          key: ${{ inputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ inputs.pnpmKeysPrefix }}
+      # - uses: actions/cache@v3
+      #   name: Setup pnpm cache
+      #   with:
+      #     path: ${{ inputs.pnpmPath }}
+      #     key: ${{ inputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
+      #     restore-keys: |
+      #       ${{ inputs.pnpmKeysPrefix }}
 
-      - name: Install dependencies
-        run: pnpm install
+      # - name: Install dependencies
+      #   run: pnpm install
 
       # - name: Install NX
       #   run: pnpm install -g nx
