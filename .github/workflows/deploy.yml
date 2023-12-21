@@ -65,9 +65,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # - name: Install Dependencies
-      #   run: npm install
-
       - name: Access Variable
         run: |
           echo "${{ needs.defineAffectedApps.outputs.affectedApps }}"
