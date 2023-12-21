@@ -25,3 +25,10 @@ jobs:
       - name: Check is CI valid
         if: needs.ci.outputs.isPassed == 'true'
         run: exit 1
+
+  cwiChecker:
+    runs-on: ubuntu-latest
+    needs: ciChecker
+    steps:
+      - name: Check is CI valid
+        run: exit 0
