@@ -54,6 +54,7 @@
 name: "Setup base"
 
 runs:
+  shell: sh
   using: "composite"
   steps:
     - name: Checkout code
