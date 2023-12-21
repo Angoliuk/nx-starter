@@ -29,5 +29,6 @@ jobs:
     needs: [variables, ci, ciChecker]
     uses: ./.github/workflows/deploy.yml
     with:
+      flags: ${{needs.variables.outputs.flags}}
       pnpmPath: ${{needs.variables.outputs.pnpmPath}}
       pnpmKeysPrefix: ${{needs.variables.outputs.pnpmKeysPrefix}}

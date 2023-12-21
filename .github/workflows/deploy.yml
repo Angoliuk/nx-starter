@@ -3,6 +3,9 @@ name: deploy
 on:
   workflow_call:
     inputs:
+      flags:
+        required: true
+        type: string
       pnpmPath:
         required: true
         type: string
@@ -56,7 +59,7 @@ jobs:
       - name: Getting affected apps
         id: affected
         run: |
-          echo "affectedApps=$(nx show projects --affected --json --base=origin/main --head=HEAD }})" >> $GITHUB_OUTPUT
+          echo "affectedApps=$(nx show projects --affected --json ${{ inputs.flags }} }})" >> $GITHUB_OUTPUT
     outputs:
       affectedApps: ${{ steps.affected.outputs.affectedApps }}
 
