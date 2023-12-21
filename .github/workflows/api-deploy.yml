@@ -1,0 +1,55 @@
+name: Deploy API
+
+on:
+  workflow_call:
+    inputs:
+      pnpmPath:
+        required: true
+        type: string
+      pnpmKeysPrefix:
+        required: true
+        type: string
+
+jobs:
+  build:
+    runs-on: [self-hosted, server-crm]
+    strategy:
+      matrix:
+        node-version: [18.15]
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Get Secrets by Name and by ARN
+        run: |
+          aws secretsmanager get-secret-value --secret-id server-crm | \
+          jq -r '.SecretString' | \
+          jq -r "to_entries|map(\"\(.key)=\\\"\(.value|tostring)\\\"\")|.[]" > ./apps/server-crm/.env
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 8
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ inputs.pnpmPath }}
+          key: ${{ inputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ inputs.pnpmKeysPrefix }}
+
+      - run: pnpm i turbo -g
+      - run: pnpm i pm2 -g
+      - run: pnpm prod:server-crm

@@ -14,24 +14,24 @@ jobs:
   defineAffectedApps:
     runs-on: ubuntu-latest
     steps:
-      - uses: nrwl/nx-set-shas@v3
+      # - uses: nrwl/nx-set-shas@v3
 
-      - name: Checkout code
-        uses: actions/checkout@v3
+      # - name: Checkout code
+      #   uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "18.x"
+      # - name: Set up Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: "18.x"
 
-      - name: Fetching git
-        run: git fetch
+      # - name: Fetching git
+      #   run: git fetch
 
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          version: 8
-          run_install: false
+      # - uses: pnpm/action-setup@v2
+      #   name: Install pnpm
+      #   with:
+      #     version: 8
+      #     run_install: false
 
       - uses: actions/cache@v3
         name: Setup pnpm cache
@@ -44,8 +44,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Install NX
-        run: pnpm install -g nx
+      # - name: Install NX
+      #   run: pnpm install -g nx
 
       - name: Getting affected apps
         id: affected
@@ -62,12 +62,12 @@ jobs:
         project: [web, api]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      # - name: Checkout code
+      #   uses: actions/checkout@v2
 
-      - name: Access Variable
-        run: |
-          echo "${{ needs.defineAffectedApps.outputs.affectedApps }}"
+      # - name: Access Variable
+      #   run: |
+      #     echo "${{ needs.defineAffectedApps.outputs.affectedApps }}"
 
       - name: Build Project
         if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)

@@ -6,6 +6,9 @@ on:
       - "main"
 
 jobs:
+  base:
+    uses: ./.github/workflows/base.yml
+
   variables:
     uses: ./.github/workflows/variables.yml
 
