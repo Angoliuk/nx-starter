@@ -15,13 +15,15 @@ on:
         value: ${{jobs.variables.outputs.pnpmKeysPrefix}}
 
 jobs:
-  base:
-    uses: ./.github/workflows/base.yml
+  # base:
+  #   uses: ./.github/workflows/base.yml
 
   variables:
-    needs: base
+    # needs: base
     runs-on: ubuntu-latest
     steps:
+      - name: base
+        uses: ./.github/workflows/base.yml
       # - uses: nrwl/nx-set-shas@v3
 
       # - name: Checkout code
