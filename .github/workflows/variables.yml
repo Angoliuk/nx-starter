@@ -52,16 +52,6 @@ jobs:
         run: |
           echo "storePath=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
 
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo ${{ github.event_name == 'push' && ' ' || format('--base={0} --head={1}', steps.base.outputs.base, steps.head.outputs.head) }}
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo ${{ github.event_name == 'push' && ' ' }}
-
     outputs:
       base: ${{ steps.base.outputs.base }}
       head: ${{ steps.base.outputs.head }}
