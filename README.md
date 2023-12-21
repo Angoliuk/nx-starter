@@ -1,8 +1,5 @@
 # NxStarter - NNN (Next, Nest, NX)
 
-Package manager:
- - pnpm
-
 
 Stack:
  - Next
@@ -16,6 +13,10 @@ Key features:
  - TS-rest for end-to-end type-safety and auto generated swagger
  - shared package for reusable code between packages
  - pre-configured tailwind
+
+
+Package manager:
+ - pnpm
 
 
 Prerequisites:
