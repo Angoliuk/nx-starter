@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "check:all": "nx format:check && nx run-many --all --target=lint && nx run-many --all --target=build",
-    "check:changed": "nx format:check && nx affected -t lint && nx affected -t build"
+    "check:all": "pnpm nx format:check && pnpm nx run-many --all --target=lint && pnpm nx run-many --all --target=build",
+    "check:changed": "pnpm nx format:check && pnpm nx affected -t lint && pnpm nx affected -t build",
+    "postinstall": "pnpm nx generate-types db"
   },
   "private": true,
   "devDependencies": {
