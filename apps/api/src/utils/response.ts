@@ -1,11 +1,13 @@
+import { StatusCodes } from "@nx-starter/shared";
+
 const success = <T>(data: T, message?: string | undefined) => {
   return {
     body: {
       data,
       message: message ? message : "Success",
-      status: 200 as const,
+      status: StatusCodes.SUCCESS,
     },
-    status: 200 as const,
+    status: StatusCodes.SUCCESS,
   };
 };
 
@@ -13,10 +15,10 @@ const forbidden = <T>(error: T, message?: string | undefined) => {
   return {
     body: {
       error,
-      message: message ? message : "Server error with status 403. Forbidden",
-      status: 403 as const,
+      message: message ? message : `Server error with status ${StatusCodes.FORBIDDEN}. Forbidden`,
+      status: StatusCodes.FORBIDDEN,
     },
-    status: 403 as const,
+    status: StatusCodes.FORBIDDEN,
   };
 };
 
@@ -24,10 +26,10 @@ const notFound = <T>(error: T, message?: string | undefined) => {
   return {
     body: {
       error,
-      message: message ? message : "Server error with status 404. Not Found",
-      status: 404 as const,
+      message: message ? message : `Server error with status ${StatusCodes.NOT_FOUND}. Not Found`,
+      status: StatusCodes.NOT_FOUND,
     },
-    status: 404 as const,
+    status: StatusCodes.NOT_FOUND,
   };
 };
 
@@ -35,10 +37,10 @@ const serverError = <T>(error: T, message?: string | undefined) => {
   return {
     body: {
       error,
-      message: message ? message : "Server error with status 500. Server Error",
-      status: 500 as const,
+      message: message ? message : `Server error with status ${StatusCodes.SERVER_ERROR}. Server Error`,
+      status: StatusCodes.SERVER_ERROR,
     },
-    status: 500 as const,
+    status: StatusCodes.SERVER_ERROR,
   };
 };
 
