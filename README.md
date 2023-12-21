@@ -1,14 +1,14 @@
-# NxStarter
-
-Monorepo starter with NX
+# NxStarter - NNN (Next, Nest, NX)
 
 Package manager:
  - pnpm
+
 
 Stack:
  - Next
  - Nest
  - Prisma
+
 
 Key features:
  - GH actions with linting, building and auto deploy to AWS
@@ -17,10 +17,12 @@ Key features:
  - shared package for reusable code between packages
  - pre-configured tailwind
 
+
 Prerequisites:
  - NodeJS 18+
  - pnpm 8+
  - docker with docker compose
+
 
 First start:
  1. Run `pnpm i` to install dependencies
