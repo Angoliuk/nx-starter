@@ -17,7 +17,7 @@ Key features:
  - *Shared package* for reusable code between packages
  - Pre-configured *tailwind*
  - Next with *Server Components*
-
+ - No JS only TS
 
 Prerequisites:
  - NodeJS 18+
@@ -31,3 +31,8 @@ First start:
  3. Run `docker compose up`. If you have your db, than you can skip it, but then do not forget to change `DATABASE_URL` in `packages/db` env
  4. Run `pnpm nx serve api` to start api
  5. Run `pnpm nx serve web` to start web
+
+ Initial content:
+  - Added base Nest module for auth/user
+  - Configured user Prisma schema
+  - Added example page
