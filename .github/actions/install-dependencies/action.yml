@@ -1,5 +1,13 @@
 name: "Install dependencies"
 
+inputs:
+  pnpmPath:
+    required: true
+    type: string
+  pnpmKeysPrefix:
+    required: true
+    type: string
+
 runs:
   using: "composite"
   steps:

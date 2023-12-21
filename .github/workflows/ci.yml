@@ -34,7 +34,9 @@ jobs:
       - uses: ./.github/actions/base-setup
 
       - uses: ./.github/actions/install-dependencies
-
+        with:
+          pnpmKeysPrefix: ${{inputs.pnpmKeysPrefix}}
+          pnpmPath: ${{inputs.pnpmPath}}
       # - uses: nrwl/nx-set-shas@v3
 
       # - name: Checkout code

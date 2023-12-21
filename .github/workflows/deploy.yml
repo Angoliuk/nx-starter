@@ -22,7 +22,9 @@ jobs:
       - uses: ./.github/actions/base-setup
 
       - uses: ./.github/actions/install-dependencies
-
+        with:
+          pnpmKeysPrefix: ${{inputs.pnpmKeysPrefix}}
+          pnpmPath: ${{inputs.pnpmPath}}
       # - name: Set up Node.js
       #   uses: actions/setup-node@v3
       #   with:
