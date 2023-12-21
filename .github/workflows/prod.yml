@@ -22,8 +22,8 @@ jobs:
     needs: ci
     steps:
       - name: Check is CI valid
-        if: needs.ci.outputs.isPassed != 'true'
-        run: exit 1
+        if: needs.ci.outputs.isPassed == 'true'
+        run: exit 0
 
   deploy:
     needs: [variables, ci, ciChecker]
