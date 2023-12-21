@@ -10,7 +10,7 @@ Stack:
  - Nest
  - Prisma
 
-Features out of a box:
+Key features:
  - GH actions with linting, building and auto deploy to AWS
  - Docker compose with postgres and pgAdmin for dev
  - TS-rest for end-to-end type-safety and auto generated swagger
