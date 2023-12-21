@@ -36,17 +36,18 @@ jobs:
     outputs:
       affectedApps: ${{ steps.affected.outputs.affectedApps }}
 
-  deploy:
+  deployWeb:
     needs: defineAffectedApps
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project: [web, api]
+    if: contains(needs.defineAffectedApps.outputs.affectedApps, 'web')
+    uses: ./.github/workflows/web-deploy.yml
+    with:
+      pnpmKeysPrefix: ${{inputs.pnpmKeysPrefix}}
+      pnpmPath: ${{inputs.pnpmPath}}
 
-    steps:
-      - name: Build web
-        if: contains(needs.defineAffectedApps.outputs.affectedApps, 'web')
-        uses: ./.github/workflows/web-deploy.yml
-      - name: Build api
-        if: contains(needs.defineAffectedApps.outputs.affectedApps, 'api')
-        uses: ./.github/workflows/api-deploy.yml
+  deployApi:
+    needs: defineAffectedApps
+    if: contains(needs.defineAffectedApps.outputs.affectedApps, 'api')
+    uses: ./.github/workflows/api-deploy.yml
+    with:
+      pnpmKeysPrefix: ${{inputs.pnpmKeysPrefix}}
+      pnpmPath: ${{inputs.pnpmPath}}

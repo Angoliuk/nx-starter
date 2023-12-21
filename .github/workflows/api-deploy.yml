@@ -1,4 +1,4 @@
-name: Deploy API
+name: Deploy api
 
 on:
   workflow_call:
