@@ -8,11 +8,11 @@ on:
 
 jobs:
   variables:
-    uses: ./.github/workflows/variables.yml
+    uses: ./.github/workflows/reusable/variables.yml
 
   ci:
     needs: variables
-    uses: ./.github/workflows/ci.yml
+    uses: ./.github/workflows/reusable/ci.yml
     with:
       flags: ${{needs.variables.outputs.flags}}
       pnpmKeysPrefix: ${{needs.variables.outputs.pnpmKeysPrefix}}

@@ -7,11 +7,11 @@ on:
 
 jobs:
   variables:
-    uses: ./.github/workflows/variables.yml
+    uses: ./.github/workflows/reusable/variables.yml
 
   ci:
     needs: variables
-    uses: ./.github/workflows/ci.yml
+    uses: ./.github/workflows/reusable/ci.yml
     with:
       flags: ${{needs.variables.outputs.flags}}
       pnpmKeysPrefix: ${{needs.variables.outputs.pnpmKeysPrefix}}
@@ -27,7 +27,7 @@ jobs:
 
   deploy:
     needs: [variables, ci, ciChecker]
-    uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/reusable/deploy.yml
     with:
       flags: ${{needs.variables.outputs.flags}}
       pnpmPath: ${{needs.variables.outputs.pnpmPath}}

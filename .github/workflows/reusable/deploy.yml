@@ -17,8 +17,6 @@ jobs:
   defineAffectedApps:
     runs-on: ubuntu-latest
     steps:
-      # - uses: nrwl/nx-set-shas@v3
-
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -28,33 +26,6 @@ jobs:
         with:
           pnpmKeysPrefix: ${{inputs.pnpmKeysPrefix}}
           pnpmPath: ${{inputs.pnpmPath}}
-      # - name: Set up Node.js
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: "18.x"
-
-      # - name: Fetching git
-      #   run: git fetch
-
-      # - uses: pnpm/action-setup@v2
-      #   name: Install pnpm
-      #   with:
-      #     version: 8
-      #     run_install: false
-
-      # - uses: actions/cache@v3
-      #   name: Setup pnpm cache
-      #   with:
-      #     path: ${{ inputs.pnpmPath }}
-      #     key: ${{ inputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
-      #     restore-keys: |
-      #       ${{ inputs.pnpmKeysPrefix }}
-
-      # - name: Install dependencies
-      #   run: pnpm install
-
-      # - name: Install NX
-      #   run: pnpm install -g nx
 
       - name: Getting affected apps
         id: affected
