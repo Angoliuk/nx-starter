@@ -15,11 +15,11 @@ on:
         value: ${{jobs.variables.outputs.pnpmKeysPrefix}}
 
 jobs:
-  # base:
-  #   uses: ./.github/workflows/base.yml
+  base:
+    uses: ./.github/workflows/base.yml
 
   variables:
-    # needs: base
+    needs: base
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
