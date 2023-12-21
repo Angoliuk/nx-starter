@@ -36,10 +36,10 @@ jobs:
       - uses: actions/cache@v3
         name: Setup pnpm cache
         with:
-          path: ${{ github.event.inputs.pnpmPath }}
-          key: ${{ github.event.inputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
+          path: ${{ inputs.pnpmPath }}
+          key: ${{ inputs.pnpmKeysPrefix }}${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ github.event.inputs.pnpmKeysPrefix }}
+            ${{ inputs.pnpmKeysPrefix }}
 
       - name: Install dependencies
         run: pnpm install

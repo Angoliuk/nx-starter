@@ -6,15 +6,12 @@ on:
       pnpmPath:
         required: true
         type: string
-        default: "13"
       pnpmKeysPrefix:
         required: true
         type: string
-        default: "13"
       flags:
         required: true
         type: string
-        default: "13"
     outputs:
       isBuildPassed:
         value: ${{jobs.ci.outputs.isBuildPassed}}
@@ -28,27 +25,6 @@ on:
         value: ${{jobs.ci.outputs.isPassed}}
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check is CI valid
-        run: echo ${{ inputs.flags }}
-      - name: Check is CI valid
-        run: echo ${{ inputs.pnpmKeysPrefix }}
-      - name: Check is CI valid
-        run: echo ${{ inputs.pnpmPath }}
-      - name: Check is CI valid
-        run: echo ${{ inputs }}
-      - name: Check is CI valid
-        run: echo ${{ env }}
-      - name: Check is CI valid
-        run: echo ${{ env.inputs }}
-      - name: Check is CI valid
-        run: echo ${{ env.inputs.flags }}
-      - name: Check is CI valid
-        run: echo ${{ env.flags }}
-      - name: Check is CI valid
-        run: echo ${{ github }}
   ci:
     runs-on: ubuntu-latest
     steps:
