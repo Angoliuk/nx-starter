@@ -22,7 +22,6 @@ jobs:
 
       - uses: ./.github/actions/base-setup
 
-      # test without deps
       - uses: ./.github/actions/install-dependencies
         with:
           pnpmKeysPrefix: ${{inputs.pnpmKeysPrefix}}
