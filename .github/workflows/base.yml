@@ -13,6 +13,7 @@ jobs:
         run: git fetch
 
   node:
+    needs: git
     runs-on: ubuntu-latest
     steps:
       - name: Set up Node.js
