@@ -11,6 +11,7 @@ jobs:
     uses: ./.github/workflows/base.yml
 
   variables:
+    needs: base
     uses: ./.github/workflows/variables.yml
 
   ci:
