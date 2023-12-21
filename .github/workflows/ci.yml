@@ -28,6 +28,17 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: base
+        uses: ./.github/actions/base-setup
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
       # - uses: nrwl/nx-set-shas@v3
 
       # - name: Checkout code
