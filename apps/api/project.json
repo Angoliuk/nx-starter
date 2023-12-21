@@ -5,7 +5,7 @@
   "projectType": "application",
   "targets": {
     "pm2": {
-      "command": "pm2 start ../../dist/apps/api/main.js"
+      "command": "nx build api && pm2 start ../../dist/apps/api/main.js"
     },
     "build": {
       "executor": "@nx/webpack:webpack",

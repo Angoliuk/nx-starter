@@ -22,6 +22,7 @@ jobs:
 
       - uses: ./.github/actions/base-setup
 
+      # test without deps
       - uses: ./.github/actions/install-dependencies
         with:
           pnpmKeysPrefix: ${{inputs.pnpmKeysPrefix}}
@@ -42,13 +43,9 @@ jobs:
         project: [web, api]
 
     steps:
-      # - name: Checkout code
-      #   uses: actions/checkout@v2
-
-      # - name: Access Variable
-      #   run: |
-      #     echo "${{ needs.defineAffectedApps.outputs.affectedApps }}"
-
-      - name: Build Project
+      - name: Build web
         if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)
-        run: echo ${{ matrix.project }}
+        uses: ./.github/workflows/web-deploy.yml
+      - name: Build api
+        if: contains(needs.defineAffectedApps.outputs.affectedApps, matrix.project)
+        uses: ./.github/workflows/api-deploy.yml
