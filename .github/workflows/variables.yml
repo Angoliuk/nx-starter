@@ -15,7 +15,11 @@ on:
         value: ${{jobs.variables.outputs.pnpmKeysPrefix}}
 
 jobs:
+  base:
+    uses: ./.github/workflows/base.yml
+
   variables:
+    needs: base
     runs-on: ubuntu-latest
     steps:
       # - uses: nrwl/nx-set-shas@v3
