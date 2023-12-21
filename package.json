@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "check:all": "nx format:check && nx run-many --all --target=lint && nx run-many --all --target=build",
-    "check:changed": "nx format:check && nx affected -t lint && nx affected -t build"
+    "check:all": "pnpm nx format:check && pnpm nx run-many --all --target=lint && pnpm nx run-many --all --target=build",
+    "check:changed": "pnpm nx format:check && pnpm nx affected -t lint && pnpm nx affected -t build",
+    "postinstall": "pnpm nx generate-types db"
   },
   "private": true,
   "devDependencies": {
@@ -45,6 +46,8 @@
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
     "tailwind-merge": "^1.12.0",
+    "@types/express": "^4.17.19",
+    "@types/passport-jwt": "^3.0.10",
     "tailwindcss": "^3.3.5",
     "typescript": "~5.2.2"
   },
@@ -61,9 +64,6 @@
     "@ts-rest/core": "^3.30.5",
     "@ts-rest/nest": "^3.30.5",
     "@ts-rest/open-api": "^3.30.5",
-    "@types/express": "^4.17.19",
-    "@types/node": "18.11.18",
-    "@types/passport-jwt": "^3.0.10",
     "argon2": "^0.31.1",
     "axios": "^1.0.0",
     "dayjs": "^1.11.8",
@@ -80,5 +80,9 @@
     "rxjs": "^7.8.0",
     "tslib": "^2.3.0",
     "zod": "^3.21.4"
+  },
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8"
   }
 }
