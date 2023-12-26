@@ -1,10 +1,16 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
-import { SignInBodySchema, SignUpBodySchema, TokensSchema, UserId } from "@nx-starter/shared";
+import {
+  ForbiddenError,
+  NotFoundError,
+  SignInBodySchema,
+  SignUpBodySchema,
+  TokensSchema,
+  UserId,
+} from "@nx-starter/shared";
 import * as argon2 from "argon2";
 
-import { response } from "../../utils";
 import { UsersService } from "../users";
 
 @Injectable()
@@ -18,43 +24,43 @@ export class AuthService {
   async logout({ userId }: UserId) {
     await this.usersService.update({ data: { hashedRt: "" }, where: { id: userId } });
 
-    return response.success({});
+    return {};
   }
 
   async refreshTokens({ accessToken: expiredAccessToken, refreshToken: expiredRefreshToken }: TokensSchema) {
     const tokenData = this.jwtService.decode(expiredAccessToken);
 
-    if (!tokenData || !tokenData.userId) return response.forbidden({}, "Wrong data in token");
+    if (!tokenData || !tokenData.userId) return new ForbiddenError("Wrong data in token");
 
     const user = await this.usersService.findOne(tokenData.userId);
 
-    if (!user) return response.forbidden({});
+    if (!user) return new NotFoundError();
 
     const refreshTokenMatches = await argon2.verify(user.hashedRt, expiredRefreshToken);
 
-    if (!refreshTokenMatches) return response.forbidden({}, "Incorrect refresh token");
+    if (!refreshTokenMatches) return new ForbiddenError("Incorrect refresh token");
 
     const tokens = await this.signTokens({ email: user.email, userId: user.id });
 
     await this.updateRefreshToken({ refreshToken: tokens.refreshToken, userId: user.id });
 
-    return response.success(tokens);
+    return tokens;
   }
 
   async signIn({ email, password }: SignInBodySchema) {
     const user = await this.usersService.findOne({ where: { email } });
 
-    if (!user) return response.forbidden({}, "User do not exists");
+    if (!user) return new NotFoundError("User do not exists");
 
     const isPasswordsMatch = await argon2.verify(user.password, password);
 
-    if (!isPasswordsMatch) return response.forbidden({}, "Incorrect password");
+    if (!isPasswordsMatch) return new ForbiddenError("Incorrect password");
 
     const tokens = await this.signTokens({ email: user.email, userId: user.id });
 
     await this.updateRefreshToken({ refreshToken: tokens.refreshToken, userId: user.id });
 
-    return response.success({ email: user.email, id: user.id, ...tokens });
+    return { email: user.email, id: user.id, ...tokens };
   }
 
   async signTokens({ email, userId }: UserId & { email: string }) {
@@ -91,7 +97,7 @@ export class AuthService {
   async signUp(body: SignUpBodySchema) {
     const existingUser = await this.usersService.findOne({ where: { email: body.email } });
 
-    if (existingUser) return response.forbidden({}, `User with email: ${existingUser.email} already exists`);
+    if (existingUser) return new ForbiddenError(`User with email ${existingUser.email} already exists`);
 
     const createdUser = await this.usersService.create({ data: body });
 
@@ -99,11 +105,11 @@ export class AuthService {
 
     await this.updateRefreshToken({ refreshToken: tokens.refreshToken, userId: createdUser.id });
 
-    return response.success({
+    return {
       email: createdUser.email,
       id: createdUser.id,
       ...tokens,
-    });
+    };
   }
 
   async updateRefreshToken({ refreshToken, userId }: UserId & { refreshToken: string }) {

@@ -1,5 +1,8 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from "@nestjs/common";
+import { StatusCodes, contract } from "@nx-starter/shared";
+import { ServerInferResponses } from "@ts-rest/core";
 import { Response } from "express";
+import { OutgoingHttpHeaders } from "node:http";
 
 const getErrorCode = (error: unknown, defaultErrorCode: number) => {
   if (typeof error !== "object" || Array.isArray(error) || error === null) return defaultErrorCode;
@@ -32,12 +35,16 @@ export class ErrorFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const res = host.switchToHttp().getResponse<Response>();
 
-    const status = getErrorCode(exception, 500);
+    const status = getErrorCode(exception, StatusCodes.SERVER_ERROR);
 
-    res.status(status).json({
-      error: exception,
-      message: getErrorMessage(exception, status),
+    const responseJson = {
+      body: {
+        message: getErrorMessage(exception, status),
+        name: "Unknown error",
+      },
       status,
-    });
+    } as ServerInferResponses<typeof contract.auth.signIn, 500> & { headers: OutgoingHttpHeaders };
+
+    res.status(status).json(responseJson);
   }
 }

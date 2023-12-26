@@ -1,22 +1,9 @@
-import { AnyZodObject, z as zod } from "zod";
+import { z as zod } from "zod";
 
+import { ForbiddenError, NotFoundError, ServerError } from "../../utils/errors";
+import { emptySchema, signInBodySchema, signUpBodySchema, tokensSchema } from "../../validation";
 import { StatusCodes } from "../constants";
-import { emptySchema, signInBodySchema, signUpBodySchema, tokensSchema } from "../validation";
 import { ContractInstance } from "./types";
-
-const successSchema = (dataSchema?: AnyZodObject) =>
-  zod.object({
-    data: dataSchema ?? zod.undefined(),
-    message: zod.string(),
-    status: zod.number(),
-  });
-
-const errorSchema = (errorSchema?: AnyZodObject) =>
-  zod.object({
-    error: errorSchema ?? zod.string(),
-    message: zod.string(),
-    status: zod.number(),
-  });
 
 export const authContract = (c: ContractInstance) =>
   c.router(
@@ -26,9 +13,9 @@ export const authContract = (c: ContractInstance) =>
         method: "POST",
         path: "/logout",
         responses: {
-          [StatusCodes.FORBIDDEN]: errorSchema(),
-          [StatusCodes.SERVER_ERROR]: errorSchema(),
-          [StatusCodes.SUCCESS]: successSchema(),
+          [StatusCodes.FORBIDDEN]: ForbiddenError.zodSchema,
+          [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
+          [StatusCodes.SUCCESS]: zod.object({}),
         },
       },
       refreshTokens: {
@@ -36,9 +23,10 @@ export const authContract = (c: ContractInstance) =>
         method: "POST",
         path: "/refresh",
         responses: {
-          [StatusCodes.FORBIDDEN]: errorSchema(),
-          [StatusCodes.SERVER_ERROR]: errorSchema(),
-          [StatusCodes.SUCCESS]: successSchema(),
+          [StatusCodes.FORBIDDEN]: ForbiddenError.zodSchema,
+          [StatusCodes.NOT_FOUND]: NotFoundError.zodSchema,
+          [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
+          [StatusCodes.SUCCESS]: zod.object({}),
         },
       },
       signIn: {
@@ -46,9 +34,10 @@ export const authContract = (c: ContractInstance) =>
         method: "POST",
         path: "/sign-in",
         responses: {
-          [StatusCodes.FORBIDDEN]: errorSchema(),
-          [StatusCodes.SERVER_ERROR]: errorSchema(),
-          [StatusCodes.SUCCESS]: successSchema(),
+          [StatusCodes.FORBIDDEN]: ForbiddenError.zodSchema,
+          [StatusCodes.NOT_FOUND]: NotFoundError.zodSchema,
+          [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
+          [StatusCodes.SUCCESS]: zod.object({}),
         },
         summary: "test",
       },
@@ -57,9 +46,10 @@ export const authContract = (c: ContractInstance) =>
         method: "POST",
         path: "/sign-up",
         responses: {
-          [StatusCodes.FORBIDDEN]: errorSchema(),
-          [StatusCodes.SERVER_ERROR]: errorSchema(),
-          [StatusCodes.SUCCESS]: successSchema(),
+          [StatusCodes.FORBIDDEN]: ForbiddenError.zodSchema,
+          [StatusCodes.NOT_FOUND]: NotFoundError.zodSchema,
+          [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
+          [StatusCodes.SUCCESS]: zod.object({}),
         },
         summary: "test",
       },
