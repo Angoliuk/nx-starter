@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import {
   ForbiddenError,
@@ -11,15 +10,12 @@ import {
 } from "@nx-starter/shared";
 import * as argon2 from "argon2";
 
+import { EnvService } from "../env";
 import { UsersService } from "../users";
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService,
-    private configService: ConfigService,
-  ) {}
+  constructor(private usersService: UsersService, private jwtService: JwtService, private envService: EnvService) {}
 
   async logout({ userId }: UserId) {
     await this.usersService.update({ data: { hashedRt: "" }, where: { id: userId } });
@@ -40,9 +36,15 @@ export class AuthService {
 
     if (!refreshTokenMatches) return new ForbiddenError("Incorrect refresh token");
 
-    const tokens = await this.signTokens({ email: user.email, userId: user.id });
+    const tokens = await this.signAndUpdateTokens({ email: user.email, userId: user.id });
 
-    await this.updateRefreshToken({ refreshToken: tokens.refreshToken, userId: user.id });
+    return tokens;
+  }
+
+  async signAndUpdateTokens(tokensBody: UserId & { email: string }) {
+    const tokens = await this.signTokens(tokensBody);
+
+    await this.updateRefreshToken({ refreshToken: tokens.refreshToken, userId: tokensBody.userId });
 
     return tokens;
   }
@@ -56,35 +58,25 @@ export class AuthService {
 
     if (!isPasswordsMatch) return new ForbiddenError("Incorrect password");
 
-    const tokens = await this.signTokens({ email: user.email, userId: user.id });
-
-    await this.updateRefreshToken({ refreshToken: tokens.refreshToken, userId: user.id });
+    const tokens = await this.signAndUpdateTokens({ email: user.email, userId: user.id });
 
     return { email: user.email, id: user.id, ...tokens };
   }
 
   async signTokens({ email, userId }: UserId & { email: string }) {
+    const tokenBody = {
+      email,
+      userId,
+    };
     const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(
-        {
-          email,
-          userId,
-        },
-        {
-          expiresIn: Number(this.configService.get<string>("ACCESS_SECRET_TOKEN_EXPIRES_IN") ?? 60),
-          secret: this.configService.get<string>("ACCESS_SECRET_TOKEN"),
-        },
-      ),
-      this.jwtService.signAsync(
-        {
-          email,
-          userId,
-        },
-        {
-          expiresIn: Number(this.configService.get<string>("REFRESH_SECRET_TOKEN_EXPIRES_IN") ?? 60),
-          secret: this.configService.get<string>("REFRESH_SECRET_TOKEN"),
-        },
-      ),
+      this.jwtService.signAsync(tokenBody, {
+        expiresIn: this.envService.get("ACCESS_SECRET_TOKEN_EXPIRES_IN"),
+        secret: this.envService.get("ACCESS_SECRET_TOKEN"),
+      }),
+      this.jwtService.signAsync(tokenBody, {
+        expiresIn: this.envService.get("REFRESH_SECRET_TOKEN_EXPIRES_IN"),
+        secret: this.envService.get("REFRESH_SECRET_TOKEN"),
+      }),
     ]);
 
     return {
@@ -100,9 +92,7 @@ export class AuthService {
 
     const createdUser = await this.usersService.create({ data: body });
 
-    const tokens = await this.signTokens({ email: createdUser.email, userId: createdUser.id });
-
-    await this.updateRefreshToken({ refreshToken: tokens.refreshToken, userId: createdUser.id });
+    const tokens = await this.signAndUpdateTokens({ email: createdUser.email, userId: createdUser.id });
 
     return {
       email: createdUser.email,

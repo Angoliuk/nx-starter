@@ -1,7 +1,9 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 
+import { envSchema } from "../utils";
 import { AuthModule } from "./auth";
+import { EnvModule } from "./env";
 import { PrismaModule } from "./prisma";
 import { UsersModule } from "./users";
 
@@ -10,9 +12,9 @@ import { UsersModule } from "./users";
     PrismaModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      // validationSchema: schema,
-      // validate: (env) => schema.parse(env),
+      validate: env => envSchema.parse(env),
     }),
+    EnvModule,
     PrismaModule,
     AuthModule,
     UsersModule,
