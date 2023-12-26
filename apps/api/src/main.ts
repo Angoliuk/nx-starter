@@ -7,7 +7,7 @@ import { generateOpenApi } from "@ts-rest/open-api";
 import { ErrorFilter } from "./middlewares";
 import { AppModule } from "./modules/app.module";
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const globalPrefix = "api";
 
 async function bootstrap() {
