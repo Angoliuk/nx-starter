@@ -1,9 +1,9 @@
-import { z as zod } from "zod";
+import { z } from "zod";
 
-export const emptySchema = zod.object({}).nullish();
+export const emptySchema = z.object({}).nullish();
 
-export type UserId = zod.infer<typeof userId>;
-export const userId = zod.object({ userId: zod.string().min(1) });
+export type UserId = z.infer<typeof userId>;
+export const userId = z.object({ userId: z.string().min(1) });
 
-export type TokensSchema = zod.infer<typeof tokensSchema>;
-export const tokensSchema = zod.object({ accessToken: zod.string().min(1), refreshToken: zod.string().min(1) });
+export type TokensSchema = z.infer<typeof tokensSchema>;
+export const tokensSchema = z.object({ accessToken: z.string().min(1), refreshToken: z.string().min(1) });

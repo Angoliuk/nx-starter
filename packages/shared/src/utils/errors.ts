@@ -1,12 +1,12 @@
-import { z as zod } from "zod";
+import { z } from "zod";
 
 import { StatusCodes } from "../api/constants";
 import { ObjectValues } from "../types";
 
 export class BaseError extends Error {
-  static zodSchema = zod.object({
-    message: zod.string(),
-    name: zod.string(),
+  static zodSchema = z.object({
+    message: z.string(),
+    name: z.string(),
   });
 
   httpStatus: ObjectValues<typeof StatusCodes> = StatusCodes.SERVER_ERROR;
