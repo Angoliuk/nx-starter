@@ -3,7 +3,8 @@ import { AuthGuard } from "@nestjs/passport";
 import { contract, formatResponse } from "@nx-starter/shared";
 import { TsRestHandler, tsRestHandler } from "@ts-rest/nest";
 
-import { GetUserData } from "../../decorators";
+import { GetUser } from "../../decorators";
+import { TokenUser } from "../../validation";
 import { AuthService } from "./auth.service";
 
 @Controller()
@@ -13,13 +14,11 @@ export class AuthController {
   @UseGuards(AuthGuard("jwt"))
   @TsRestHandler(contract.auth.logout)
   async logout(
-    @GetUserData()
-    userData: {
-      id: string;
-    },
+    @GetUser()
+    user: TokenUser,
   ) {
     return tsRestHandler(contract.auth.logout, async () => {
-      const logoutResponse = await this.authService.logout({ userId: userData.id });
+      const logoutResponse = await this.authService.logout({ userId: user.userId });
       return formatResponse(logoutResponse);
     });
   }

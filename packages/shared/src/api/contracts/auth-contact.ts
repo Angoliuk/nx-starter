@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { ForbiddenError, NotFoundError, ServerError } from "../../utils/errors";
-import { emptySchema, signInBodySchema, signUpBodySchema, tokensSchema } from "../../validation";
+import { baseHeaders, emptySchema, signInBodySchema, signUpBodySchema, tokensSchema } from "../../validation";
 import { StatusCodes } from "../constants";
 import { ContractInstance } from "./types";
 
@@ -10,6 +10,7 @@ export const authContract = (c: ContractInstance) =>
     {
       logout: {
         body: emptySchema,
+        headers: baseHeaders,
         method: "POST",
         path: "/logout",
         responses: {
@@ -39,7 +40,6 @@ export const authContract = (c: ContractInstance) =>
           [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
           [StatusCodes.SUCCESS]: z.object({}),
         },
-        summary: "test",
       },
       signUp: {
         body: signUpBodySchema,
@@ -51,7 +51,6 @@ export const authContract = (c: ContractInstance) =>
           [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
           [StatusCodes.SUCCESS]: z.object({}),
         },
-        summary: "test",
       },
     },
     { pathPrefix: "/auth" },

@@ -1,1 +1,1 @@
-export { GetUserData } from "./get-user-data.decorator";
+export { GetUser } from "./get-user.decorator";

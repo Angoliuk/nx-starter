@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common/decorators";
 import { PassportStrategy } from "@nestjs/passport";
+import { ForbiddenError } from "@nx-starter/shared";
 import { Request } from "express";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
@@ -17,6 +18,9 @@ export class RefreshTokenStrategy extends PassportStrategy(Strategy, "jwt-refres
 
   validate(req: Request, payload: object) {
     const refreshToken = req.get("authorization")?.replace("Bearer", "").trim();
+
+    if (!refreshToken) throw new ForbiddenError();
+
     return {
       ...payload,
       refreshToken,

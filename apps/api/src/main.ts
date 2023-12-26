@@ -11,22 +11,16 @@ const port = process.env.PORT || 8080;
 const globalPrefix = "api";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: { origin: "*" } });
 
   app.useGlobalFilters(new ErrorFilter());
 
-  const document = generateOpenApi(
-    contract,
-    {
-      info: {
-        title: "API",
-        version: "1.0.0",
-      },
+  const document = generateOpenApi(contract, {
+    info: {
+      title: "API",
+      version: "1.0.0",
     },
-    {
-      setOperationId: true,
-    },
-  );
+  });
 
   SwaggerModule.setup("api-docs", app, document);
 
