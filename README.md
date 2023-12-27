@@ -41,4 +41,11 @@ First start:
 TODO:
  - Envalid for db package
  - Backend logger
- - aliases
+
+ Blocked features:
+ - Aliases inside apps
+  Reasons:
+    - After extending tsconfigs paths do not combine, so if I will add aliases, then root aliases will be removed
+ - Better libs aliases
+  Reasons:
+    - comment here ./tsconfig.base.json, line 40
