@@ -29,15 +29,8 @@ First start:
  4. Run `pnpm nx serve api` to start api
  5. Run `pnpm nx serve web` to start web
 
- Initial content:
-  - Added base Nest module for auth/user
-  - Configured user Prisma schema
-  - Added example page
-
-
 TODO:
  - Envalid for db package
- - Backend logger
 
  Blocked features:
  1. Aliases inside apps<br>
