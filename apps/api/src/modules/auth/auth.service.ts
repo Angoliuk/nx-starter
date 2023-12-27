@@ -18,7 +18,7 @@ export class AuthService {
   constructor(private usersService: UsersService, private jwtService: JwtService, private envService: EnvService) {}
 
   async logout({ userId }: UserId) {
-    // await this.usersService.update({ data: { hashedRt: "" }, where: { id: userId } });
+    await this.usersService.update({ data: { hashedRt: "" }, where: { id: userId } });
 
     return {};
   }
