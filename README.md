@@ -39,5 +39,6 @@ First start:
 
 
 TODO:
- - envalid for db package
+ - Envalid for db package
+ - Backend logger
  - ??

@@ -35,7 +35,7 @@ export class ErrorFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const res = host.switchToHttp().getResponse<Response>();
     const status = getErrorCode(exception, StatusCodes.SERVER_ERROR);
-    console.log(exception);
+
     const responseJson = {
       body: {
         message: getErrorMessage(exception, status),
