@@ -36,3 +36,9 @@ First start:
   - Added base Nest module for auth/user
   - Configured user Prisma schema
   - Added example page
+
+
+TODO:
+ - envalid for db package
+ - use hook form fix
+ - ??
