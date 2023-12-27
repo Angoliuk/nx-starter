@@ -1,6 +1,7 @@
 import { Controller, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { contract, formatResponse } from "@nx-starter/shared";
+import { contract } from "@nx-starter/shared/api";
+import { formatResponse } from "@nx-starter/shared/utils";
 import { TsRestHandler, tsRestHandler } from "@ts-rest/nest";
 
 import { GetUser } from "../../decorators";

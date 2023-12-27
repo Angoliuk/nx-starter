@@ -1,5 +1,5 @@
 import { ArgumentsHost, Catch, ExceptionFilter } from "@nestjs/common";
-import { StatusCodes, contract } from "@nx-starter/shared";
+import { StatusCodes, contract } from "@nx-starter/shared/api";
 import { ServerInferResponses } from "@ts-rest/core";
 import { Response } from "express";
 import { OutgoingHttpHeaders } from "node:http";
