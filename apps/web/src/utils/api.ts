@@ -1,4 +1,4 @@
-import { contract } from "@nx-starter/shared";
+import { contract } from "@nx-starter/shared/api";
 import { initClient } from "@ts-rest/core";
 
 import { API_BASE_URL } from "../env";

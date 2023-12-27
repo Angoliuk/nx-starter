@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common/decorators";
 import { PassportStrategy } from "@nestjs/passport";
-import { ForbiddenError } from "@nx-starter/shared";
+import { ForbiddenError } from "@nx-starter/shared/utils";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
 import { TokenUser, tokenUser } from "../../../validation";

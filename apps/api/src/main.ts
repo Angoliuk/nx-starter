@@ -1,7 +1,7 @@
 import { Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { SwaggerModule } from "@nestjs/swagger";
-import { contract } from "@nx-starter/shared";
+import { contract } from "@nx-starter/shared/api";
 import { generateOpenApi } from "@ts-rest/open-api";
 
 import { ErrorFilter } from "./middlewares";
