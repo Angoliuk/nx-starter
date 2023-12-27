@@ -1,7 +1,13 @@
-import { z } from "zod";
-
 import { ForbiddenError, NotFoundError, ServerError } from "../../utils/errors";
-import { baseHeaders, emptySchema, signInBodySchema, signUpBodySchema, tokensSchema } from "../../validation";
+import {
+  baseHeaders,
+  emptySchema,
+  signInBodySchema,
+  signInResponseSchema,
+  signUpBodySchema,
+  signUpResponseSchema,
+  tokensSchema,
+} from "../../validation";
 import { StatusCodes } from "../constants";
 import { ContractInstance } from "./types";
 
@@ -16,7 +22,7 @@ export const authContract = (c: ContractInstance) =>
         responses: {
           [StatusCodes.FORBIDDEN]: ForbiddenError.zodSchema,
           [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
-          [StatusCodes.SUCCESS]: z.object({}),
+          [StatusCodes.SUCCESS]: emptySchema,
         },
       },
       refreshTokens: {
@@ -27,7 +33,7 @@ export const authContract = (c: ContractInstance) =>
           [StatusCodes.FORBIDDEN]: ForbiddenError.zodSchema,
           [StatusCodes.NOT_FOUND]: NotFoundError.zodSchema,
           [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
-          [StatusCodes.SUCCESS]: z.object({}),
+          [StatusCodes.SUCCESS]: tokensSchema,
         },
       },
       signIn: {
@@ -38,7 +44,7 @@ export const authContract = (c: ContractInstance) =>
           [StatusCodes.FORBIDDEN]: ForbiddenError.zodSchema,
           [StatusCodes.NOT_FOUND]: NotFoundError.zodSchema,
           [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
-          [StatusCodes.SUCCESS]: z.object({}),
+          [StatusCodes.SUCCESS]: signInResponseSchema,
         },
       },
       signUp: {
@@ -49,7 +55,7 @@ export const authContract = (c: ContractInstance) =>
           [StatusCodes.FORBIDDEN]: ForbiddenError.zodSchema,
           [StatusCodes.NOT_FOUND]: NotFoundError.zodSchema,
           [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
-          [StatusCodes.SUCCESS]: z.object({}),
+          [StatusCodes.SUCCESS]: signUpResponseSchema,
         },
       },
     },
