@@ -16,6 +16,7 @@ Key features:
  - Next with *Server Components*
  - No JS only TS
 
+
 Prerequisites:
  - NodeJS 18+
  - Pnpm 8+
@@ -29,8 +30,6 @@ First start:
  4. Run `pnpm nx serve api` to start api
  5. Run `pnpm nx serve web` to start web
 
-TODO:
- - Envalid for db package
 
  Blocked features:
  1. Aliases inside apps<br>
