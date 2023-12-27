@@ -16,10 +16,6 @@ Key features:
  - Next with *Server Components*
  - No JS only TS
 
-Package manager:
- - pnpm
-
-
 Prerequisites:
  - NodeJS 18+
  - Pnpm 8+
