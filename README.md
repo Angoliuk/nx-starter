@@ -41,4 +41,4 @@ First start:
 TODO:
  - Envalid for db package
  - Backend logger
- - ??
+ - aliases
