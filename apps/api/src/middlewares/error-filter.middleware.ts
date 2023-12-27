@@ -1,4 +1,4 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from "@nestjs/common";
+import { ArgumentsHost, Catch, ExceptionFilter, Logger } from "@nestjs/common";
 import { StatusCodes, contract } from "@nx-starter/shared/api";
 import { ServerInferResponses } from "@ts-rest/core";
 import { Response } from "express";
@@ -32,6 +32,8 @@ const getErrorMessage = (error: unknown, status: number) => {
 
 @Catch()
 export class ErrorFilter implements ExceptionFilter {
+  private logger = new Logger("HTTP");
+
   catch(exception: unknown, host: ArgumentsHost) {
     const res = host.switchToHttp().getResponse<Response>();
     const status = getErrorCode(exception, StatusCodes.SERVER_ERROR);
@@ -41,6 +43,7 @@ export class ErrorFilter implements ExceptionFilter {
       name: "Unknown error",
     } as ServerInferResponses<typeof contract.auth.signIn, 500>["body"] & { headers: OutgoingHttpHeaders };
 
+    this.logger.error(exception);
     res.status(status).json(responseJson);
   }
 }
