@@ -1,7 +1,10 @@
+import { Logger } from "@nestjs/common";
 import { z } from "zod";
 
 import { StatusCodes } from "../api/constants";
 import { ObjectValues } from "../types";
+
+const logger = new Logger();
 
 export class BaseError extends Error {
   static zodSchema = z.object({
@@ -13,6 +16,7 @@ export class BaseError extends Error {
 
   constructor(message?: string) {
     super(message ?? "Unknown error, status 500");
+    logger.log(this.stack);
   }
 
   toJSON() {
