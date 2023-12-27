@@ -1,8 +1,5 @@
 # NxStarter - NNN (Next, Nest, NX)
 
-Package manager:
- - pnpm
-
 
 Stack:
  - Next
@@ -18,6 +15,10 @@ Key features:
  - Pre-configured *tailwind*
  - Next with *Server Components*
  - No JS only TS
+
+Package manager:
+ - pnpm
+
 
 Prerequisites:
  - NodeJS 18+
