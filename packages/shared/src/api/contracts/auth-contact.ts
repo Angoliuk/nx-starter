@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import { ForbiddenError, NotFoundError, ServerError } from "../../utils/errors";
 import {
   baseHeaders,
@@ -24,7 +22,7 @@ export const authContract = (c: ContractInstance) =>
         responses: {
           [StatusCodes.FORBIDDEN]: ForbiddenError.zodSchema,
           [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
-          [StatusCodes.SUCCESS]: z.object({}),
+          [StatusCodes.SUCCESS]: emptySchema,
         },
       },
       refreshTokens: {
