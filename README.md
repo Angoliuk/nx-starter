@@ -37,3 +37,9 @@ First start:
   - Added base Nest module for auth/user
   - Configured user Prisma schema
   - Added example page
+
+
+TODO:
+ - Envalid for db package
+ - Backend logger
+ - ??

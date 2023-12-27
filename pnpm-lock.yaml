@@ -34,13 +34,13 @@ dependencies:
     version: 5.7.0(prisma@5.7.0)
   '@ts-rest/core':
     specifier: ^3.30.5
-    version: 3.30.5(zod@3.21.4)
+    version: 3.30.5(zod@3.22.4)
   '@ts-rest/nest':
     specifier: ^3.30.5
-    version: 3.30.5(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@ts-rest/core@3.30.5)(rxjs@7.8.1)(zod@3.21.4)
+    version: 3.30.5(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@ts-rest/core@3.30.5)(rxjs@7.8.1)(zod@3.22.4)
   '@ts-rest/open-api':
     specifier: ^3.30.5
-    version: 3.30.5(@ts-rest/core@3.30.5)(zod@3.21.4)
+    version: 3.30.5(@ts-rest/core@3.30.5)(zod@3.22.4)
   argon2:
     specifier: ^0.31.1
     version: 0.31.2
@@ -87,8 +87,8 @@ dependencies:
     specifier: ^2.3.0
     version: 2.6.2
   zod:
-    specifier: ^3.21.4
-    version: 3.21.4
+    specifier: ^3.22.3
+    version: 3.22.4
 
 devDependencies:
   '@nestjs/schematics':
@@ -238,7 +238,7 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.20
 
-  /@anatine/zod-openapi@1.14.2(openapi3-ts@2.0.2)(zod@3.21.4):
+  /@anatine/zod-openapi@1.14.2(openapi3-ts@2.0.2)(zod@3.22.4):
     resolution: {integrity: sha512-q0qHfnuNYVKu0Swrnnvfj9971AEyW7c8v9jCOZGCl5ZbyGMNG4RPyJkRcMi/JC8CRfdOe0IDfNm1nNsi2avprg==}
     peerDependencies:
       openapi3-ts: ^2.0.0 || ^3.0.0
@@ -246,7 +246,7 @@ packages:
     dependencies:
       openapi3-ts: 2.0.2
       ts-deepmerge: 6.2.0
-      zod: 3.21.4
+      zod: 3.22.4
     dev: false
 
   /@angular-devkit/core@16.0.1:
@@ -3528,7 +3528,7 @@ packages:
     engines: {node: '>=10.13.0'}
     dev: true
 
-  /@ts-rest/core@3.30.5(zod@3.21.4):
+  /@ts-rest/core@3.30.5(zod@3.22.4):
     resolution: {integrity: sha512-j2sgvk3x8wZiCyhB3ij0I287FgkngCGRHXFBxQ9HtZ9mxQuIIDfibi1yD/ydNvNif0pA6BDdASGQY1WjfqUC3g==}
     peerDependencies:
       zod: ^3.22.3
@@ -3536,10 +3536,10 @@ packages:
       zod:
         optional: true
     dependencies:
-      zod: 3.21.4
+      zod: 3.22.4
     dev: false
 
-  /@ts-rest/nest@3.30.5(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@ts-rest/core@3.30.5)(rxjs@7.8.1)(zod@3.21.4):
+  /@ts-rest/nest@3.30.5(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@ts-rest/core@3.30.5)(rxjs@7.8.1)(zod@3.22.4):
     resolution: {integrity: sha512-lyxLC9rLcBLQDQIa9Gd7386Po/Gbk2dCYwkAvGBE3uAnHrgQRujNXUyNLvsy0SGsiKJuh9io2vlruSRRS7LEJg==}
     peerDependencies:
       '@nestjs/common': ^9.0.0 || ^10.0.0
@@ -3553,21 +3553,21 @@ packages:
     dependencies:
       '@nestjs/common': 10.2.10(reflect-metadata@0.1.13)(rxjs@7.8.1)
       '@nestjs/core': 10.2.10(@nestjs/common@10.2.10)(@nestjs/platform-express@10.2.10)(reflect-metadata@0.1.13)(rxjs@7.8.1)
-      '@ts-rest/core': 3.30.5(zod@3.21.4)
+      '@ts-rest/core': 3.30.5(zod@3.22.4)
       rxjs: 7.8.1
-      zod: 3.21.4
+      zod: 3.22.4
     dev: false
 
-  /@ts-rest/open-api@3.30.5(@ts-rest/core@3.30.5)(zod@3.21.4):
+  /@ts-rest/open-api@3.30.5(@ts-rest/core@3.30.5)(zod@3.22.4):
     resolution: {integrity: sha512-FOq6afvj6VCLMSQEO8J0B2YuZ2BfvQrscMy9i5rinI4sJO2/q17fdUqOoT9AI6n4coHCOFpcRUOz2xks7Nn5fA==}
     peerDependencies:
       '@ts-rest/core': 3.30.5
       zod: ^3.22.3
     dependencies:
-      '@anatine/zod-openapi': 1.14.2(openapi3-ts@2.0.2)(zod@3.21.4)
-      '@ts-rest/core': 3.30.5(zod@3.21.4)
+      '@anatine/zod-openapi': 1.14.2(openapi3-ts@2.0.2)(zod@3.22.4)
+      '@ts-rest/core': 3.30.5(zod@3.22.4)
       openapi3-ts: 2.0.2
-      zod: 3.21.4
+      zod: 3.22.4
     dev: false
 
   /@tsconfig/node10@1.0.9:
@@ -11811,3 +11811,7 @@ packages:
 
   /zod@3.21.4:
     resolution: {integrity: sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==}
+
+  /zod@3.22.4:
+    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false

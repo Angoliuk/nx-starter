@@ -1,3 +1,5 @@
+import React from "react";
+
 declare module "*.svg" {
   const content: unknown;
   export const ReactComponent: unknown;

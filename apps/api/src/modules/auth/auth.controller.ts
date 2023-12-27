@@ -1,9 +1,10 @@
 import { Controller, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { contract } from "@nx-starter/shared";
+import { contract, formatResponse } from "@nx-starter/shared";
 import { TsRestHandler, tsRestHandler } from "@ts-rest/nest";
 
-import { GetUserData } from "../../decorators";
+import { GetUser } from "../../decorators";
+import { TokenUser } from "../../validation";
 import { AuthService } from "./auth.service";
 
 @Controller()
@@ -13,14 +14,12 @@ export class AuthController {
   @UseGuards(AuthGuard("jwt"))
   @TsRestHandler(contract.auth.logout)
   async logout(
-    @GetUserData()
-    userData: {
-      id: string;
-    },
+    @GetUser()
+    user: TokenUser,
   ) {
     return tsRestHandler(contract.auth.logout, async () => {
-      const logoutResponse = await this.authService.logout({ userId: userData.id });
-      return logoutResponse;
+      const logoutResponse = await this.authService.logout({ userId: user.userId });
+      return formatResponse(logoutResponse);
     });
   }
 
@@ -28,7 +27,7 @@ export class AuthController {
   async refreshTokens() {
     return tsRestHandler(contract.auth.refreshTokens, async ({ body }) => {
       const refreshTokensResponse = await this.authService.refreshTokens(body);
-      return refreshTokensResponse;
+      return formatResponse(refreshTokensResponse);
     });
   }
 
@@ -36,7 +35,7 @@ export class AuthController {
   async signIn() {
     return tsRestHandler(contract.auth.signIn, async ({ body }) => {
       const signedInUser = await this.authService.signIn(body);
-      return signedInUser;
+      return formatResponse(signedInUser);
     });
   }
 
@@ -44,7 +43,7 @@ export class AuthController {
   async signUp() {
     return tsRestHandler(contract.auth.signUp, async ({ body }) => {
       const signedUpUser = await this.authService.signUp(body);
-      return signedUpUser;
+      return formatResponse(signedUpUser);
     });
   }
 }

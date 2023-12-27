@@ -1,6 +1,8 @@
 import { contract } from "@nx-starter/shared";
 import { initClient } from "@ts-rest/core";
 
+import { API_BASE_URL } from "../env";
+
 export const api = initClient(contract, {
   api: async ({ body, cache, credentials, headers, method, next, path, route, signal }) => {
     const result = await fetch(path, {
@@ -50,5 +52,5 @@ export const api = initClient(contract, {
     };
   },
   baseHeaders: {},
-  baseUrl: "http://localhost:8080",
+  baseUrl: API_BASE_URL,
 });
