@@ -4,6 +4,9 @@
   "sourceRoot": "apps/web",
   "projectType": "application",
   "targets": {
+    "pm2": {
+      "command": "pm2 startOrReload ./apps/web/ecosystem.config.js --env production"
+    },
     "build": {
       "executor": "@nx/next:build",
       "outputs": [

@@ -18,29 +18,38 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-      - name: Get Secrets by Name and by ARN
+      # - name: Configure AWS Credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+      #     aws-region: ${{ secrets.AWS_REGION }}
+
+      # - name: Get Secrets by Name and by ARN
+      #   run: |
+      #     aws secretsmanager get-secret-value --secret-id api | \
+      #     jq -r '.SecretString' | \
+      #     jq -r "to_entries|map(\"\(.key)=\\\"\(.value|tostring)\\\"\")|.[]" > ./apps/api/.env
+
+      # - uses: ./.github/actions/base-setup
+
+      # - uses: ./.github/actions/install-dependencies
+      #   with:
+      #     pnpmKeysPrefix: ${{inputs.pnpmKeysPrefix}}
+      #     pnpmPath: ${{inputs.pnpmPath}}
+
+      - name: SSH EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.WEB_SSH_PRIVATE_KEY }}
+          HOSTNAME: ${{secrets.WEB_SSH_HOST}}
+          USER_NAME: ${{secrets.WEB_USER_NAME}}
+          PROJECT_ROOT_ROUTE: ${{secrets.WEB_PROJECT_ROOT_ROUTE}}
+
         run: |
-          aws secretsmanager get-secret-value --secret-id web | \
-          jq -r '.SecretString' | \
-          jq -r "to_entries|map(\"\(.key)=\\\"\(.value|tostring)\\\"\")|.[]" > ./apps/web/.env
-
-      - uses: ./.github/actions/base-setup
-
-      - uses: ./.github/actions/install-dependencies
-        with:
-          pnpmKeysPrefix: ${{inputs.pnpmKeysPrefix}}
-          pnpmPath: ${{inputs.pnpmPath}}
-
-      - run: nx build web
-
-      - name: Deploy app build to S3 bucket
-        run: aws s3 sync ./dist/apps/web/.next s3://${{secrets.AWS_WEB_S3_BUCKET}} --delete
-
-      - name: Clear CloudFront cache
-        run: aws cloudfront create-invalidation --distribution-id  --paths "/*"
+          echo "$PRIVATE_KEY" > private_key && chmod 400 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+              cd ${PROJECT_ROOT_ROUTE} &&
+              git pull &&
+              pnpm i &&
+              pnpm nx pm2 web
+              '
