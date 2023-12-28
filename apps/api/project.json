@@ -5,7 +5,7 @@
   "projectType": "application",
   "targets": {
     "pm2": {
-      "command": "pnpm nx build api && pm2 start ../../dist/apps/api/main.js"
+      "command": "pm2 startOrReload ./apps/api/ecosystem.config.js --env production"
     },
     "build": {
       "executor": "@nx/webpack:webpack",
