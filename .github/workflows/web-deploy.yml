@@ -11,18 +11,21 @@ on:
         type: string
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: SSH keys creation
+        run: echo "${{ secrets.WEB_SSH_PRIVATE_KEY }}" | tr -d '\r' > private-keys.pem
+      - name: SSH keys access config
+        run: chmod 400 private-keys.pem
       - name: SSH EC2
         run: |
-          echo ${{ secrets.API_SSH_PRIVATE_KEY }} > "private-keys.pem" && chmod 400 "private-keys.pem" &&
-          ssh -i "private-keys.pem" ${{secrets.API_USER_NAME}}@${{secrets.API_SSH_HOST}} '
-            cd ${{secrets.API_PROJECT_ROOT_ROUTE}} &&
+          ssh -i private-keys.pem -o "StrictHostKeyChecking no" ${{secrets.WEB_USER_NAME}}@${{secrets.WEB_SSH_HOST}} <<'ENDSSH'
+            cd ${{secrets.WEB_PROJECT_ROOT_ROUTE}} &&
             git pull &&
             pnpm i &&
             pnpm nx pm2 web
-            '
+          ENDSSH
