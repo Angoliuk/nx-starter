@@ -40,6 +40,7 @@ jobs:
     needs: defineAffectedApps
     if: contains(needs.defineAffectedApps.outputs.affectedApps, 'web')
     uses: ./.github/workflows/web-deploy.yml
+    secrets: inherit
     with:
       pnpmKeysPrefix: ${{inputs.pnpmKeysPrefix}}
       pnpmPath: ${{inputs.pnpmPath}}
@@ -48,6 +49,7 @@ jobs:
     needs: defineAffectedApps
     if: contains(needs.defineAffectedApps.outputs.affectedApps, 'api')
     uses: ./.github/workflows/api-deploy.yml
+    secrets: inherit
     with:
       pnpmKeysPrefix: ${{inputs.pnpmKeysPrefix}}
       pnpmPath: ${{inputs.pnpmPath}}

@@ -27,6 +27,7 @@ jobs:
 
   deploy:
     needs: [variables, ciChecker]
+    secrets: inherit
     uses: ./.github/workflows/deploy.yml
     with:
       flags: ${{needs.variables.outputs.flags}}
