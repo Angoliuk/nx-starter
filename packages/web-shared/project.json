@@ -1,0 +1,35 @@
+{
+  "name": "web-shared",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/web-shared/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/packages/web-shared",
+        "main": "packages/web-shared/src/index.ts",
+        "tsConfig": "packages/web-shared/tsconfig.lib.json",
+        "assets": [
+          "packages/web-shared/*.md"
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/web-shared/**/*.ts",
+          "packages/web-shared/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

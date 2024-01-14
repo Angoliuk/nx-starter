@@ -42,6 +42,7 @@
       // but it do not work as I want
       // Needs to be fixed in future
       "@nx-starter/shared/*": ["packages/shared/src/*/index.ts"],
+      "@nx-starter/web-shared/*": ["packages/web-shared/src/*/index.ts"],
       "@nx-starter/tailwind": ["packages/tailwind/src/index.ts"]
     }
   },
