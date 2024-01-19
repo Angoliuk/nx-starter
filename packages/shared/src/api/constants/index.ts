@@ -1,7 +1,9 @@
-export const StatusCodes = {
-  FORBIDDEN: 403,
-  NOT_FOUND: 404,
-  SERVER_ERROR: 500,
-  SUCCESS: 200,
-  TIMEOUT_ERROR: 408,
+export const STATUS_CODES = {
+  FORBIDDEN: 403 as const,
+  NOT_FOUND: 404 as const,
+  SERVER_ERROR: 500 as const,
+  SUCCESS: 200 as const,
+  TIMEOUT_ERROR: 408 as const,
 } as const;
+
+export type StatusCodes = (typeof STATUS_CODES)[keyof typeof STATUS_CODES];

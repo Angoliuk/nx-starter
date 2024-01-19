@@ -1,4 +1,4 @@
-import { StatusCodes } from "../api";
+import { STATUS_CODES } from "../api";
 
 const getErrorStatusCode = (error: object, defaultErrorCode: number) => {
   if ("getStatus" in error && error.getStatus instanceof Function) {
@@ -27,13 +27,13 @@ const getErrorStack = (error: unknown) => {
 export const getErrorInfo = (error: unknown) => {
   if (typeof error !== "object" || Array.isArray(error) || error === null)
     return {
-      message: `Server error with status ${StatusCodes.SERVER_ERROR}`,
+      message: `Server error with status ${STATUS_CODES.SERVER_ERROR}`,
       name: "Unknown error",
       stack: "",
-      statusCode: StatusCodes.SERVER_ERROR,
+      statusCode: STATUS_CODES.SERVER_ERROR,
     };
 
-  const statusCode = getErrorStatusCode(error, StatusCodes.SERVER_ERROR);
+  const statusCode = getErrorStatusCode(error, STATUS_CODES.SERVER_ERROR);
   return {
     message: getErrorMessage(error, statusCode),
     name: getErrorName(error),
