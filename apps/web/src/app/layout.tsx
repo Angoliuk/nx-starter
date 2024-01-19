@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 import "../styles/global.css";
+import "@nx-starter/tailwind/styles";
 
 export const metadata = {};
 
