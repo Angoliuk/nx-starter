@@ -1,0 +1,26 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2022",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@nx-starter/db": ["packages/db/src/index.ts"],
+      "@nx-starter/shared/*": ["packages/shared/src/*"],
+      "@nx-starter/tailwind": ["packages/tailwind/src/index.ts"],
+      "@nx-starter/tailwind/styles": ["packages/tailwind/src/global.css"],
+      "@nx-starter/web-shared/*": ["packages/web-shared/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

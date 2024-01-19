@@ -1,19 +1,5 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2022",
-    "module": "esnext",
-    "lib": ["es2020", "dom"],
-    "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
     "composite": false,
     "allowJs": true,
     "resolveJsonModule": true,
@@ -34,17 +20,7 @@
     "strictNullChecks": true,
     "noImplicitAny": true,
     "strictBindCallApply": true,
-    "noFallthroughCasesInSwitch": true,
-    "paths": {
-      "@nx-starter/db": ["packages/db/src/index.ts"],
-      // TODO: The idea was to make imports from first level directories in src(/api, /utils, etc.).
-      // I do not want to hardcode this, instead I tried something like a regexp for a paths,
-      // but it do not work as I want
-      // Needs to be fixed in future
-      "@nx-starter/shared/*": ["packages/shared/src/*/index.ts"],
-      "@nx-starter/web-shared/*": ["packages/web-shared/src/*/index.ts"],
-      "@nx-starter/tailwind": ["packages/tailwind/src/index.ts"]
-    }
+    "noFallthroughCasesInSwitch": true
   },
-  "exclude": ["node_modules", "tmp"]
+  "extends": "./tsconfig.base.json"
 }
