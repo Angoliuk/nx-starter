@@ -14,7 +14,7 @@ export class AuthService {
   async logout({ userId }: UserId) {
     await this.usersService.update({ data: { hashedRt: "" }, where: { id: userId } });
 
-    return {};
+    return null;
   }
 
   async refreshTokens({ accessToken: expiredAccessToken, refreshToken: expiredRefreshToken }: TokensSchema) {
