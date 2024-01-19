@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+// TODO: finish carousel component
+
 import { tw } from "@nx-starter/tailwind";
-import useEmblaCarousel from // type EmblaPluginType as CarouselPlugin, // type EmblaOptionsType as CarouselOptions, // type EmblaCarouselType as CarouselApi,
-"embla-carousel-react";
+import useEmblaCarousel from "embla-carousel-react"; // type EmblaPluginType as CarouselPlugin, // type EmblaOptionsType as CarouselOptions, // type EmblaCarouselType as CarouselApi,
 import { HTMLAttributes, KeyboardEvent, forwardRef, useCallback, useEffect, useState } from "react";
 
 import { CarouselContext } from "./use-carousel";
