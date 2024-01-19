@@ -19,7 +19,7 @@ Key features:
 
 Prerequisites:
  - NodeJS 18+
- - Pnpm 8+
+ - Pnpm 7+
  - Docker with docker compose
 
 
