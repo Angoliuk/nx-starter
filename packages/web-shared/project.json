@@ -4,20 +4,6 @@
   "sourceRoot": "packages/web-shared/src",
   "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
-      "options": {
-        "outputPath": "dist/packages/web-shared",
-        "main": "packages/web-shared/src/index.ts",
-        "tsConfig": "packages/web-shared/tsconfig.lib.json",
-        "assets": [
-          "packages/web-shared/*.md"
-        ]
-      }
-    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": [

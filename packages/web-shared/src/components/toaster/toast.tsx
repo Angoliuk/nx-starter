@@ -1,3 +1,5 @@
+"use client";
+
 import { tw } from "@nx-starter/tailwind";
 import { Root } from "@radix-ui/react-toast";
 import { type VariantProps, cva } from "class-variance-authority";

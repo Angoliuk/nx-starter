@@ -1,6 +1,6 @@
 "use client";
 import { tw } from "@nx-starter/tailwind";
-import { CheckboxItem } from "@radix-ui/react-dropdown-menu";
+import { CheckboxItem, ItemIndicator } from "@radix-ui/react-dropdown-menu";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 

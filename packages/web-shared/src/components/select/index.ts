@@ -8,3 +8,4 @@ export * from "./select-separator";
 export * from "./select-trigger";
 export * from "./select-value";
 export * from "./select";
+export * from "./form-select";

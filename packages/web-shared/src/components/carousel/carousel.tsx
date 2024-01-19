@@ -1,20 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { tw } from "@nx-starter/tailwind";
-import useEmblaCarousel, {
-  type EmblaCarouselType as CarouselApi,
-  type EmblaOptionsType as CarouselOptions,
-  type EmblaPluginType as CarouselPlugin,
-} from "embla-carousel-react";
+import useEmblaCarousel from // type EmblaPluginType as CarouselPlugin, // type EmblaOptionsType as CarouselOptions, // type EmblaCarouselType as CarouselApi,
+"embla-carousel-react";
 import { HTMLAttributes, KeyboardEvent, forwardRef, useCallback, useEffect, useState } from "react";
 
 import { CarouselContext } from "./use-carousel";
 
 export type CarouselProps = {
-  opts?: CarouselOptions;
+  opts?: any;
+  // opts?: CarouselOptions;
+  // plugins?: CarouselPlugin[];
+  // setApi?: (api: CarouselApi) => void;
+
   orientation?: "horizontal" | "vertical";
-  plugins?: CarouselPlugin[];
-  setApi?: (api: CarouselApi) => void;
+  plugins?: any[];
+  setApi?: (api: any) => void;
 };
 
 export const Carousel = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement> & CarouselProps>(
@@ -29,7 +31,7 @@ export const Carousel = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement
     const [canScrollPrev, setCanScrollPrev] = useState(false);
     const [canScrollNext, setCanScrollNext] = useState(false);
 
-    const onSelect = useCallback((api: CarouselApi) => {
+    const onSelect = useCallback((api: any) => {
       if (!api) {
         return;
       }

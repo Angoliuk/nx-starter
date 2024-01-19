@@ -1,27 +1,17 @@
 {
-  "extends": "../../tsconfig.json",
-  "include": [],
   "compilerOptions": {
     "jsx": "preserve",
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "incremental": true,
+    "allowJs": false,
     "esModuleInterop": false,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "types": ["node"],
+    "allowSyntheticDefaultImports": true,
+    "strict": true
   },
+  "files": [],
+  "include": [],
   "references": [
     {
       "path": "./tsconfig.lib.json"
     }
-  ]
+  ],
+  "extends": "../../tsconfig.json"
 }

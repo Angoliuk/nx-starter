@@ -1,5 +1,3 @@
-"use client";
-
 import { tw } from "@nx-starter/tailwind";
 import Image from "next/image";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
