@@ -14,35 +14,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "composite": false,
-    "allowJs": true,
-    "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
-    "noEmit": false,
-    "noEmitOnError": false,
-    "useUnknownInCatchVariables": false,
-    "declarationMap": false,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "inlineSources": false,
-    "isolatedModules": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "preserveWatchOutput": true,
-    "strict": true,
-    "incremental": true,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "strictBindCallApply": true,
-    "noFallthroughCasesInSwitch": true,
     "paths": {
       "@nx-starter/db": ["packages/db/src/index.ts"],
-      // TODO: The idea was to make imports from first level directories in src(/api, /utils, etc.).
-      // I do not want to hardcode this, instead I tried something like a regexp for a paths,
-      // but it do not work as I want
-      // Needs to be fixed in future
-      "@nx-starter/shared/*": ["packages/shared/src/*/index.ts"],
-      "@nx-starter/tailwind": ["packages/tailwind/src/index.ts"]
+      "@nx-starter/shared/*": ["packages/shared/src/*"],
+      "@nx-starter/tailwind": ["packages/tailwind/src/index.ts"],
+      "@nx-starter/tailwind/styles": ["packages/tailwind/src/global.css"],
+      "@nx-starter/web-shared/*": ["packages/web-shared/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

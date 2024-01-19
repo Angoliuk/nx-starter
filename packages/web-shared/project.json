@@ -1,0 +1,21 @@
+{
+  "name": "web-shared",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/web-shared/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/web-shared/**/*.ts",
+          "packages/web-shared/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

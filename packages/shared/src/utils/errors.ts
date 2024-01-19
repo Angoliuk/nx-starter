@@ -1,57 +1,61 @@
 import { z } from "zod";
 
-import { StatusCodes } from "../api/constants";
-import { ObjectValues } from "../types";
+import { STATUS_CODES, StatusCodes } from "../api/constants";
 
-export class BaseError extends Error {
+export abstract class BaseError extends Error {
+  static statusCode: StatusCodes;
+
   static zodSchema = z.object({
     message: z.string(),
-    name: z.string(),
   });
 
-  httpStatus: ObjectValues<typeof StatusCodes> = StatusCodes.SERVER_ERROR;
+  static extend<TName extends string, TStatus extends StatusCodes>(
+    name: TName,
+    statusCode: TStatus,
+  ): ErrorConstructor<TName, TStatus> {
+    return class ErrorImpl extends this {
+      static override statusCode = statusCode;
+      static override zodSchema = super.zodSchema.extend({
+        name: z.literal(name),
+      });
 
-  constructor(message?: string) {
-    super(message ?? "Unknown error, status 500");
-    console.error(this.message, this.stack);
-  }
+      override name = name;
+      override statusCode = statusCode;
 
-  toJSON() {
-    return {
-      message: this.message,
-      name: this.name,
+      static override extend<T extends string>(name: T) {
+        return super.extend(name, statusCode);
+      }
     };
   }
+  abstract override name: string;
+
+  abstract statusCode: StatusCodes;
 }
 
-export class ForbiddenError extends BaseError {
-  override httpStatus = StatusCodes.FORBIDDEN;
+type Merge<T, K> = Omit<T, keyof K> & K;
 
-  constructor(message?: string) {
-    super(message ?? `Forbidden error, status ${StatusCodes.FORBIDDEN}`);
+type ErrorConstructor<TName extends string, TStatus extends StatusCodes> = Merge<
+  typeof Error,
+  {
+    extend<T extends string>(name: T): ErrorConstructor<T, TStatus>;
+    new (...args: ConstructorParameters<typeof BaseError>): BaseErrorType<TName, TStatus>;
+    statusCode: TStatus;
+    zodSchema: ReturnType<typeof BaseError.zodSchema.extend<{ name: z.ZodLiteral<TName> }>>;
   }
-}
+>;
 
-export class NotFoundError extends BaseError {
-  override httpStatus = StatusCodes.NOT_FOUND;
-
-  constructor(message?: string) {
-    super(message ?? `Not found error, status ${StatusCodes.NOT_FOUND}`);
+type BaseErrorType<TName extends string, TStatus extends StatusCodes> = Merge<
+  Error,
+  {
+    name: TName;
+    statusCode: TStatus;
   }
-}
+>;
 
-export class ServerError extends BaseError {
-  override httpStatus = StatusCodes.SERVER_ERROR;
+export class ForbiddenError extends BaseError.extend("ForbiddenError", STATUS_CODES.FORBIDDEN) {}
 
-  constructor(message?: string) {
-    super(message ?? `Server error, status ${StatusCodes.SERVER_ERROR}`);
-  }
-}
+export class NotFoundError extends BaseError.extend("NotFoundError", STATUS_CODES.NOT_FOUND) {}
 
-export class TimeoutError extends BaseError {
-  override httpStatus = StatusCodes.TIMEOUT_ERROR;
+export class ServerError extends BaseError.extend("InternalServerError", STATUS_CODES.SERVER_ERROR) {}
 
-  constructor(message?: string) {
-    super(message ?? `Request timeout, status ${StatusCodes.TIMEOUT_ERROR}`);
-  }
-}
+export class TimeoutError extends BaseError.extend("TimeoutError", STATUS_CODES.TIMEOUT_ERROR) {}

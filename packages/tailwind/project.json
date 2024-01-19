@@ -6,19 +6,28 @@
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/packages/tailwind",
         "main": "packages/tailwind/src/index.ts",
         "tsConfig": "packages/tailwind/tsconfig.lib.json",
-        "assets": ["packages/tailwind/*.md"]
+        "assets": [
+          "packages/tailwind/*.md"
+        ]
       }
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["packages/tailwind/**/*.ts", "packages/tailwind/package.json"]
+        "lintFilePatterns": [
+          "packages/tailwind/**/*.ts",
+          "packages/tailwind/package.json"
+        ]
       }
     }
   },

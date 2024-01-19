@@ -2,13 +2,14 @@ import { Controller, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { contract } from "@nx-starter/shared/api";
 import { formatResponse } from "@nx-starter/shared/utils";
-import { TsRestHandler, tsRestHandler } from "@ts-rest/nest";
+import { TsRest, TsRestHandler, tsRestHandler } from "@ts-rest/nest";
 
 import { GetUser } from "../../decorators";
 import { TokenUser } from "../../validation";
 import { AuthService } from "./auth.service";
 
 @Controller()
+@TsRest({ validateResponses: true })
 export class AuthController {
   constructor(private authService: AuthService) {}
 

@@ -1,28 +1,27 @@
 import { ForbiddenError, NotFoundError, ServerError } from "../../utils/errors";
 import {
   baseHeaders,
-  emptySchema,
   signInBodySchema,
   signInResponseSchema,
   signUpBodySchema,
   signUpResponseSchema,
   tokensSchema,
 } from "../../validation";
-import { StatusCodes } from "../constants";
+import { STATUS_CODES } from "../constants";
 import { ContractInstance } from "./types";
 
 export const authContract = (c: ContractInstance) =>
   c.router(
     {
       logout: {
-        body: emptySchema,
+        body: null,
         headers: baseHeaders,
         method: "POST",
         path: "/logout",
         responses: {
-          [StatusCodes.FORBIDDEN]: ForbiddenError.zodSchema,
-          [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
-          [StatusCodes.SUCCESS]: emptySchema,
+          [STATUS_CODES.FORBIDDEN]: ForbiddenError.zodSchema,
+          [STATUS_CODES.SERVER_ERROR]: ServerError.zodSchema,
+          [STATUS_CODES.SUCCESS]: null,
         },
       },
       refreshTokens: {
@@ -30,10 +29,10 @@ export const authContract = (c: ContractInstance) =>
         method: "POST",
         path: "/refresh",
         responses: {
-          [StatusCodes.FORBIDDEN]: ForbiddenError.zodSchema,
-          [StatusCodes.NOT_FOUND]: NotFoundError.zodSchema,
-          [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
-          [StatusCodes.SUCCESS]: tokensSchema,
+          [STATUS_CODES.FORBIDDEN]: ForbiddenError.zodSchema,
+          [STATUS_CODES.NOT_FOUND]: NotFoundError.zodSchema,
+          [STATUS_CODES.SERVER_ERROR]: ServerError.zodSchema,
+          [STATUS_CODES.SUCCESS]: tokensSchema,
         },
       },
       signIn: {
@@ -41,10 +40,10 @@ export const authContract = (c: ContractInstance) =>
         method: "POST",
         path: "/sign-in",
         responses: {
-          [StatusCodes.FORBIDDEN]: ForbiddenError.zodSchema,
-          [StatusCodes.NOT_FOUND]: NotFoundError.zodSchema,
-          [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
-          [StatusCodes.SUCCESS]: signInResponseSchema,
+          [STATUS_CODES.FORBIDDEN]: ForbiddenError.zodSchema,
+          [STATUS_CODES.NOT_FOUND]: NotFoundError.zodSchema,
+          [STATUS_CODES.SERVER_ERROR]: ServerError.zodSchema,
+          [STATUS_CODES.SUCCESS]: signInResponseSchema,
         },
       },
       signUp: {
@@ -52,10 +51,10 @@ export const authContract = (c: ContractInstance) =>
         method: "POST",
         path: "/sign-up",
         responses: {
-          [StatusCodes.FORBIDDEN]: ForbiddenError.zodSchema,
-          [StatusCodes.NOT_FOUND]: NotFoundError.zodSchema,
-          [StatusCodes.SERVER_ERROR]: ServerError.zodSchema,
-          [StatusCodes.SUCCESS]: signUpResponseSchema,
+          [STATUS_CODES.FORBIDDEN]: ForbiddenError.zodSchema,
+          [STATUS_CODES.NOT_FOUND]: NotFoundError.zodSchema,
+          [STATUS_CODES.SERVER_ERROR]: ServerError.zodSchema,
+          [STATUS_CODES.SUCCESS]: signUpResponseSchema,
         },
       },
     },
