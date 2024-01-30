@@ -1,8 +1,9 @@
 import { Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { SwaggerModule } from "@nestjs/swagger";
-import { contract } from "@nx-starter/shared/api";
+import { contract } from "@/shared/api";
 import { generateOpenApi } from "@ts-rest/open-api";
+import cookieParser from "cookie-parser";
 
 import { ErrorFilter } from "./middlewares";
 import { AppModule } from "./modules/app.module";
@@ -14,6 +15,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: { origin: "*" } });
 
   app.useGlobalFilters(new ErrorFilter());
+  app.use(cookieParser());
 
   const document = generateOpenApi(contract, {
     info: {

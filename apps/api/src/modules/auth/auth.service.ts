@@ -1,8 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { ForbiddenError, NotFoundError } from "@nx-starter/shared/utils";
-import { SignInBodySchema, SignUpBodySchema, TokensSchema, UserId } from "@nx-starter/shared/validation";
+import { ForbiddenError, NotFoundError } from "@/shared/utils";
+import { SignInBodySchema, SignUpBodySchema, TokensSchema, UserId } from "@/shared/validation";
 import * as argon2 from "argon2";
+import { Response } from "express";
 
 import { EnvService } from "../env";
 import { UsersService } from "../users";
@@ -10,6 +11,30 @@ import { UsersService } from "../users";
 @Injectable()
 export class AuthService {
   constructor(private usersService: UsersService, private jwtService: JwtService, private envService: EnvService) {}
+
+  async addTokensToCookies({
+    accessToken,
+    refreshToken,
+    res,
+  }: {
+    accessToken: string;
+    refreshToken: string;
+    res: Response;
+  }) {
+    res.cookie("accessToken", accessToken, {
+      expires: new Date(Date.now() + this.envService.get("ACCESS_SECRET_TOKEN_EXPIRES_IN")),
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+    });
+
+    res.cookie("refreshToken", refreshToken, {
+      expires: new Date(Date.now() + this.envService.get("REFRESH_SECRET_TOKEN_EXPIRES_IN")),
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false,
+    });
+  }
 
   async logout({ userId }: UserId) {
     await this.usersService.update({ data: { hashedRt: "" }, where: { id: userId } });

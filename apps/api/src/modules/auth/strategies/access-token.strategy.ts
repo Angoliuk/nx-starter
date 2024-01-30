@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common/decorators";
 import { PassportStrategy } from "@nestjs/passport";
-import { ForbiddenError } from "@nx-starter/shared/utils";
+import { ForbiddenError } from "@/shared/utils";
+import { Request } from "express";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
 import { TokenUser, tokenUser } from "../../../validation";
@@ -11,9 +12,14 @@ import { UsersService } from "../../users";
 export class AccessTokenStrategy extends PassportStrategy(Strategy, "jwt") {
   constructor(envService: EnvService, private usersService: UsersService) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: false,
+      jwtFromRequest: ExtractJwt.fromExtractors([AccessTokenStrategy.extractJWTFromCookie]),
       secretOrKey: envService.get("ACCESS_SECRET_TOKEN"),
     });
+  }
+
+  private static extractJWTFromCookie(req: Request): null | string {
+    return req?.cookies?.accessToken ?? null;
   }
 
   async validate(payload: object): Promise<TokenUser | undefined> {
