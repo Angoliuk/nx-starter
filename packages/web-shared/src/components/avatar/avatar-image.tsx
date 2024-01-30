@@ -1,4 +1,4 @@
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import Image from "next/image";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { Action } from "@radix-ui/react-toast";
 import { ComponentPropsWithoutRef, ElementRef, ReactElement, forwardRef } from "react";
 

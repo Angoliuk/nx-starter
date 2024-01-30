@@ -1,6 +1,6 @@
 "use client";
 
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { Command as CommandPrimitive } from "cmdk";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 

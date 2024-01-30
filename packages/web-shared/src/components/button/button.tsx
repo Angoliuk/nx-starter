@@ -1,4 +1,4 @@
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { Slot } from "@radix-ui/react-slot";
 import { type VariantProps, cva } from "class-variance-authority";
 import { ButtonHTMLAttributes, forwardRef } from "react";

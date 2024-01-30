@@ -1,5 +1,5 @@
 "use client";
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { Icon, Trigger } from "@radix-ui/react-select";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";

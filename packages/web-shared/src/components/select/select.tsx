@@ -1,6 +1,6 @@
 "use client";
 
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { SelectProps as RadixSelectProps, Root } from "@radix-ui/react-select";
 import { FC } from "react";
 

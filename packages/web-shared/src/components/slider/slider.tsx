@@ -1,6 +1,6 @@
 "use client";
 
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { Range, Root, Thumb, Track } from "@radix-ui/react-slider";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 

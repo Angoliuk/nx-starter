@@ -1,5 +1,5 @@
 "use client";
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { HTMLAttributes, forwardRef } from "react";
 
 import { useCarousel } from "./use-carousel";

@@ -1,4 +1,4 @@
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { HTMLAttributes, forwardRef } from "react";
 
 export const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>(

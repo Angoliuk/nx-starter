@@ -1,4 +1,4 @@
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { ComponentProps, FC } from "react";
 

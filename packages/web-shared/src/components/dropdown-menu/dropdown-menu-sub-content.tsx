@@ -1,5 +1,5 @@
 "use client";
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { SubContent } from "@radix-ui/react-dropdown-menu";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 

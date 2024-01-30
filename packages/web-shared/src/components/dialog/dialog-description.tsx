@@ -1,5 +1,5 @@
 "use client";
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { Description } from "@radix-ui/react-dialog";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 

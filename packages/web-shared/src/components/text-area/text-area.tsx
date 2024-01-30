@@ -1,4 +1,4 @@
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { TextareaHTMLAttributes, forwardRef } from "react";
 
 import { FormError } from "../form-error";

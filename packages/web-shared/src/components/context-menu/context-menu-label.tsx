@@ -1,5 +1,5 @@
 "use client";
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { Label } from "@radix-ui/react-context-menu";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 

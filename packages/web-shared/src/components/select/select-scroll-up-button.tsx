@@ -1,5 +1,5 @@
 "use client";
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { ChevronUpIcon } from "@radix-ui/react-icons";
 import { ScrollUpButton } from "@radix-ui/react-select";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";

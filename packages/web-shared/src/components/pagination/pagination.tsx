@@ -1,4 +1,4 @@
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { ComponentProps, FC } from "react";
 
 export const Pagination: FC<ComponentProps<"nav">> = ({ className, ...props }) => (
