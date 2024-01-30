@@ -1,3 +1,14 @@
 {
-  "recommendations": []
+  "recommendations": [
+    "naumovs.color-highlight",
+    "nrwl.angular-console",
+    "esbenp.prettier-vscode",
+    "YoavBls.pretty-ts-errors",
+    "Prisma.prisma",
+    "bradlc.vscode-tailwindcss",
+    "Gruntfuggly.todo-tree",
+    "SimonSiefke.svg-preview",
+    "dbaeumer.vscode-eslint",
+    "streetsidesoftware.code-spell-checker"
+  ]
 }
