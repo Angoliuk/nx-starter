@@ -1,7 +1,7 @@
-import { Controller, Res, UseGuards } from "@nestjs/common";
-import { AuthGuard } from "@nestjs/passport";
 import { contract } from "@/shared/api";
 import { formatResponse } from "@/shared/utils";
+import { Controller, Res, UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { TsRest, TsRestHandler, tsRestHandler } from "@ts-rest/nest";
 import { Response } from "express";
 

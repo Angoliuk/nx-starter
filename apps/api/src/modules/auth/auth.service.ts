@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
 import { ForbiddenError, NotFoundError } from "@/shared/utils";
 import { SignInBodySchema, SignUpBodySchema, TokensSchema, UserId } from "@/shared/validation";
+import { Injectable } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
 import * as argon2 from "argon2";
 import { Response } from "express";
 

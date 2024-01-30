@@ -1,7 +1,7 @@
 import type { DefaultArgs } from "@prisma/client/runtime/library";
 
-import { Injectable } from "@nestjs/common";
 import { Prisma } from "@/db";
+import { Injectable } from "@nestjs/common";
 import * as argon2 from "argon2";
 
 import { PrismaService } from "../prisma";

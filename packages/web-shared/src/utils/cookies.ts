@@ -6,16 +6,20 @@ export const cookiesUtil = <T>(key: string) => ({
   delete: () => cookies().delete(key),
   get: () => {
     // TODO: use zod for validation of local storage
-    const response = cookies().get(key);
-    if (!response?.value) return null;
+    const response = cookies().get(key)?.value;
+    if (!response) return null;
     try {
-      return JSON.parse(response.value) as T;
+      return JSON.parse(response) as T;
     } catch (e) {
       return response;
     }
   },
   key,
   set: (value: T, expires?: number) => {
-    cookies().set(key, JSON.stringify(value), { expires: expires ?? Date.now() - oneDay });
+    cookies().set(key, JSON.stringify(value), {
+      expires: expires ?? Date.now() + oneDay,
+      httpOnly: true,
+      sameSite: "strict",
+    });
   },
 });

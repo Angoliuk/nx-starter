@@ -1,4 +1,4 @@
-import { cleanEnv, str as string, url } from "envalid";
+import { cleanEnv, url } from "envalid";
 
 export class Environment {
   public static config(env: unknown) {
@@ -8,7 +8,6 @@ export class Environment {
         desc: "API url",
         example: "http://localhost:8080",
       }),
-      NODE_ENV: string({ default: "development", desc: "Node environment", example: "development" }),
     });
   }
 }

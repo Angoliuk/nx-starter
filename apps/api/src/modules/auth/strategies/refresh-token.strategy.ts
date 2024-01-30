@@ -1,6 +1,6 @@
+import { ForbiddenError } from "@/shared/utils";
 import { Injectable } from "@nestjs/common/decorators";
 import { PassportStrategy } from "@nestjs/passport";
-import { ForbiddenError } from "@/shared/utils";
 import { Request } from "express";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
