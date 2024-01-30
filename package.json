@@ -1,5 +1,5 @@
 {
-  "name": "@/source",
+  "name": "source",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -95,7 +95,8 @@
     "dayjs": "^1.11.8",
     "embla-carousel-react": "8.0.0-rc19",
     "envalid": "^8.0.0",
-    "next": "13.4.1",
+    "express": "^4.18.2",
+    "next": "14.1.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "pm2": "^5.3.0",
