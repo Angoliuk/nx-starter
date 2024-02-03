@@ -43,14 +43,15 @@ export const PageWrapper: FC<PageWrapperProps> = ({
         isHeaderRightShown={isHeaderRightShown}
         isHeaderShown={isHeaderShown}
       />
-      <div
+      <main
         className={tw(
           "flex h-full min-h-0 w-full flex-1 flex-col overflow-y-auto scroll-smooth",
           contentWrapperClassName,
         )}
+        role="main"
       >
         {children}
-      </div>
+      </main>
       <Footer footer={footer} footerClassName={footerClassName} isFooterShown={isFooterShown} />
     </div>
   ) : (

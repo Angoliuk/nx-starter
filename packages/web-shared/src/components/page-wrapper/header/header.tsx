@@ -34,7 +34,7 @@ export const Header = memo(
     return header ? (
       header
     ) : (
-      <div
+      <header
         className={tw(
           "sticky top-0 z-50 flex h-header w-full items-center bg-stone-950 border-b-2 border-stone-900 p-5",
           headerClassName,
@@ -47,7 +47,7 @@ export const Header = memo(
           isHeaderCenterShown={isHeaderCenterShown}
         />
         <HeaderRight headerRight={headerRight} isHeaderRightShown={isHeaderRightShown} />
-      </div>
+      </header>
     );
   },
 );
