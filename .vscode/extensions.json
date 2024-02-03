@@ -9,6 +9,7 @@
     "Gruntfuggly.todo-tree",
     "SimonSiefke.svg-preview",
     "dbaeumer.vscode-eslint",
-    "streetsidesoftware.code-spell-checker"
+    "streetsidesoftware.code-spell-checker",
+    "DavidAnson.vscode-markdownlint"
   ]
 }

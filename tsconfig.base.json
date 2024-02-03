@@ -10,33 +10,17 @@
     "importHelpers": true,
     "target": "es2022",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@/db": [
-        "packages/db/src/index.ts"
-      ],
-      "@/shared/*": [
-        "packages/shared/src/*"
-      ],
-      "@/tailwind": [
-        "packages/tailwind/src/index.ts"
-      ],
-      "@/tailwind/styles": [
-        "packages/tailwind/src/global.css"
-      ],
-      "@/web-shared/*": [
-        "packages/web-shared/src/*"
-      ]
+      "@/db": ["packages/db/src/index.ts"],
+      "@/shared/*": ["packages/shared/src/*"],
+      "@/tailwind": ["packages/tailwind/src/index.ts"],
+      "@/tailwind/styles": ["packages/tailwind/src/global.css"],
+      "@/web-shared/*": ["packages/web-shared/src/*"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }
