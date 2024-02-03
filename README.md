@@ -27,8 +27,8 @@ First start:
 1. Run `pnpm i` to install dependencies
 2. Prepare env files. I created .env.example with default envs
 3. Run `docker compose up`. If you have your db, than you can skip it, but then do not forget to change `DATABASE_URL` in `packages/db` env
-4. Run `pnpm nx serve api` to start api
-5. Run `pnpm nx serve web` to start web
+4. Run `pnpm nx run api:serve` to start api
+5. Run `pnpm nx run web:serve` to start web
 
 Blocked features:
 
@@ -45,5 +45,4 @@ Blocked features:
 TODO:
 
 1. SWC?
-2. Prettier tailwind
-3. Carousel component
+2. Carousel component

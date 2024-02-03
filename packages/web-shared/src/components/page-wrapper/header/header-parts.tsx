@@ -6,7 +6,7 @@ export type HeaderLeftProps = {
 };
 
 export const HeaderLeft = memo(({ headerLeft }: HeaderLeftProps): ReactElement | null => {
-  return <div className={tw("flex items-center mobile:w-1/3")}>{headerLeft}</div>;
+  return <div className={tw("mobile:w-1/3 flex items-center")}>{headerLeft}</div>;
 });
 HeaderLeft.displayName = "HeaderLeft";
 
@@ -19,7 +19,7 @@ export type HeaderCenterProps = {
 export const HeaderCenter = memo(
   ({ headerCenter, headerCenterClassName, isHeaderCenterShown }: HeaderCenterProps): ReactElement | null => {
     return isHeaderCenterShown ? (
-      <div className={tw("flex items-center mobile:w-1/3 mobile:justify-center", headerCenterClassName)}>
+      <div className={tw("mobile:w-1/3 mobile:justify-center flex items-center", headerCenterClassName)}>
         {headerCenter}
       </div>
     ) : null;
@@ -34,7 +34,7 @@ export type HeaderRightProps = {
 
 export const HeaderRight = memo(({ headerRight, isHeaderRightShown }: HeaderRightProps): ReactElement | null => {
   return isHeaderRightShown ? (
-    <div className={tw("flex items-center justify-end mobile:w-1/3")}>{headerRight}</div>
+    <div className={tw("mobile:w-1/3 flex items-center justify-end")}>{headerRight}</div>
   ) : null;
 });
 HeaderRight.displayName = "HeaderRight";

@@ -36,7 +36,7 @@ export const Header = memo(
     ) : (
       <header
         className={tw(
-          "sticky top-0 z-50 flex h-header w-full items-center bg-stone-950 border-b-2 border-stone-900 p-5",
+          "h-header sticky top-0 z-50 flex w-full items-center border-b-2 border-stone-900 bg-stone-950 p-5",
           headerClassName,
         )}
       >
