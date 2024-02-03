@@ -4,5 +4,8 @@
   "semi": true,
   "singleQuote": false,
   "arrowParens": "avoid",
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "plugins": [
+    "prettier-plugin-tailwindcss"
+  ]
 }
