@@ -37,14 +37,14 @@ export const defaultConfig = {
     }),
   ],
   theme: {
-    colors: {
-      [AppThemeColors.WHITE_1000]: "#ffffff",
-      current: "currentColor",
-      transparent: "transparent",
-    },
     extend: {
       animation: {
         "smooth-pulse": "smooth-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;",
+      },
+      colors: {
+        [AppThemeColors.WHITE_1000]: "#ffffff",
+        current: "currentColor",
+        transparent: "transparent",
       },
       keyframes: {
         "smooth-pulse": {
