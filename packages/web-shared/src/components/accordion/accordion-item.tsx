@@ -1,6 +1,6 @@
 "use client";
 
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { Item } from "@radix-ui/react-accordion";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 

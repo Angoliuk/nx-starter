@@ -1,6 +1,6 @@
 "use client";
 
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { FC, HTMLAttributes } from "react";
 
 export const AlertDialogFooter: FC<HTMLAttributes<HTMLDivElement>> = ({ className, ...props }) => (

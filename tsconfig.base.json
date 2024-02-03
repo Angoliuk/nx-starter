@@ -15,11 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nx-starter/db": ["packages/db/src/index.ts"],
-      "@nx-starter/shared/*": ["packages/shared/src/*"],
-      "@nx-starter/tailwind": ["packages/tailwind/src/index.ts"],
-      "@nx-starter/tailwind/styles": ["packages/tailwind/src/global.css"],
-      "@nx-starter/web-shared/*": ["packages/web-shared/src/*"]
+      "@/db": ["packages/db/src/index.ts"],
+      "@/shared/*": ["packages/shared/src/*"],
+      "@/tailwind": ["packages/tailwind/src/index.ts"],
+      "@/tailwind/styles": ["packages/tailwind/src/global.css"],
+      "@/web-shared/*": ["packages/web-shared/src/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

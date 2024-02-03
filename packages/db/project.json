@@ -36,14 +36,9 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "packages/db/**/*.ts",
-          "packages/db/package.json"
-        ]
+        "lintFilePatterns": ["packages/db/**/*.ts", "packages/db/package.json"]
       }
     }
   },

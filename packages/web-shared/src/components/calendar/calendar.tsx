@@ -1,6 +1,6 @@
 "use client";
 
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { ComponentProps, FC } from "react";
 import { DayPicker } from "react-day-picker";

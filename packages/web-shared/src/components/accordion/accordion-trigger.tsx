@@ -1,6 +1,6 @@
 "use client";
 
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { Header, Trigger } from "@radix-ui/react-accordion";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";

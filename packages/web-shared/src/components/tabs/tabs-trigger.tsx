@@ -1,5 +1,5 @@
 "use client";
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { Trigger } from "@radix-ui/react-tabs";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 

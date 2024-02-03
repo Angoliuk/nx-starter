@@ -13,6 +13,7 @@ coverage
 
 # builds
 dist
+.next
 
 # vite
 dev-dist
@@ -39,9 +40,8 @@ screenshots
 videos
 downloads
 
-
 # .md
 *.md
 
-# json
-*.json
+# history
+.history

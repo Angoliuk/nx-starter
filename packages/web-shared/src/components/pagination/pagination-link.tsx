@@ -1,4 +1,4 @@
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import Link, { LinkProps } from "next/link";
 import { ComponentProps, FC } from "react";
 

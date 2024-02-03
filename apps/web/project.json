@@ -5,19 +5,29 @@
   "projectType": "application",
   "targets": {
     "pm2": {
+      "dependsOn": [
+        {
+          "projects": ["tailwind"],
+          "target": "build"
+        }
+      ],
       "command": "pm2 startOrReload ./apps/web/ecosystem.config.js --env production"
     },
     "build": {
       "executor": "@nx/next:build",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/apps/web",
         "postcssConfig": "apps/web/postcss.config.js",
         "tsConfig": "apps/web/tsconfig.spec.json"
       },
+      "dependsOn": [
+        {
+          "projects": ["tailwind"],
+          "target": "build"
+        }
+      ],
       "configurations": {
         "development": {
           "outputPath": "apps/web"
@@ -26,6 +36,12 @@
       }
     },
     "serve": {
+      "dependsOn": [
+        {
+          "projects": ["tailwind"],
+          "target": "build"
+        }
+      ],
       "executor": "@nx/next:server",
       "defaultConfiguration": "development",
       "options": {
@@ -51,13 +67,9 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/web/**/*.{ts,tsx,js,jsx}"
-        ]
+        "lintFilePatterns": ["apps/web/**/*.{ts,tsx,js,jsx}"]
       }
     }
   },

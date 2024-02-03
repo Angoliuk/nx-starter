@@ -1,4 +1,4 @@
-import { tw } from "@nx-starter/tailwind";
+import { tw } from "@/tailwind";
 import { type VariantProps, cva } from "class-variance-authority";
 import { FC, HTMLAttributes } from "react";
 

@@ -1,5 +1,5 @@
+import { ForbiddenError } from "@/shared/utils";
 import { type ExecutionContext, createParamDecorator } from "@nestjs/common";
-import { ForbiddenError } from "@nx-starter/shared/utils";
 import { Request } from "express";
 
 import { TokenUser } from "../validation";

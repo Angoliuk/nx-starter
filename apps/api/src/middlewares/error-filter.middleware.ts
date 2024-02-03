@@ -1,6 +1,6 @@
+import { contract } from "@/shared/api";
+import { getErrorInfo } from "@/shared/utils";
 import { ArgumentsHost, Catch, ExceptionFilter, Logger } from "@nestjs/common";
-import { contract } from "@nx-starter/shared/api";
-import { getErrorInfo } from "@nx-starter/shared/utils";
 import { ServerInferResponses } from "@ts-rest/core";
 import { Response } from "express";
 import { OutgoingHttpHeaders } from "node:http";
