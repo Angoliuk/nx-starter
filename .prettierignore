@@ -13,6 +13,7 @@ coverage
 
 # builds
 dist
+.next
 
 # vite
 dev-dist
