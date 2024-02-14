@@ -1,3 +1,5 @@
-export default async function Index() {
-  return <></>;
+import { redirect } from "next/navigation";
+
+export default function RootPage() {
+  redirect("/en");
 }
