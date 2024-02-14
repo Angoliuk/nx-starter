@@ -1,3 +1,7 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.localesPaths": ["./apps/web/src/utils/i18n/translations"],
+  "i18n-ally.enabledFrameworks": ["react", "next-intl"],
+  "i18n-ally.sourceLanguage": "en"
 }
