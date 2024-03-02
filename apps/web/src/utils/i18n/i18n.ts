@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { getRequestConfig } from "next-intl/server";
 
-export const localePrefix = undefined;
+export const localePrefix = "never";
 export const defaultLocale = "en" as const;
 export const locales = [defaultLocale, "ua"] as const;
 
