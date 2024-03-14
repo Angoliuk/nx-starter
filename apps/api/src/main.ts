@@ -12,7 +12,7 @@ const port = process.env.PORT || 8080;
 const globalPrefix = "api";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: { origin: "*" } });
+  const app = await NestFactory.create(AppModule, { cors: { credentials: true, origin: "*" } });
 
   app.useGlobalFilters(new ErrorFilter());
   app.use(cookieParser());

@@ -1,5 +1,6 @@
 import { contract } from "@/shared/api";
 import { initClient } from "@ts-rest/core";
+import { cookies } from "next/headers";
 
 import { API_BASE_URL } from "../env";
 
@@ -8,8 +9,8 @@ export const api = initClient(contract, {
     const result = await fetch(path, {
       body,
       cache,
-      credentials,
-      headers,
+      credentials: "include",
+      headers: { ...headers, Cookie: cookies().toString() },
       method,
       next,
       signal,
