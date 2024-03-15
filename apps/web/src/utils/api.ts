@@ -5,12 +5,12 @@ import { cookies } from "next/headers";
 import { API_BASE_URL } from "../env";
 
 export const api = initClient(contract, {
-  api: async ({ body, cache, credentials, headers, method, next, path, route, signal }) => {
+  api: async ({ body, cache, credentials = "include", headers, method, next, path, route, signal }) => {
     const result = await fetch(path, {
       body,
       cache,
-      credentials: "include",
-      headers: { ...headers, Cookie: cookies().toString() },
+      credentials,
+      headers: { Cookie: cookies().toString(), ...headers },
       method,
       next,
       signal,
