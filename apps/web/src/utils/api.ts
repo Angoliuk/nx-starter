@@ -10,7 +10,13 @@ export const api = initClient(contract, {
       body,
       cache,
       credentials,
-      headers: { Cookie: cookies().toString(), ...headers },
+      headers: {
+        Cookie: cookies()
+          .getAll()
+          .map(cookie => `${cookie.name}=${cookie.value}`)
+          .join(";"),
+        ...headers,
+      },
       method,
       next,
       signal,
