@@ -14,8 +14,6 @@ model User {
   email    String @unique
   password String
 
-  hashedRt String @default("")
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

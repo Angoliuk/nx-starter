@@ -1,10 +1,11 @@
 import { ForbiddenError, NotFoundError } from "@/shared/utils";
-import { SignInBodySchema, SignUpBodySchema, TokensSchema, UserId } from "@/shared/validation";
+import { SignInBodySchema, SignUpBodySchema, UserId } from "@/shared/validation";
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import * as argon2 from "argon2";
 import { Response } from "express";
 
+import { tokenUser } from "../../validation";
 import { EnvService } from "../env";
 import { UsersService } from "../users";
 
@@ -36,36 +37,30 @@ export class AuthService {
     });
   }
 
-  async logout({ userId }: UserId) {
-    await this.usersService.update({ data: { hashedRt: "" }, where: { id: userId } });
+  async getTokenUserFromPayload(payload: object) {
+    const userValidationResult = tokenUser.safeParse(payload);
 
+    if (!userValidationResult.success) throw new ForbiddenError();
+
+    const user = await this.usersService.findOne({
+      where: { email: userValidationResult.data.email, id: userValidationResult.data.userId },
+    });
+
+    if (!user) throw new NotFoundError("User not found");
+
+    return {
+      email: user.email,
+      userId: user.id,
+    };
+  }
+
+  async logout() {
     return null;
   }
 
-  async refreshTokens({ accessToken: expiredAccessToken, refreshToken: expiredRefreshToken }: TokensSchema) {
-    const tokenData = this.jwtService.decode(expiredAccessToken);
-
-    if (!tokenData || !tokenData.userId) return new ForbiddenError("Wrong data in token");
-
-    const user = await this.usersService.findOne(tokenData.userId);
-
-    if (!user) return new NotFoundError();
-
-    const refreshTokenMatches = await argon2.verify(user.hashedRt, expiredRefreshToken);
-
-    if (!refreshTokenMatches) return new ForbiddenError("Incorrect refresh token");
-
-    const tokens = await this.signAndUpdateTokens({ email: user.email, userId: user.id });
-
-    return tokens;
-  }
-
-  async signAndUpdateTokens(tokensBody: UserId & { email: string }) {
-    const tokens = await this.signTokens(tokensBody);
-
-    await this.updateRefreshToken({ refreshToken: tokens.refreshToken, userId: tokensBody.userId });
-
-    return tokens;
+  async removeTokensFromCookies({ res }: { res: Response }) {
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
   }
 
   async signIn({ email, password }: SignInBodySchema) {
@@ -77,7 +72,7 @@ export class AuthService {
 
     if (!isPasswordsMatch) return new ForbiddenError("Incorrect password");
 
-    const tokens = await this.signAndUpdateTokens({ email: user.email, userId: user.id });
+    const tokens = await this.signTokens({ email: user.email, userId: user.id });
 
     return { email: user.email, id: user.id, ...tokens };
   }
@@ -87,6 +82,7 @@ export class AuthService {
       email,
       userId,
     };
+
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(tokenBody, {
         expiresIn: this.envService.get("ACCESS_SECRET_TOKEN_EXPIRES_IN"),
@@ -111,17 +107,12 @@ export class AuthService {
 
     const createdUser = await this.usersService.create({ data: body });
 
-    const tokens = await this.signAndUpdateTokens({ email: createdUser.email, userId: createdUser.id });
+    const tokens = await this.signTokens({ email: createdUser.email, userId: createdUser.id });
 
     return {
       email: createdUser.email,
       id: createdUser.id,
       ...tokens,
     };
-  }
-
-  async updateRefreshToken({ refreshToken, userId }: UserId & { refreshToken: string }) {
-    const hash = await argon2.hash(refreshToken);
-    await this.usersService.update({ data: { hashedRt: hash }, where: { id: userId } });
   }
 }
