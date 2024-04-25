@@ -20,6 +20,12 @@ runs:
 
     - uses: nrwl/nx-set-shas@v3
 
+    - name: set NX env
+      shell: bash
+      run: |
+        echo "nxDiffFlags=--base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}" >> $GITHUB_ENV
+        echo "affectedApps=$(nx show projects --affected --json ${{ inputs.flags }} }})" >> $GITHUB_ENV
+
     - name: Install NX
       shell: sh
       run: npm install -g nx

@@ -18,9 +18,6 @@ runs:
           echo "$key=$value" >> $GITHUB_ENV
         done
 
-        echo "nxDiffFlags=--base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}" >> $GITHUB_ENV
-        echo "affectedApps=$(nx show projects --affected --json ${{ inputs.flags }} }})" >> $GITHUB_ENV
-
         if [ "$RUNNER_OS" == "macOS" ]; then
           envHash=$(echo -n "$json" | shasum -a 256 | cut -d ' ' -f1)
           echo "envHash=$envHash" >> $GITHUB_ENV
