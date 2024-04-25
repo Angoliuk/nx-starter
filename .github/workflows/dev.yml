@@ -29,8 +29,10 @@ jobs:
           json: ${{ toJSON(matrix.config) }}
       - name: NX
         uses: "./.github/workflows/modules/nx/lint"
-      - name: Linting commit
-        uses: "./.github/workflows/utils/commit"
+      # - name: Linting commit
+      #   uses: "./.github/workflows/utils/commit"
+      #     with:
+      # message: "Linting fixes"
 
   building:
     name: "Build: ${{ matrix.config.name }}"
