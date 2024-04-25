@@ -4,10 +4,6 @@ description: Get nx env
 runs:
   using: "composite"
   steps:
-    - name: Install NX
-      shell: bash
-      run: npm install -g nx
-
     - uses: nrwl/nx-set-shas@v3
 
     - name: set NX env
@@ -15,4 +11,4 @@ runs:
       run: |
         nxFlags="--base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}"
         echo "nxDiffFlags=$nxFlags" >> $GITHUB_ENV
-        echo "affectedApps=$(nx show projects --affected --json $nxFlags)" >> $GITHUB_ENV
+        echo "affectedApps=$(pnpm nx show projects --affected --json $nxFlags)" >> $GITHUB_ENV
