@@ -19,7 +19,7 @@ runs:
       uses: ./.github/workflows/utils/cache/get-pnpm-cache
 
     - name: Install NX
-      shell: sh
+      shell: bash
       run: npm install -g nx
 
     - uses: nrwl/nx-set-shas@v3
@@ -28,6 +28,6 @@ runs:
       shell: bash
       run: |
         echo 1
-        # nxFlags="--base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}"
-        # echo "nxDiffFlags=$nxFlags" >> $GITHUB_ENV
-        # echo "affectedApps=$(nx show projects --affected --json $nxFlags)" >> $GITHUB_ENV
+        nxFlags="--base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}"
+        echo "nxDiffFlags=$nxFlags" >> $GITHUB_ENV
+        echo "affectedApps=$(nx show projects --affected --json $nxFlags)" >> $GITHUB_ENV
