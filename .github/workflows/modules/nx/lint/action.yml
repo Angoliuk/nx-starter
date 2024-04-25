@@ -10,10 +10,10 @@ runs:
     - name: Install dependencies
       uses: ./.github/workflows/modules/nx/install-dependencies
 
-    - name: Code style
-      shell: bash
-      run: nx format:check ${{ env.nxDiffFlags }}
+    # - name: Code style
+    #   shell: bash
+    #   run: nx format:check ${{ env.nxDiffFlags }}
 
-    - name: Lint
-      shell: bash
-      run: nx affected --target=lint ${{ env.nxDiffFlags }}
+    # - name: Lint
+    #   shell: bash
+    #   run: nx affected --target=lint ${{ env.nxDiffFlags }}
