@@ -71,10 +71,10 @@ jobs:
         config:
           - { name: "Ubuntu", os: "ubuntu-latest" }
     steps:
-      - name: deployWeb
+      - name: "Deploy web"
         if: ${{ env.affectedApps }} && contains(env.affectedApps, 'web')
         uses: ./.github/workflows/modules/nx/web-deploy.yml
 
-      - name: deployApi
+      - name: "Deploy api"
         if: ${{ env.affectedApps }} && contains(env.affectedApps, 'api')
         uses: ./.github/workflows/modules/nx/api-deploy.yml
