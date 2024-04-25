@@ -12,8 +12,8 @@ runs:
 
     - name: Prisma Generation
       shell: bash
-      run: nx generate-types db
+      run: pnpm nx generate-types db
 
     - name: Build
       shell: bash
-      run: nx affected --target=build ${{ env.nxDiffFlags }}
+      run: pnpm nx affected --target=build ${{ env.nxDiffFlags }}
