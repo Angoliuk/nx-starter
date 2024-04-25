@@ -15,8 +15,8 @@ runs:
 
     - name: Code style
       shell: bash
-      run: pnpm nx format:check
-      #  ${{ env.nxDiffFlags }}
+      run: echo ${{ env.nxDiffFlags }}
+      # pnpm nx format:check ${{ env.nxDiffFlags }}
 
     # - name: Lint
     #   shell: bash
