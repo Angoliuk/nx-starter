@@ -4,7 +4,8 @@ description: Deploy api
 runs:
   using: "composite"
   steps:
-    - run: echo hello
+    - shell: bash
+      run: echo hello
     # - name: SSH keys creation
     #   run: echo "${{ secrets.API_SSH_PRIVATE_KEY }}" | tr -d '\r' > private-keys.pem
     # - name: SSH keys access config

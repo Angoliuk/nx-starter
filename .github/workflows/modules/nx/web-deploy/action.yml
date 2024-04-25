@@ -4,7 +4,8 @@ description: Deploy web
 runs:
   using: "composite"
   steps:
-    - run: echo hello
+    - shell: bash
+      run: echo hello
     # - name: SSH keys creation
     #   run: echo "${{ secrets.WEB_SSH_PRIVATE_KEY }}" | tr -d '\r' > private-keys.pem
     # - name: SSH keys access config

@@ -11,9 +11,9 @@ runs:
       uses: ./.github/workflows/modules/nx/install-dependencies
 
     - name: Prisma Generation
-      id: db
+      shell: bash
       run: nx generate-types db
 
     - name: Build
-      id: build
+      shell: bash
       run: nx affected --target=build ${{ env.nxDiffFlags }}

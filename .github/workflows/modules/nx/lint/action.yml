@@ -11,9 +11,9 @@ runs:
       uses: ./.github/workflows/modules/nx/install-dependencies
 
     - name: Code style
-      id: format
+      shell: bash
       run: nx format:check ${{ env.nxDiffFlags }}
 
     - name: Lint
-      id: lint
+      shell: bash
       run: nx affected --target=lint ${{ env.nxDiffFlags }}
