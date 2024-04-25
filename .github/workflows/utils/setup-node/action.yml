@@ -30,4 +30,5 @@ runs:
         echo 1
         nxFlags="--base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}"
         echo "nxDiffFlags=$nxFlags" >> $GITHUB_ENV
+        nx -v
         # echo "affectedApps=$(nx show projects --affected --json $nxFlags)" >> $GITHUB_ENV
