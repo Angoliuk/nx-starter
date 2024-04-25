@@ -10,8 +10,8 @@ runs:
     - name: Install dependencies
       uses: ./.github/workflows/modules/nx/install-dependencies
 
-    # - name: Get nx env
-    #   uses: ./.github/workflows/utils/get-nx-env
+    - name: Get nx env
+      uses: ./.github/workflows/utils/get-nx-env
 
     # - name: Code style
     #   shell: bash
