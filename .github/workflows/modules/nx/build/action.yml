@@ -10,6 +10,9 @@ runs:
     - name: Install dependencies
       uses: ./.github/workflows/modules/nx/install-dependencies
 
+    - name: Get nx env
+      uses: ./.github/workflows/utils/get-nx-env
+
     - name: Prisma Generation
       shell: bash
       run: nx generate-types db
