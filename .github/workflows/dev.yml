@@ -4,24 +4,52 @@ on:
   push:
     branches:
       - "**"
-      - "!main"
+      - "!master"
+
+permissions:
+  contents: write
 
 jobs:
-  variables:
-    uses: ./.github/workflows/variables.yml
-
-  ci:
-    needs: variables
-    uses: ./.github/workflows/ci.yml
-    with:
-      flags: ${{needs.variables.outputs.flags}}
-      pnpmKeysPrefix: ${{needs.variables.outputs.pnpmKeysPrefix}}
-      pnpmPath: ${{needs.variables.outputs.pnpmPath}}
-
-  ciChecker:
-    runs-on: ubuntu-latest
-    needs: ci
+  linting:
+    name: "Linting ${{ matrix.config.name }}"
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { name: "Ubuntu", os: "ubuntu-latest" }
     steps:
-      - name: Check is CI valid
-        if: needs.ci.outputs.isPassed != 'true'
-        run: exit 1
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Env
+        uses: "./.github/workflows/utils/json-to-env"
+        with:
+          json: ${{ toJSON(matrix.config) }}
+      - name: NX
+        uses: "./.github/workflows/modules/nx/lint"
+      - name: Linting commit
+        uses: "./.github/workflows/utils/commit"
+
+  building:
+    name: "Build: ${{ matrix.config.name }}"
+    runs-on: ${{ matrix.config.os }}
+    needs:
+      - linting
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - { name: "Ubuntu", os: "ubuntu-latest" }
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Env
+        uses: "./.github/workflows/utils/json-to-env"
+        with:
+          json: ${{ toJSON(matrix.config) }}
+      - name: NX
+        uses: "./.github/workflows/modules/nx/build"

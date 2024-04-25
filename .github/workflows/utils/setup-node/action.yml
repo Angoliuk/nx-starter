@@ -1,0 +1,25 @@
+name: Setup NodeJS
+description: Setup NodeJS
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "20.x"
+
+    - uses: pnpm/action-setup@v3
+      name: Install pnpm
+      with:
+        version: 8
+        run_install: false
+
+    - name: Setup pnpm cache
+      uses: ./.github/workflows/utils/cache/get-pnpm-cache
+
+    - uses: nrwl/nx-set-shas@v3
+
+    - name: Install NX
+      shell: sh
+      run: npm install -g nx

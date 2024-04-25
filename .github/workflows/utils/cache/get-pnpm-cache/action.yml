@@ -1,0 +1,16 @@
+name: Get pnpm cache
+description: Getting pnpm cache
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Get pnpm path
+      shell: bash
+      run: |
+        echo "pnpmPath=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+    - uses: actions/cache@v4
+      name: Setup pnpm cache
+      with:
+        path: "${{ env.pnpmPath }}"
+        key: ${{ hashFiles('**/pnpm-lock.yaml') }}-${{ env.envHash }}-${{ env.os }}-pnpm-store

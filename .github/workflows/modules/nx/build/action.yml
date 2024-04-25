@@ -1,0 +1,19 @@
+name: Build NX
+description: Build NX
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup node base
+      uses: ./.github/workflows/utils/setup-node
+
+    - name: Install dependencies
+      uses: ./.github/workflows/modules/nx/install-dependencies
+
+    - name: Prisma Generation
+      id: db
+      run: nx generate-types db
+
+    - name: Build
+      id: build
+      run: nx affected --target=build ${{ env.nxDiffFlags }}

@@ -1,0 +1,17 @@
+name: Commit changes
+description: Pull last changes and push commit
+
+inputs:
+  message:
+    required: true
+    description: Message for commit
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: EndBug/add-and-commit@v9
+      with:
+        author_name: formatter
+        author_email: robot@example.com
+        message: ${{ inputs.message }}
+        add: '*'

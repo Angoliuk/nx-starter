@@ -1,0 +1,19 @@
+name: Deploy web
+description: Deploy web
+
+runs:
+  using: "composite"
+  steps:
+    - run: echo hello
+    # - name: SSH keys creation
+    #   run: echo "${{ secrets.WEB_SSH_PRIVATE_KEY }}" | tr -d '\r' > private-keys.pem
+    # - name: SSH keys access config
+    #   run: chmod 400 private-keys.pem
+    # - name: SSH EC2
+    #   run: |
+    #     ssh -i private-keys.pem -o "StrictHostKeyChecking no" ${{secrets.WEB_USER_NAME}}@${{secrets.WEB_SSH_HOST}} <<'ENDSSH'
+    #       cd ${{secrets.WEB_PROJECT_ROOT_ROUTE}} &&
+    #       git pull &&
+    #       pnpm i &&
+    #       pnpm nx pm2 web
+    #     ENDSSH

@@ -1,0 +1,19 @@
+name: Deploy api
+description: Deploy api
+
+runs:
+  using: "composite"
+  steps:
+    - run: echo hello
+    # - name: SSH keys creation
+    #   run: echo "${{ secrets.API_SSH_PRIVATE_KEY }}" | tr -d '\r' > private-keys.pem
+    # - name: SSH keys access config
+    #   run: chmod 400 private-keys.pem
+    # - name: SSH EC2
+    #   run: |
+    #     ssh -i private-keys.pem -o "StrictHostKeyChecking no" ${{secrets.API_USER_NAME}}@${{secrets.API_SSH_HOST}} <<'ENDSSH'
+    #       cd ${{secrets.API_PROJECT_ROOT_ROUTE}} &&
+    #       git pull &&
+    #       pnpm i &&
+    #       pnpm nx pm2 api
+    #     ENDSSH

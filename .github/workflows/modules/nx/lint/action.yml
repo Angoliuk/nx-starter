@@ -1,0 +1,19 @@
+name: Lint NX
+description: Lint NX
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup node base
+      uses: ./.github/workflows/utils/setup-node
+
+    - name: Install dependencies
+      uses: ./.github/workflows/modules/nx/install-dependencies
+
+    - name: Code style
+      id: format
+      run: nx format:check ${{ env.nxDiffFlags }}
+
+    - name: Lint
+      id: lint
+      run: nx affected --target=lint ${{ env.nxDiffFlags }}
