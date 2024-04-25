@@ -1,15 +1,22 @@
 import { contract } from "@/shared/api";
 import { initClient } from "@ts-rest/core";
+import { cookies } from "next/headers";
 
 import { API_BASE_URL } from "../env";
 
 export const api = initClient(contract, {
-  api: async ({ body, cache, credentials, headers, method, next, path, route, signal }) => {
+  api: async ({ body, cache, credentials = "include", headers, method, next, path, route, signal }) => {
     const result = await fetch(path, {
       body,
       cache,
       credentials,
-      headers,
+      headers: {
+        Cookie: cookies()
+          .getAll()
+          .map(cookie => `${cookie.name}=${cookie.value}`)
+          .join(";"),
+        ...headers,
+      },
       method,
       next,
       signal,

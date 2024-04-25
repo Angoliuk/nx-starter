@@ -5,7 +5,7 @@ type Props = {
   params: { locale: string };
 };
 
-export default function Index({ params: { locale } }: Props) {
+export default function IndexPage({ params: { locale } }: Props) {
   unstable_setRequestLocale(locale);
 
   const t = useTranslations("example");

@@ -4,7 +4,7 @@ import { tw } from "@/tailwind";
 import { Command as CommandPrimitive } from "cmdk";
 import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 
-const CommandItem = forwardRef<
+export const CommandItem = forwardRef<
   ElementRef<typeof CommandPrimitive.Item>,
   ComponentPropsWithoutRef<typeof CommandPrimitive.Item>
 >(({ className, ...props }, ref) => (

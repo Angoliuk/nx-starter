@@ -1,0 +1,22 @@
+name: Lint NX
+description: Lint NX
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup node base
+      uses: ./.github/workflows/utils/setup-node
+
+    - name: Install dependencies
+      uses: ./.github/workflows/modules/nx/install-dependencies
+
+    - name: Get nx env
+      uses: ./.github/workflows/utils/get-nx-env
+
+    - name: Code style
+      shell: bash
+      run: pnpm nx format:check --verbose ${{ env.nxDiffFlags }}
+
+    - name: Lint
+      shell: bash
+      run: pnpm nx affected --target=lint ${{ env.nxDiffFlags }}

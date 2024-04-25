@@ -25,7 +25,7 @@ export const authContract = (c: ContractInstance) =>
         },
       },
       refreshTokens: {
-        body: tokensSchema,
+        body: null,
         method: "POST",
         path: "/refresh",
         responses: {

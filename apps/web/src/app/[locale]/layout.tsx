@@ -8,7 +8,7 @@ export function generateStaticParams() {
   return locales.map(locale => ({ locale }));
 }
 
-export default function RootLayout({
+export default function LocaleLayout({
   children,
   params: { locale },
 }: {

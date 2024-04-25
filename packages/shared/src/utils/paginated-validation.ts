@@ -1,6 +1,6 @@
 import { ZodTypeAny, z } from "zod";
 
-export const paginatedValidation = <T extends ZodTypeAny>(itemSchema: T) => {
+export const getPaginatedValidation = <T extends ZodTypeAny>(itemSchema: T) => {
   return z.object({
     items: z.array(itemSchema),
     pagination: z.object({

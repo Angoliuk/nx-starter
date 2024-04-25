@@ -1,27 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-// TODO: finish carousel component
-
 import { tw } from "@/tailwind";
-import useEmblaCarousel from "embla-carousel-react"; // type EmblaPluginType as CarouselPlugin, // type EmblaOptionsType as CarouselOptions, // type EmblaCarouselType as CarouselApi,
+import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-react";
 import { HTMLAttributes, KeyboardEvent, forwardRef, useCallback, useEffect, useState } from "react";
 
 import { CarouselContext } from "./use-carousel";
 
-export type CarouselProps = {
-  opts?: any;
-  // opts?: CarouselOptions;
-  // plugins?: CarouselPlugin[];
-  // setApi?: (api: CarouselApi) => void;
+type CarouselApi = UseEmblaCarouselType[1];
+type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
+type CarouselOptions = UseCarouselParameters[0];
+type CarouselPlugin = UseCarouselParameters[1];
 
+export type CarouselProps = {
+  opts?: CarouselOptions;
   orientation?: "horizontal" | "vertical";
-  plugins?: any[];
-  setApi?: (api: any) => void;
+  plugins?: CarouselPlugin;
+  setApi?: (api: CarouselApi) => void;
 };
 
 export const Carousel = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement> & CarouselProps>(
   ({ children, className, opts, orientation = "horizontal", plugins, setApi, ...props }, ref) => {
+    const [canScrollPrev, setCanScrollPrev] = useState(false);
+    const [canScrollNext, setCanScrollNext] = useState(false);
+
     const [carouselRef, api] = useEmblaCarousel(
       {
         ...opts,
@@ -29,13 +30,9 @@ export const Carousel = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement
       },
       plugins,
     );
-    const [canScrollPrev, setCanScrollPrev] = useState(false);
-    const [canScrollNext, setCanScrollNext] = useState(false);
 
-    const onSelect = useCallback((api: any) => {
-      if (!api) {
-        return;
-      }
+    const onSelect = useCallback((api: CarouselApi) => {
+      if (!api) return;
 
       setCanScrollPrev(api.canScrollPrev());
       setCanScrollNext(api.canScrollNext());
@@ -63,17 +60,13 @@ export const Carousel = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement
     );
 
     useEffect(() => {
-      if (!api || !setApi) {
-        return;
-      }
+      if (!api || !setApi) return;
 
       setApi(api);
     }, [api, setApi]);
 
     useEffect(() => {
-      if (!api) {
-        return;
-      }
+      if (!api) return;
 
       onSelect(api);
       api.on("reInit", onSelect);

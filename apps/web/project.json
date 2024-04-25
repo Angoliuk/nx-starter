@@ -20,7 +20,7 @@
       "options": {
         "outputPath": "dist/apps/web",
         "postcssConfig": "apps/web/postcss.config.js",
-        "tsConfig": "apps/web/tsconfig.spec.json"
+        "tsConfig": "apps/web/tsconfig.json"
       },
       "dependsOn": [
         {

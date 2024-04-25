@@ -10,7 +10,7 @@
       "options": {
         "outputPath": "dist/packages/tailwind",
         "main": "packages/tailwind/src/index.ts",
-        "tsConfig": "packages/tailwind/tsconfig.lib.json",
+        "tsConfig": "packages/tailwind/tsconfig.json",
         "assets": ["packages/tailwind/*.md"]
       }
     },

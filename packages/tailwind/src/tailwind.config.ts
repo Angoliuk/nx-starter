@@ -7,6 +7,7 @@ import { AppThemeColors, FontSizes } from "./theme";
 export const defaultConfig = {
   content: ["./src/**/*.{js,ts,jsx,tsx}", "./assets/**/*.svg"],
   plugins: [
+    require("tailwindcss-animate"),
     plugin(({ matchUtilities, theme }) => {
       matchUtilities(
         {
