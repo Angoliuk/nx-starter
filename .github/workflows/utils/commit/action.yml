@@ -7,11 +7,11 @@ inputs:
     description: Message for commit
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - uses: EndBug/add-and-commit@v9
       with:
         author_name: formatter
         author_email: robot@example.com
         message: ${{ inputs.message }}
-        add: '*'
+        add: "*"

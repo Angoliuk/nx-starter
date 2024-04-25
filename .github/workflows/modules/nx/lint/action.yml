@@ -15,8 +15,8 @@ runs:
 
     - name: Code style
       shell: bash
-      run: pnpm nx format:check --base=${{ env.NX_BASE }} --head=${{ env.NX_HEAD }}
+      run: pnpm nx format:check --verbose ${{ env.nxDiffFlags }}
 
-    # - name: Lint
-    #   shell: bash
-    #   run: pnpm nx affected --target=lint ${{ env.nxDiffFlags }}
+    - name: Lint
+      shell: bash
+      run: pnpm nx affected --target=lint ${{ env.nxDiffFlags }}

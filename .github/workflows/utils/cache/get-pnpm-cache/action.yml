@@ -2,7 +2,7 @@ name: Get pnpm cache
 description: Getting pnpm cache
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Get pnpm path
       shell: bash
