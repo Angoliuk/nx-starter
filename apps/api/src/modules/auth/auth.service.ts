@@ -1,5 +1,5 @@
 import { ForbiddenError, NotFoundError } from "@/shared/utils";
-import { SignInBodySchema, SignUpBodySchema, UserId } from "@/shared/validation";
+import { SignInBodySchema, SignUpBodySchema, UserIdSchema } from "@/shared/validation";
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import * as argon2 from "argon2";
@@ -77,7 +77,7 @@ export class AuthService {
     return { email: user.email, id: user.id, ...tokens };
   }
 
-  async signTokens({ email, userId }: UserId & { email: string }) {
+  async signTokens({ email, userId }: UserIdSchema & { email: string }) {
     const tokenBody = {
       email,
       userId,

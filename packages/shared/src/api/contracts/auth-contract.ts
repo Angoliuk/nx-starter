@@ -1,6 +1,5 @@
 import { ForbiddenError, NotFoundError, ServerError } from "../../utils/errors";
 import {
-  baseHeaders,
   signInBodySchema,
   signInResponseSchema,
   signUpBodySchema,
@@ -15,7 +14,6 @@ export const authContract = (c: ContractInstance) =>
     {
       logout: {
         body: null,
-        headers: baseHeaders,
         method: "POST",
         path: "/logout",
         responses: {
