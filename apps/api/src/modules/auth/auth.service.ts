@@ -42,7 +42,7 @@ export class AuthService {
 
     if (!userValidationResult.success) throw new ForbiddenError();
 
-    const user = await this.usersService.findOne({
+    const user = await this.usersService.getOne({
       where: { email: userValidationResult.data.email, id: userValidationResult.data.userId },
     });
 
@@ -64,7 +64,7 @@ export class AuthService {
   }
 
   async signIn({ email, password }: SignInBodySchema) {
-    const user = await this.usersService.findOne({ where: { email } });
+    const user = await this.usersService.getOne({ where: { email } });
 
     if (!user) return new NotFoundError("User do not exists");
 
@@ -101,7 +101,7 @@ export class AuthService {
   }
 
   async signUp(body: SignUpBodySchema) {
-    const existingUser = await this.usersService.findOne({ where: { email: body.email } });
+    const existingUser = await this.usersService.getOne({ where: { email: body.email } });
 
     if (existingUser) return new ForbiddenError(`User with email ${existingUser.email} already exists`);
 
