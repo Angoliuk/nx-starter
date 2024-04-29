@@ -19,12 +19,12 @@ export class UsersService {
     return await this.prisma.user.delete(deleteData);
   }
 
-  async get(findData: Prisma.UserFindManyArgs<DefaultArgs>) {
-    return await this.prisma.user.findMany(findData);
+  async get(getData: Prisma.UserFindManyArgs<DefaultArgs>) {
+    return await this.prisma.user.findMany(getData);
   }
 
-  async getOne(findData: Prisma.UserFindUniqueArgs<DefaultArgs>) {
-    return await this.prisma.user.findUnique(findData);
+  async getOne(getData: Prisma.UserFindUniqueArgs<DefaultArgs>) {
+    return await this.prisma.user.findUnique(getData);
   }
 
   async update(updateData: Prisma.UserUpdateArgs<DefaultArgs>) {
