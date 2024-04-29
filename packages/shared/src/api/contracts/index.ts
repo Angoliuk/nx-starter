@@ -1,6 +1,6 @@
 import { initContract } from "@ts-rest/core";
 
-import { authContract } from "./auth-contact";
+import { authContract } from "./auth-contract";
 
 const c = initContract();
 
