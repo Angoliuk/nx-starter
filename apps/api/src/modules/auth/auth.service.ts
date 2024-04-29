@@ -77,7 +77,7 @@ export class AuthService {
     return { email: user.email, id: user.id, ...tokens };
   }
 
-  async signTokens({ email, userId }: UserIdSchema & { email: string }) {
+  async signTokens({ email, userId }: { email: string; userId: UserIdSchema }) {
     const tokenBody = {
       email,
       userId,
