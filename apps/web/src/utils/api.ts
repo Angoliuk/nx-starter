@@ -1,15 +1,22 @@
 import { contract } from "@/shared/api";
 import { initClient } from "@ts-rest/core";
 import { cookies } from "next/headers";
+import { z } from "zod";
 
 import { API_BASE_URL } from "../env";
 
+// It's custom ts-rest api in order to use Next fetch. It is up-to-date for @ts-rest/core 3.45.2
+// Initial fetch here: https://github.com/ts-rest/ts-rest/blob/main/libs/ts-rest/core/src/lib/client.ts#L186
+
+export const isZodType = (obj: unknown): obj is z.ZodTypeAny => {
+  return typeof (obj as z.ZodTypeAny)?.safeParse === "function";
+};
+
 export const api = initClient(contract, {
-  api: async ({ body, cache, credentials = "include", headers, method, next, path, route, signal }) => {
+  api: async ({ body, fetchOptions, headers, method, path, route, validateResponse }) => {
     const result = await fetch(path, {
+      ...fetchOptions,
       body,
-      cache,
-      credentials,
       headers: {
         Cookie: cookies()
           .getAll()
@@ -18,30 +25,26 @@ export const api = initClient(contract, {
         ...headers,
       },
       method,
-      next,
-      signal,
     });
 
     const contentType = result.headers.get("content-type");
 
     if (contentType?.includes("application/") && contentType?.includes("json")) {
-      if (!route.validateResponseOnClient) {
+      const response = {
+        body: await result.json(),
+        headers: result.headers,
+        status: result.status,
+      };
+
+      const responseSchema = route.responses[response.status];
+      if ((validateResponse ?? route.validateResponseOnClient) && isZodType(responseSchema)) {
         return {
-          body: await result.json(),
-          headers: result.headers,
-          status: result.status,
+          ...response,
+          body: responseSchema.parse(response.body),
         };
       }
 
-      const jsonData = await result.json();
-      const statusCode = result.status;
-      const response = route.responses[statusCode];
-
-      return {
-        body: response && typeof response !== "symbol" && "parse" in response ? response?.parse(jsonData) : jsonData,
-        headers: result.headers,
-        status: statusCode,
-      };
+      return response;
     }
 
     if (contentType?.includes("text/")) {
@@ -58,6 +61,7 @@ export const api = initClient(contract, {
       status: result.status,
     };
   },
-  baseHeaders: {},
   baseUrl: API_BASE_URL,
+  throwOnUnknownStatus: true,
+  validateResponse: true,
 });

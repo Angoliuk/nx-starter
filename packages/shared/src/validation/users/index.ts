@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { getBaseQueryValidation, getPaginatedResponseValidation, userIdSchema } from "../general";
+import { getBasePaginationQueryValidation, getPaginatedResponseValidation, userIdSchema } from "../general";
 
 export type UserSchema = z.infer<typeof userSchema>;
 export const userSchema = z.object({ email: z.string().min(1), password: z.string().min(1) });
@@ -18,7 +18,7 @@ export type DeleteUserResponseSchema = z.infer<typeof deleteUserResponseSchema>;
 export const deleteUserResponseSchema = userSchema;
 
 export type GetUsersQuerySchema = z.infer<typeof getUsersQuerySchema>;
-export const getUsersQuerySchema = getBaseQueryValidation(userSchema);
+export const getUsersQuerySchema = getBasePaginationQueryValidation(userSchema);
 
 export type GetUsersResponseSchema = z.infer<typeof getUsersResponseSchema>;
 export const getUsersResponseSchema = getPaginatedResponseValidation(userSchema);

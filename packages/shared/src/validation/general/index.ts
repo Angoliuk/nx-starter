@@ -22,7 +22,9 @@ export const getPaginatedResponseValidation = <T extends ZodTypeAny>(itemSchema:
   });
 };
 
-export const getBaseQueryValidation = <T extends AnyZodObject, C extends [keyof T["shape"]]>(entitySchema: T) => {
+export const getBasePaginationQueryValidation = <T extends AnyZodObject, C extends [keyof T["shape"]]>(
+  entitySchema: T,
+) => {
   return z.object({
     limit: z.number().min(0),
     // @ts-expect-error enum do not want to accept C as generic
