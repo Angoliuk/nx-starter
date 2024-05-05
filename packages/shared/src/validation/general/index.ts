@@ -22,16 +22,19 @@ export const getPaginatedResponseValidation = <T extends ZodTypeAny>(itemSchema:
   });
 };
 
-export const getBasePaginationQueryValidation = <T extends AnyZodObject, C extends [keyof T["shape"]]>(
-  entitySchema: T,
-) => {
-  return z.object({
-    limit: z.number().min(0),
-    // @ts-expect-error enum do not want to accept C as generic
-    orderBy: z.record(z.enum<string, C>(Object.keys(entitySchema.shape) as C), sortOrderSchema),
-    page: z.number().min(0),
-  });
+export const getBaseQuerySchema = <T extends AnyZodObject, C extends [keyof T["shape"]]>(entitySchema: T) => {
+  return z
+    .object({
+      // @ts-expect-error enum do not want to accept C as generic
+      orderBy: z.record(z.enum<string, C>(Object.keys(entitySchema.shape) as C), sortOrderSchema).optional(),
+    })
+    .and(paginationQuerySchema);
 };
+
+export const paginationQuerySchema = z.object({
+  limit: z.coerce.number().min(0).default(10),
+  page: z.coerce.number().min(0),
+});
 
 export const uniqueEnumArray = <U extends string, T extends Readonly<[U, ...U[]]>>(enumValues: T) => {
   return z.array(z.enum(enumValues)).refine(
