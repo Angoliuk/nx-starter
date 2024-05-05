@@ -1,4 +1,4 @@
-import { AnyZodObject, ZodTypeAny, z } from "zod";
+import { AnyZodObject, RawCreateParams, ZodTypeAny, z } from "zod";
 
 export type UserIdSchema = z.infer<typeof userIdSchema>;
 export const userIdSchema = z.string().min(1);
@@ -31,4 +31,28 @@ export const getBasePaginationQueryValidation = <T extends AnyZodObject, C exten
     orderBy: z.record(z.enum<string, C>(Object.keys(entitySchema.shape) as C), sortOrderSchema),
     page: z.number().min(0),
   });
+};
+
+export const uniqueEnumArray = <U extends string, T extends Readonly<[U, ...U[]]>>(enumValues: T) => {
+  return z.array(z.enum(enumValues)).refine(
+    arr => {
+      const uniqueSet = new Set(arr);
+      return uniqueSet.size === arr.length;
+    },
+    {
+      message: "Array must contain unique values",
+    },
+  );
+};
+
+export const uniqueArray = <T extends ZodTypeAny>(schema: T, params?: RawCreateParams) => {
+  return z.array(schema, params).refine(
+    arr => {
+      const uniqueSet = new Set(arr);
+      return uniqueSet.size === arr.length;
+    },
+    {
+      message: "Array must contain unique values",
+    },
+  );
 };
