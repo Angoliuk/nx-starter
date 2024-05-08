@@ -5,7 +5,7 @@ import { Checkbox, CheckboxProps } from "./checkbox";
 
 export type FormCheckboxProps<
   TFieldValues extends FieldValues,
-  TPath extends FieldPathByValue<TFieldValues, boolean | number | string>,
+  TPath extends FieldPathByValue<TFieldValues, boolean | number | string | null | undefined>,
 > = Omit<CheckboxProps, "defaultValue" | "onBlur" | "onChange" | "value"> & {
   control: Control<TFieldValues>;
   defaultValue?: PathValue<TFieldValues, TPath>;
@@ -14,7 +14,7 @@ export type FormCheckboxProps<
 
 export const FormCheckbox = <
   TFieldValues extends FieldValues,
-  TPath extends FieldPathByValue<TFieldValues, boolean | number | string>,
+  TPath extends FieldPathByValue<TFieldValues, boolean | number | string | null | undefined>,
 >({
   containerClassName,
   control,

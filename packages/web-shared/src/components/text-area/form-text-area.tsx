@@ -5,7 +5,7 @@ import { TextArea, TextAreaProps } from "./text-area";
 
 export type FormTextAreaProps<
   TFieldValues extends FieldValues,
-  TPath extends FieldPathByValue<TFieldValues, boolean | number | string>,
+  TPath extends FieldPathByValue<TFieldValues, boolean | number | string | null | undefined>,
 > = Omit<TextAreaProps, "defaultValue" | "onBlur" | "onChange" | "value"> & {
   control: Control<TFieldValues>;
   defaultValue?: PathValue<TFieldValues, TPath>;
@@ -14,7 +14,7 @@ export type FormTextAreaProps<
 
 export const FormTextArea = <
   TFieldValues extends FieldValues,
-  TPath extends FieldPathByValue<TFieldValues, boolean | number | string>,
+  TPath extends FieldPathByValue<TFieldValues, boolean | number | string | null | undefined>,
 >({
   containerClassName,
   control,

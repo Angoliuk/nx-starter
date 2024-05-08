@@ -5,7 +5,7 @@ import { Select, SelectProps } from "./select";
 
 export type FormSelectProps<
   TFieldValues extends FieldValues,
-  TPath extends FieldPathByValue<TFieldValues, boolean | number | string>,
+  TPath extends FieldPathByValue<TFieldValues, boolean | number | string | null | undefined>,
 > = Omit<SelectProps, "defaultValue" | "onBlur" | "onChange" | "value"> & {
   control: Control<TFieldValues>;
   defaultValue?: PathValue<TFieldValues, TPath>;
@@ -14,7 +14,7 @@ export type FormSelectProps<
 
 export const FormSelect = <
   TFieldValues extends FieldValues,
-  TPath extends FieldPathByValue<TFieldValues, boolean | number | string>,
+  TPath extends FieldPathByValue<TFieldValues, boolean | number | string | null | undefined>,
 >({
   children,
   containerClassName,

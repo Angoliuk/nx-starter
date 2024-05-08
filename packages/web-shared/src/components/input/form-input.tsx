@@ -5,7 +5,7 @@ import { Input, InputProps } from "./input";
 
 export type FormInputProps<
   TFieldValues extends FieldValues,
-  TPath extends FieldPathByValue<TFieldValues, boolean | number | string>,
+  TPath extends FieldPathByValue<TFieldValues, boolean | number | string | null | undefined>,
 > = Omit<InputProps, "defaultValue" | "onBlur" | "onChange" | "value"> & {
   control: Control<TFieldValues>;
   defaultValue?: PathValue<TFieldValues, TPath>;
@@ -14,7 +14,7 @@ export type FormInputProps<
 
 export const FormInput = <
   TFieldValues extends FieldValues,
-  TPath extends FieldPathByValue<TFieldValues, boolean | number | string>,
+  TPath extends FieldPathByValue<TFieldValues, boolean | number | string | null | undefined>,
 >({
   control,
   defaultValue,
