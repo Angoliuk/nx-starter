@@ -31,7 +31,6 @@
     ],
     "sharedGlobals": []
   },
-  "nxCloudAccessToken": "NmRkZGU4ZWYtNDIzZS00YTU5LTg4ODctYjg5NzlkZWE5MWUwfHJlYWQtd3JpdGU=",
   "generators": {
     "@nx/react": {
       "application": {

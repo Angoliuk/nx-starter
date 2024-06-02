@@ -1,5 +1,5 @@
-import { contract } from "@/shared/api";
 import { getErrorInfo } from "@/shared/utils";
+import { webContract } from "@/web-shared/api";
 import { ArgumentsHost, Catch, ExceptionFilter, Logger } from "@nestjs/common";
 import { ServerInferResponses } from "@ts-rest/core";
 import { Response } from "express";
@@ -17,7 +17,14 @@ export class ErrorFilter implements ExceptionFilter {
     const responseJson = {
       message,
       name,
-    } as ServerInferResponses<typeof contract.auth.signIn, 500>["body"] & { headers: OutgoingHttpHeaders };
+    } as {
+      headers: OutgoingHttpHeaders;
+    } & ServerInferResponses<typeof webContract.auth.signIn, 500>["body"];
+
+    if (name === "JWTError" || name === "UnauthorizedException") {
+      res.clearCookie("accessToken");
+      res.clearCookie("refreshToken");
+    }
 
     this.logger.error(exception, stack);
     res.status(statusCode).json(responseJson);

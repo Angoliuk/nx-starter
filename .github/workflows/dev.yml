@@ -24,13 +24,13 @@ jobs:
         with:
           fetch-depth: 0
       - name: Env
-        uses: "./.github/workflows/utils/json-to-env"
+        uses: ./.github/workflows/utils/json-to-env
         with:
           json: ${{ toJSON(matrix.config) }}
       - name: NX
-        uses: "./.github/workflows/modules/nx/lint"
+        uses: ./.github/workflows/modules/nx/lint
       - name: Linting commit
-        uses: "./.github/workflows/utils/commit"
+        uses: ./.github/workflows/utils/commit
         with:
           message: "Linting fixes"
 
@@ -50,8 +50,8 @@ jobs:
         with:
           fetch-depth: 0
       - name: Env
-        uses: "./.github/workflows/utils/json-to-env"
+        uses: ./.github/workflows/utils/json-to-env
         with:
           json: ${{ toJSON(matrix.config) }}
       - name: NX
-        uses: "./.github/workflows/modules/nx/build"
+        uses: ./.github/workflows/modules/nx/build

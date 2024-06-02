@@ -1,5 +1,6 @@
-import { ForbiddenError, NotFoundError } from "@/shared/utils";
-import { SignInBodySchema, SignUpBodySchema, UserIdSchema } from "@/shared/validation";
+import { UserIdSchema } from "@/shared/types";
+import { ForbiddenError, JWTError, NotFoundError } from "@/shared/utils";
+import { SignInBodySchema, SignUpBodySchema } from "@/web-shared/validation";
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import * as argon2 from "argon2";
@@ -11,7 +12,11 @@ import { UsersService } from "../users";
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService, private jwtService: JwtService, private envService: EnvService) {}
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+    private envService: EnvService,
+  ) {}
 
   async addTokensToCookies({
     accessToken,
@@ -40,22 +45,33 @@ export class AuthService {
   async getTokenUserFromPayload(payload: object) {
     const userValidationResult = tokenUser.safeParse(payload);
 
-    if (!userValidationResult.success) throw new ForbiddenError();
+    if (!userValidationResult.success) {
+      throw new JWTError("Wrong payload");
+    }
 
     const user = await this.usersService.getOne({
-      where: { email: userValidationResult.data.email, id: userValidationResult.data.userId },
+      where: { id: userValidationResult.data.userId },
     });
 
-    if (!user) throw new NotFoundError("User not found");
+    if (!user) {
+      throw new JWTError("User not found");
+    }
 
     return {
-      email: user.email,
       userId: user.id,
     };
   }
 
   async logout() {
-    return null;
+    return {};
+  }
+
+  async me(userId: UserIdSchema) {
+    const user = await this.usersService.getOne({ where: { id: userId } });
+
+    if (!user) return new NotFoundError(`User with id ${userId} do not exists`);
+
+    return user;
   }
 
   async removeTokensFromCookies({ res }: { res: Response }) {
@@ -72,14 +88,13 @@ export class AuthService {
 
     if (!isPasswordsMatch) return new ForbiddenError("Incorrect password");
 
-    const tokens = await this.signTokens({ email: user.email, userId: user.id });
+    const tokens = await this.signTokens({ userId: user.id });
 
-    return { email: user.email, id: user.id, ...tokens };
+    return { id: user.id, ...tokens };
   }
 
-  async signTokens({ email, userId }: { email: string; userId: UserIdSchema }) {
+  async signTokens({ userId }: { userId: UserIdSchema }) {
     const tokenBody = {
-      email,
       userId,
     };
 
@@ -103,14 +118,14 @@ export class AuthService {
   async signUp(body: SignUpBodySchema) {
     const existingUser = await this.usersService.getOne({ where: { email: body.email } });
 
-    if (existingUser) return new ForbiddenError(`User with email ${existingUser.email} already exists`);
+    if (existingUser)
+      return new ForbiddenError(`User with email ${existingUser.email} already exists`);
 
     const createdUser = await this.usersService.create({ data: body });
 
-    const tokens = await this.signTokens({ email: createdUser.email, userId: createdUser.id });
+    const tokens = await this.signTokens({ userId: createdUser.id });
 
     return {
-      email: createdUser.email,
       id: createdUser.id,
       ...tokens,
     };

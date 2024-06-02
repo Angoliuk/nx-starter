@@ -7,7 +7,7 @@ import { PrismaModule } from "./prisma";
 import { UsersModule } from "./users";
 
 @Module({
-  imports: [PrismaModule, EnvModule, PrismaModule, AuthModule, UsersModule],
+  imports: [PrismaModule, EnvModule, AuthModule, UsersModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

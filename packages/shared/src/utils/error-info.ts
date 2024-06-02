@@ -1,4 +1,4 @@
-import { STATUS_CODES } from "../api";
+import { STATUS_CODES } from "../constants";
 
 const getErrorStatusCode = (error: object, defaultErrorCode: number) => {
   if ("getStatus" in error && error.getStatus instanceof Function) {
@@ -13,7 +13,9 @@ const getErrorStatusCode = (error: object, defaultErrorCode: number) => {
 };
 
 const getErrorMessage = (error: object, status: number) => {
-  return "message" in error && typeof error.message === "string" ? error.message : "Server error with status " + status;
+  return "message" in error && typeof error.message === "string"
+    ? error.message
+    : "Server error with status " + status;
 };
 
 const getErrorName = (error: object) => {
@@ -21,7 +23,9 @@ const getErrorName = (error: object) => {
 };
 
 const getErrorStack = (error: unknown) => {
-  return typeof error === "object" && !Array.isArray(error) && error !== null && "stack" in error ? error.stack : "";
+  return typeof error === "object" && !Array.isArray(error) && error !== null && "stack" in error
+    ? error.stack
+    : "";
 };
 
 export const getErrorInfo = (error: unknown) => {

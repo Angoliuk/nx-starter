@@ -5,12 +5,7 @@
   "projectType": "application",
   "targets": {
     "pm2": {
-      "dependsOn": [
-        {
-          "projects": ["tailwind"],
-          "target": "build"
-        }
-      ],
+      "dependsOn": [{ "dependencies": true, "target": "build" }],
       "command": "pm2 startOrReload ./apps/web/ecosystem.config.js --env production"
     },
     "build": {
@@ -22,12 +17,7 @@
         "postcssConfig": "apps/web/postcss.config.js",
         "tsConfig": "apps/web/tsconfig.json"
       },
-      "dependsOn": [
-        {
-          "projects": ["tailwind"],
-          "target": "build"
-        }
-      ],
+      "dependsOn": [{ "dependencies": true, "target": "build" }],
       "configurations": {
         "development": {
           "outputPath": "apps/web"
@@ -36,12 +26,7 @@
       }
     },
     "serve": {
-      "dependsOn": [
-        {
-          "projects": ["tailwind"],
-          "target": "build"
-        }
-      ],
+      "dependsOn": [{ "dependencies": true, "target": "build" }],
       "executor": "@nx/next:server",
       "defaultConfiguration": "development",
       "options": {
@@ -51,11 +36,13 @@
       "configurations": {
         "development": {
           "buildTarget": "web:build:development",
-          "dev": true
+          "dev": true,
+          "port": 4201
         },
         "production": {
           "buildTarget": "web:build:production",
-          "dev": false
+          "dev": false,
+          "port": 4201
         }
       }
     },

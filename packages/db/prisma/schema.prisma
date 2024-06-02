@@ -10,10 +10,16 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
+  id String @id @default(uuid())
+
   email    String @unique
   password String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum NEWS_VISIBILITY {
+  HIDDEN
+  VISIBLE
 }

@@ -1,20 +1,17 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "jsx": "preserve",
-    "allowJs": false,
-    "esModuleInterop": false,
-    "allowSyntheticDefaultImports": true,
+    "module": "commonjs",
+    "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "outDir": "../../dist/out-tsc",
-    "types": [
-      "node",
-      "@nx/react/typings/cssmodule.d.ts",
-      "@nx/react/typings/image.d.ts",
-      "next",
-      "@nx/next/typings/image.d.ts"
-    ]
+    "declaration": true,
+    "types": ["node"]
   },
   "files": [],
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
-  "extends": "../../tsconfig.json"
+  "include": ["**/*.ts"]
 }
