@@ -2,10 +2,9 @@ import type { Config as TailwindConfig } from "tailwindcss";
 
 import plugin from "tailwindcss/plugin";
 
-import { AppThemeColors, FontSizes } from "./theme";
+import { FontSizes, ThemeColors } from "./theme";
 
 export const defaultConfig = {
-  content: ["./src/**/*.{js,ts,jsx,tsx}", "./assets/**/*.svg"],
   plugins: [
     require("tailwindcss-animate"),
     plugin(({ matchUtilities, theme }) => {
@@ -43,7 +42,7 @@ export const defaultConfig = {
         "smooth-pulse": "smooth-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;",
       },
       colors: {
-        [AppThemeColors.WHITE_1000]: "#ffffff",
+        [ThemeColors.WHITE_1000]: "#ffffff",
         current: "currentColor",
         transparent: "transparent",
       },
@@ -67,4 +66,4 @@ export const defaultConfig = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fontSize: false as never as any,
   },
-} satisfies TailwindConfig;
+} satisfies Omit<TailwindConfig, "content">;
