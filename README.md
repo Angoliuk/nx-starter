@@ -8,7 +8,7 @@ Stack:
 
 Key features:
 
-- _GH actions_ with linting, building and auto deploy to AWS
+- _GH actions_ with linting, building and auto deploy
 - _Docker compose_ with postgres and pgAdmin for dev
 - TS-Rest for _end-to-end type-safety_ and auto generated _swagger_
 - _Shared package_ for reusable code between packages
