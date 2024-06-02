@@ -3,7 +3,7 @@ name: prod
 on:
   push:
     branches:
-      - "master"
+      - "main"
 
 permissions:
   contents: write
@@ -24,15 +24,15 @@ jobs:
           fetch-depth: 0
 
       - name: Env
-        uses: "./.github/workflows/utils/json-to-env"
+        uses: ./.github/workflows/utils/json-to-env
         with:
           json: ${{ toJSON(matrix.config) }}
 
       - name: NX
-        uses: "./.github/workflows/modules/nx/lint"
+        uses: ./.github/workflows/modules/nx/lint
 
       - name: Linting commit
-        uses: "./.github/workflows/utils/commit"
+        uses: ./.github/workflows/utils/commit
         with:
           message: "Linting fixes"
 
@@ -53,12 +53,12 @@ jobs:
           fetch-depth: 0
 
       - name: Env
-        uses: "./.github/workflows/utils/json-to-env"
+        uses: ./.github/workflows/utils/json-to-env
         with:
           json: ${{ toJSON(matrix.config) }}
 
       - name: NX
-        uses: "./.github/workflows/modules/nx/build"
+        uses: ./.github/workflows/modules/nx/build
 
   deploying:
     name: "Deploy"
@@ -71,10 +71,15 @@ jobs:
         config:
           - { name: "Ubuntu", os: "ubuntu-latest" }
     steps:
-      - name: deployWeb
-        if: ${{ env.affectedApps }} && contains(env.affectedApps, 'web')
-        uses: ./.github/workflows/modules/nx/web-deploy.yml
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: deployApi
+      - name: Deploy web
+        if: ${{ env.affectedApps }} && contains(env.affectedApps, 'web')
+        uses: ./.github/workflows/modules/nx/web-deploy
+
+      - name: Deploy api
         if: ${{ env.affectedApps }} && contains(env.affectedApps, 'api')
-        uses: ./.github/workflows/modules/nx/api-deploy.yml
+        uses: ./.github/workflows/modules/nx/api-deploy

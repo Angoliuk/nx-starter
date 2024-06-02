@@ -1,0 +1,10 @@
+node_modules
+dist
+minio_tmp
+.next
+.nx
+.history
+.vscode
+tmp
+.git
+.github

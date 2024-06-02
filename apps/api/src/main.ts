@@ -1,4 +1,4 @@
-import { contract } from "@/shared/api";
+import { webContract } from "@/web-shared/api";
 import { Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { SwaggerModule } from "@nestjs/swagger";
@@ -17,16 +17,31 @@ async function bootstrap() {
   app.useGlobalFilters(new ErrorFilter());
   app.use(cookieParser());
 
-  const document = generateOpenApi(contract, {
+  const webDocument = generateOpenApi(webContract, {
+    components: {
+      securitySchemes: {
+        cookieAuth: {
+          in: "cookie",
+          name: "accessToken",
+          type: "apiKey",
+        },
+      },
+    },
     info: {
       title: "API",
       version: "1.0.0",
     },
   });
 
-  SwaggerModule.setup("api-docs", app, document);
+  SwaggerModule.setup("web-api-docs", app, webDocument, {
+    swaggerOptions: {
+      withCredentials: true,
+    },
+  });
 
-  await app.listen(port, () => Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`));
+  await app.listen(port, () =>
+    Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`),
+  );
 }
 
 bootstrap();

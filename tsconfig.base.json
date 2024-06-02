@@ -19,7 +19,8 @@
       "@/db": ["./packages/db/src/index.ts"],
       "@/shared/*": ["./packages/shared/src/*"],
       "@/tailwind": ["./packages/tailwind/src/index.ts"],
-      "@/tailwind/styles": ["./packages/tailwind/src/global.css"],
+      "@/tailwind-config": ["./packages/tailwind/src/tailwind.config.ts"],
+      "@/ui-shared/*": ["./packages/ui-shared/src/*"],
       "@/web-shared/*": ["./packages/web-shared/src/*"]
     }
   },

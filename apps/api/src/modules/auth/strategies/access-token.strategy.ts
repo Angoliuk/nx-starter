@@ -9,7 +9,10 @@ import { AuthService } from "../auth.service";
 
 @Injectable()
 export class AccessTokenStrategy extends PassportStrategy(Strategy, "jwt") {
-  constructor(envService: EnvService, private authService: AuthService) {
+  constructor(
+    envService: EnvService,
+    private authService: AuthService,
+  ) {
     super({
       ignoreExpiration: false,
       jwtFromRequest: ExtractJwt.fromExtractors([AccessTokenStrategy.extractJWTFromCookie]),

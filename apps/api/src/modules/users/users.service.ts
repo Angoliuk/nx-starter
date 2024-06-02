@@ -1,5 +1,3 @@
-import type { DefaultArgs } from "@prisma/client/runtime/library";
-
 import { Prisma } from "@/db";
 import { Injectable } from "@nestjs/common";
 import * as argon2 from "argon2";
@@ -10,24 +8,42 @@ import { PrismaService } from "../prisma";
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async create({ data, select }: Prisma.UserCreateArgs<DefaultArgs>) {
-    const passwordHash = await argon2.hash(data.password);
-    return await this.prisma.user.create({ data: { ...data, password: passwordHash }, select });
+  async count<T extends Prisma.UserCountArgs>(
+    countData: Prisma.SelectSubset<T, Prisma.UserCountArgs>,
+  ) {
+    return await this.prisma.user.count(countData);
   }
 
-  async delete(deleteData: Prisma.UserDeleteArgs<DefaultArgs>) {
+  async create<T extends Prisma.UserCreateArgs>({
+    data,
+    select,
+  }: Prisma.SelectSubset<T, Prisma.UserCreateArgs>) {
+    const passwordHash = await argon2.hash(data.password);
+    const userData = { ...data, password: passwordHash };
+    return await this.prisma.user.create({ data: userData, select });
+  }
+
+  async delete<T extends Prisma.UserDeleteArgs>(
+    deleteData: Prisma.SelectSubset<T, Prisma.UserDeleteArgs>,
+  ) {
     return await this.prisma.user.delete(deleteData);
   }
 
-  async find(findData: Prisma.UserFindManyArgs<DefaultArgs>) {
-    return await this.prisma.user.findMany(findData);
+  async get<T extends Prisma.UserFindManyArgs>(
+    getData: Prisma.SelectSubset<T, Prisma.UserFindManyArgs>,
+  ) {
+    return await this.prisma.user.findMany(getData);
   }
 
-  async findOne(findData: Prisma.UserFindUniqueArgs<DefaultArgs>) {
-    return await this.prisma.user.findUnique(findData);
+  async getOne<T extends Prisma.UserFindUniqueArgs>(
+    getData: Prisma.SelectSubset<T, Prisma.UserFindUniqueArgs>,
+  ) {
+    return await this.prisma.user.findUnique(getData);
   }
 
-  async update(updateData: Prisma.UserUpdateArgs<DefaultArgs>) {
+  async update<T extends Prisma.UserUpdateArgs>(
+    updateData: Prisma.SelectSubset<T, Prisma.UserUpdateArgs>,
+  ) {
     return await this.prisma.user.update(updateData);
   }
 }

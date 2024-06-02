@@ -4,16 +4,6 @@
   "sourceRoot": "packages/tailwind/src",
   "projectType": "library",
   "targets": {
-    "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/packages/tailwind",
-        "main": "packages/tailwind/src/index.ts",
-        "tsConfig": "packages/tailwind/tsconfig.json",
-        "assets": ["packages/tailwind/*.md"]
-      }
-    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],

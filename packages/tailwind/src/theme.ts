@@ -1,4 +1,4 @@
-export enum AppThemeColors {
+export enum ThemeColors {
   WHITE_1000 = "white-1000",
 }
 

@@ -9,7 +9,10 @@ declare module "*.svg" {
 declare module "react" {
   function memo<T extends React.ComponentType<unknown>>(
     Component: T,
-    propsAreEqual?: (prev: Readonly<React.ComponentProps<T>>, next: Readonly<React.ComponentProps<T>>) => boolean,
+    propsAreEqual?: (
+      prev: Readonly<React.ComponentProps<T>>,
+      next: Readonly<React.ComponentProps<T>>,
+    ) => boolean,
   ): T;
 
   function forwardRef<T, C extends React.ComponentType<unknown>>(

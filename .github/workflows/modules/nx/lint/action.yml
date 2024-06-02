@@ -13,10 +13,6 @@ runs:
     - name: Get nx env
       uses: ./.github/workflows/utils/get-nx-env
 
-    - name: Code style
-      shell: bash
-      run: pnpm nx format:check --verbose ${{ env.nxDiffFlags }}
-
     - name: Lint
       shell: bash
-      run: pnpm nx affected --target=lint ${{ env.nxDiffFlags }}
+      run: pnpm check:all

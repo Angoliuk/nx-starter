@@ -1,47 +1,48 @@
-import { contract } from "@/shared/api";
+import { webContract } from "@/web-shared/api";
 import { initClient } from "@ts-rest/core";
-import { cookies } from "next/headers";
+import { z } from "zod";
 
 import { API_BASE_URL } from "../env";
+import { getCookieTokens } from "./cookies-tokens";
+import { syncCookies } from "./sync-cookies";
 
-export const api = initClient(contract, {
-  api: async ({ body, cache, credentials = "include", headers, method, next, path, route, signal }) => {
+export const isZodType = (obj: unknown): obj is z.ZodTypeAny => {
+  return typeof (obj as z.ZodTypeAny)?.safeParse === "function";
+};
+
+export const api = initClient(webContract, {
+  api: async ({ body, fetchOptions, headers, method, path, route, validateResponse }) => {
     const result = await fetch(path, {
+      ...fetchOptions,
       body,
-      cache,
-      credentials,
       headers: {
-        Cookie: cookies()
-          .getAll()
-          .map(cookie => `${cookie.name}=${cookie.value}`)
-          .join(";"),
+        Cookie: await getCookieTokens(),
         ...headers,
       },
       method,
-      next,
-      signal,
     });
+
+    // Well, that a war crime to sync cookies between Nest and Next
+    await syncCookies(result.headers.getSetCookie());
 
     const contentType = result.headers.get("content-type");
 
     if (contentType?.includes("application/") && contentType?.includes("json")) {
-      if (!route.validateResponseOnClient) {
+      const response = {
+        body: await result.json(),
+        headers: result.headers,
+        status: result.status,
+      };
+
+      const responseSchema = route.responses[response.status];
+      if ((validateResponse ?? route.validateResponseOnClient) && isZodType(responseSchema)) {
         return {
-          body: await result.json(),
-          headers: result.headers,
-          status: result.status,
+          ...response,
+          body: responseSchema?.parse(response.body),
         };
       }
 
-      const jsonData = await result.json();
-      const statusCode = result.status;
-      const response = route.responses[statusCode];
-
-      return {
-        body: response && typeof response !== "symbol" && "parse" in response ? response?.parse(jsonData) : jsonData,
-        headers: result.headers,
-        status: statusCode,
-      };
+      return response;
     }
 
     if (contentType?.includes("text/")) {
@@ -58,6 +59,7 @@ export const api = initClient(contract, {
       status: result.status,
     };
   },
-  baseHeaders: {},
   baseUrl: API_BASE_URL,
+  throwOnUnknownStatus: true,
+  validateResponse: true,
 });

@@ -5,6 +5,7 @@
   "projectType": "application",
   "targets": {
     "pm2": {
+      "dependsOn": [{ "dependencies": true, "target": "build" }],
       "command": "pm2 startOrReload ./apps/api/ecosystem.config.js --env production"
     },
     "build": {
@@ -19,7 +20,8 @@
         "tsConfig": "apps/api/tsconfig.json",
         "assets": ["apps/api/src/assets"],
         "isolatedConfig": true,
-        "webpackConfig": "apps/api/webpack.config.js"
+        "webpackConfig": "apps/api/webpack.config.js",
+        "dependsOn": [{ "dependencies": true, "target": "build" }]
       },
       "configurations": {
         "development": {},
@@ -34,10 +36,12 @@
       },
       "configurations": {
         "development": {
-          "buildTarget": "api:build:development"
+          "buildTarget": "api:build:development",
+          "port": 4201
         },
         "production": {
-          "buildTarget": "api:build:production"
+          "buildTarget": "api:build:production",
+          "port": 4201
         }
       }
     },

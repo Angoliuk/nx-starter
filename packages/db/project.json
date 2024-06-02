@@ -22,14 +22,26 @@
         "cwd": "packages/db"
       }
     },
-    "generate-types": {
+    "seed": {
+      "command": "prisma db seed",
+      "options": {
+        "cwd": "packages/db"
+      }
+    },
+    "generate": {
       "command": "prisma generate",
       "options": {
         "cwd": "packages/db"
       }
     },
-    "migrate": {
+    "migrate:dev": {
       "command": "prisma migrate dev",
+      "options": {
+        "cwd": "packages/db"
+      }
+    },
+    "migrate:deploy": {
+      "command": "prisma migrate deploy",
       "options": {
         "cwd": "packages/db"
       }
