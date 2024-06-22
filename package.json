@@ -113,7 +113,7 @@
   },
   "engines": {
     "node": ">=20",
-    "pnpm": ">=8"
+    "pnpm": ">=9"
   },
   "prisma": {
     "schema": "packages/db/prisma/schema.prisma",
