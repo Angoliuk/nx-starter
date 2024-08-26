@@ -10,7 +10,6 @@ RUN pnpm add tsx -g
 COPY package.json pnpm-lock.yaml ./
 COPY . .
 
-
 RUN pnpm i
 RUN pnpm nx run api:build
 

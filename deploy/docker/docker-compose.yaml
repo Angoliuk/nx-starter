@@ -2,6 +2,27 @@
 
 version: "3.8"
 services:
+  api:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.api
+    depends_on:
+      postgres:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+  web:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.web
+    ports:
+      - "4201:4201"
+    restart: unless-stopped
   postgres:
     image: postgres
     ports:
@@ -37,6 +58,7 @@ services:
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     restart: unless-stopped
+
 volumes:
   pgdata:
   pgadmin-data:

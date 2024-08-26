@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+        - name: web
+          image: <your-docker-registry>/web-app:latest
+          ports:
+            - containerPort: 4201
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "500Mi"
+          env:
+            - name: NEXT_PUBLIC_API_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: web-secrets
+                  key: api_url
